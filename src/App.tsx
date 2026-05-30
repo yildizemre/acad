@@ -1,8 +1,12 @@
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Courses from './components/Courses';
-import WhyUs from './components/WhyUs';
-import HowItWorks from './components/HowItWorks';
+import AgeFilter from './components/AgeFilter';
+import CoursesSection from './components/CoursesSection';
+import AboutSection from './components/AboutSection';
+import Philosophy from './components/Philosophy';
+import GallerySection from './components/GallerySection';
+import Testimonials from './components/Testimonials';
+import TrialCTA from './components/TrialCTA';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 
@@ -12,9 +16,13 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        <Courses />
-        <WhyUs />
-        <HowItWorks />
+        <AgeFilter />
+        <CoursesSection />
+        <AboutSection />
+        <Philosophy />
+        <GallerySection />
+        <Testimonials />
+        <TrialCTA />
       </main>
       <Footer />
       <WhatsAppButton />

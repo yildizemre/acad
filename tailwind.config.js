@@ -20,9 +20,9 @@ export default {
         brand: {
           navy: '#0D1B4B',
           'navy-light': '#1A2E6E',
-          green: '#00C896',
-          'green-light': '#00E5AA',
-          'green-dark': '#009B74',
+          green: '#ed5b2d',
+          'green-light': '#f07847',
+          'green-dark': '#d44d22',
         },
       },
       fontFamily: {

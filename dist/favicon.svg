@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Hype Academia">
+  <rect width="32" height="32" rx="7" fill="#0f172a"/>
+  <path fill="#F26522" d="M7 7 L25 7 L16 16 Z"/>
+  <path fill="#F26522" d="M7 25 L25 25 L16 16 Z"/>
+</svg>

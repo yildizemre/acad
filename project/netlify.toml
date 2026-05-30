@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Deneme dersi formu bildirim e-postası:
+# Netlify Dashboard → Site configuration → Forms → Form notifications
+# → Add notification → Email notification → emre.yildiz@hypevisionlab.com
+# Form adı: deneme-dersi

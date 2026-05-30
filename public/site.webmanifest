@@ -1,0 +1,23 @@
+{
+  "name": "Hype Academia — Çocuklar İçin Yazılım Eğitimi",
+  "short_name": "Hype Academia",
+  "description": "8-17 yaş arası çocuklara online Python, Scratch, Unity, Yapay Zeka ve Robotik eğitimi.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

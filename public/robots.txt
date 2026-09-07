@@ -1,4 +1,16 @@
+# Hype Academia — https://hypeacademia.com
+
 User-agent: *
+Allow: /
+
+# Yapay zeka arama motorlari (icerigin kaynak gosterilerek kullanilmasi icin)
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
 Allow: /
 
 Sitemap: https://hypeacademia.com/sitemap.xml

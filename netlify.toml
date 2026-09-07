@@ -5,13 +5,50 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# SPA fallback (public/_redirects ile birlikte)
+# ─── Yönlendirme ──────────────────────────────────────────────────────────────
+# Derleme sırasında her rota için ayrı bir index.html üretiliyor
+# (scripts/prerender.mjs). Netlify önce bu statik dosyalara bakar, bulamazsa
+# aşağıdaki kurala düşer.
+#
+# ⚠️  Bu kurala "force = true" EKLEMEYİN. Eklenirse statik sayfalar atlanır,
+#     arama motorları her adreste aynı boş index.html'i görür ve ön işlemenin
+#     bütün faydası kaybolur.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+# ─── Önbellek ─────────────────────────────────────────────────────────────────
+# Hash'li varlıklar sonsuza kadar önbelleklenebilir; HTML asla.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# ─── Güvenlik başlıkları ──────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+
+# ─── Notlar ───────────────────────────────────────────────────────────────────
 # Deneme dersi formu bildirim e-postası:
-# Netlify Dashboard → Site configuration → Forms → Form notifications
-# → Add notification → Email notification → emre.yildiz@hypevisionlab.com
-# Form adı: deneme-dersi
+#   Netlify Dashboard → Site configuration → Forms → Form notifications
+#   → Add notification → Email notification
+#   Form adı: deneme-dersi
+#
+# Ortam değişkenleri (analitik, takvim, ödeme):
+#   Site configuration → Environment variables — bkz. .env.example

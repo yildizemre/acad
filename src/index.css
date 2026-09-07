@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,99 +7,231 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
   }
 
   body {
+    /* Kağıt zemin — beyaz kullanmıyoruz */
+    @apply bg-sand-100 text-lead-700 antialiased;
     font-family: 'Inter', system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+    @apply text-ink-950;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   * {
     box-sizing: border-box;
   }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-electric-500 ring-offset-2 ring-offset-sand-100;
+  }
+
+  ::selection {
+    @apply bg-electric-500 text-white;
+  }
 }
 
 @layer components {
+  /* ─── Butonlar ─────────────────────────────────────────────────────────
+     Tuğla rengi SADECE burada. Sayfanın başka yerinde dolgu olarak yok. */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg font-semibold
+           transition-colors duration-150 whitespace-nowrap;
+  }
+
   .btn-primary {
-    @apply bg-brand-green text-white font-semibold px-6 py-3 rounded-xl
-           hover:bg-brand-green-light transition-all duration-200
-           shadow-lg hover:shadow-brand-green/30 hover:scale-105
-           active:scale-95 inline-flex items-center gap-2;
+    @apply btn bg-brick-500 text-sand-50 px-6 py-3 hover:bg-brick-600;
+  }
+
+  .btn-secondary {
+    @apply btn bg-ink-950 text-sand-50 px-6 py-3 hover:bg-ink-900;
+  }
+
+  .btn-ghost {
+    @apply btn border border-sand-400 bg-transparent text-ink-950 px-6 py-3
+           hover:border-ink-950 hover:bg-sand-200;
   }
 
   .btn-outline {
-    @apply border-2 border-white text-white font-semibold px-6 py-3 rounded-xl
-           hover:bg-white hover:text-brand-navy transition-all duration-200
-           active:scale-95 inline-flex items-center gap-2;
+    @apply btn border border-sand-50/40 text-sand-50 px-6 py-3
+           hover:bg-sand-50 hover:text-ink-950;
   }
 
+  .btn-lg {
+    @apply text-base px-7 py-3.5;
+  }
+
+  .btn-sm {
+    @apply text-sm px-4 py-2.5;
+  }
+
+  /* ─── Yüzeyler ─────────────────────────────────────────────────────────
+     Gölge yok. Derinlik 1px çizgiyle kuruluyor. */
   .card {
-    @apply bg-white rounded-2xl shadow-md hover:shadow-xl
-           transition-all duration-300 hover:-translate-y-1 overflow-hidden;
+    @apply bg-sand-50 rounded-lg border border-sand-300;
+  }
+
+  .card-hover {
+    @apply card transition-colors duration-200 hover:border-ink-950;
+  }
+
+  .panel {
+    @apply bg-sand-200 rounded-lg border border-sand-300;
+  }
+
+  /* ─── Tipografi ────────────────────────────────────────────────────────
+     Üst başlık artık ortalanmış turuncu bir etiket değil; solda,
+     numaralı, çizgili bir bölüm işareti. */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-xs font-semibold uppercase
+           tracking-[0.16em] text-lead-500;
+  }
+
+  .rule {
+    @apply h-px w-8 bg-sand-400;
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold text-brand-navy leading-tight;
+    @apply font-display text-display-sm font-semibold text-ink-950;
   }
 
   .section-subtitle {
-    @apply text-gray-500 text-lg mt-4 leading-relaxed;
+    @apply text-lead-600 text-lg leading-relaxed;
   }
 
+  /* Etiketler: dolgu yerine ince çerçeve */
   .badge {
-    @apply inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full;
+    @apply inline-flex items-center gap-1.5 text-xs font-semibold
+           px-2.5 py-1 rounded border;
+  }
+
+  .badge-neutral {
+    @apply badge border-sand-400 text-lead-600 bg-transparent;
+  }
+
+  .badge-ink {
+    @apply badge border-ink-950 text-ink-950 bg-transparent;
+  }
+
+  .badge-brick {
+    @apply badge border-brick-500 text-brick-600 bg-transparent;
+  }
+
+  .badge-solid {
+    @apply badge border-ink-950 bg-ink-950 text-sand-50;
+  }
+
+  /* ─── Düzen ────────────────────────────────────────────────────────────
+     Bölümler arası ayrım gölgeyle değil, tam genişlik çizgiyle. */
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .section-divider {
+    @apply border-t border-sand-300;
+  }
+
+  /* Sayı ile başlayan bölüm işareti — "01 / Programlar" */
+  .section-index {
+    @apply font-mono text-xs text-lead-400 tracking-widest;
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    background: linear-gradient(135deg, #ed5b2d 0%, #f07847 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /* Logo mavisiyle altı çizili vurgu — marka işaretiyle aynı renk */
+  .underline-electric {
+    background-image: linear-gradient(#1b18ff, #1b18ff);
+    background-repeat: no-repeat;
+    background-position: 0 92%;
+    background-size: 100% 0.14em;
   }
 
-  .bg-hero {
-    background: linear-gradient(135deg, #0D1B4B 0%, #1A2E6E 60%, #0f2a5e 100%);
+  /* Vurgu artık gradyan değil: kelimenin altında tuğla rengi bir kural */
+  .underline-brick {
+    background-image: linear-gradient(#b8432b, #b8432b);
+    background-repeat: no-repeat;
+    background-position: 0 92%;
+    background-size: 100% 0.14em;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
   .animate-delay-100 { animation-delay: 100ms; }
   .animate-delay-200 { animation-delay: 200ms; }
   .animate-delay-300 { animation-delay: 300ms; }
-  .animate-delay-400 { animation-delay: 400ms; }
-  .animate-delay-500 { animation-delay: 500ms; }
 }
 
-/* Custom scrollbar */
+/* ─── Kaydırma çubuğu ───────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f5f1ea;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
+  background: #c9bfae;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #ada091;
 }
 
-/* Floating WhatsApp button pulse ring */
+/* ─── Kaydırınca beliren bölümler ───────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* WhatsApp butonu — markanın kendi rengi, paletin dışında kalır */
 .whatsapp-ring::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: #25D366;
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  opacity: 0.4;
+  background: #25d366;
+  animation: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.35;
 }
 
 @keyframes ping {
   75%, 100% {
     transform: scale(1.5);
     opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

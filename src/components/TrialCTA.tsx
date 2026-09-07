@@ -50,38 +50,39 @@ export default function TrialCTA() {
   };
 
   const field =
-    'w-full px-4 py-3 rounded bg-ink-900 border border-ink-700 text-sand-50 ' +
-    'placeholder:text-sand-500 focus:border-brick-500 focus:outline-none transition-colors';
+    'w-full px-4 py-3 rounded bg-white/15 border border-white/30 text-white ' +
+    'placeholder:text-white0 focus:border-white focus:outline-none transition-colors';
 
   return (
-    <section id="deneme" className="bg-ink-950 text-sand-50">
-      <div className="container py-16 md:py-24">
-        <div className="grid lg:grid-cols-[1fr_440px] gap-12 lg:gap-16 items-start">
+    <section id="deneme" className="section">
+      <div className="container">
+        <div className="rounded-3xl bg-electric-500 text-white p-6 sm:p-8 md:p-12 overflow-hidden">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_440px] gap-10 lg:gap-16 items-start [&>*]:min-w-0">
           {/* Sol: süreç */}
           <div>
             <p className="flex items-center gap-3 mb-5">
-              <span className="h-px w-8 bg-sand-50/25" />
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-sand-400">
+              <span className="h-px w-8 bg-white/25" />
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
                 Ücretsiz Deneme Dersi
               </span>
             </p>
 
-            <h2 className="font-display text-display-md font-semibold text-sand-50 mb-6">
+            <h2 className="text-display-md text-white mb-6">
               Anlatmakla olmuyor. Bir ders yapalım.
             </h2>
 
-            <p className="text-lg text-sand-300 leading-relaxed max-w-xl mb-10">
+            <p className="text-lg text-white/80 leading-relaxed max-w-xl mb-10">
               Çocuğunuz gerçek bir eğitmenle gerçek bir ders yapar; biz de size seviyesi ve
               hangi programın uygun olduğu hakkında dürüst bir görüş veririz. Bağlayıcılığı yok.
             </p>
 
-            <ol className="border-t border-sand-50/15">
+            <ol className="border-t border-white/25">
               {STEPS.map(([n, t, d]) => (
-                <li key={n} className="flex gap-5 py-5 border-b border-sand-50/15">
-                  <span className="font-mono text-xs text-sand-500 pt-1 shrink-0">{n}</span>
+                <li key={n} className="flex gap-5 py-5 border-b border-white/25">
+                  <span className="font-mono text-xs text-white0 pt-1 shrink-0">{n}</span>
                   <div>
-                    <h3 className="font-semibold text-sand-50 mb-1">{t}</h3>
-                    <p className="text-sm text-sand-300 leading-relaxed">{d}</p>
+                    <h3 className="font-semibold text-white mb-1">{t}</h3>
+                    <p className="text-sm text-white/80 leading-relaxed">{d}</p>
                   </div>
                 </li>
               ))}
@@ -93,7 +94,7 @@ export default function TrialCTA() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => track('whatsapp_tiklandi', { source: 'ana_sayfa_kapanis' })}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-sand-50 border-b border-brick-500 pb-0.5 hover:text-brick-400 transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-2 underline-offset-4 decoration-marker hover:text-marker transition-colors"
               >
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp'tan yazmayı tercih ederim
@@ -101,7 +102,7 @@ export default function TrialCTA() {
               <a
                 href={`tel:${SITE.phoneIntl}`}
                 onClick={() => track('telefon_tiklandi', { source: 'ana_sayfa_kapanis' })}
-                className="text-sm text-sand-300 hover:text-sand-50 transition-colors"
+                className="text-sm text-white/80 hover:text-white transition-colors"
               >
                 veya arayın: {SITE.phoneDisplay}
               </a>
@@ -109,14 +110,14 @@ export default function TrialCTA() {
           </div>
 
           {/* Sağ: form */}
-          <div className="border border-sand-50/20 rounded-lg p-6 md:p-8">
+          <div className="border border-white/20 rounded-2xl p-6 md:p-8">
             {status === 'done' ? (
               <div className="py-6">
-                <h3 className="font-display text-2xl font-semibold text-sand-50 mb-3">
+                <h3 className="text-2xl font-extrabold text-white mb-3">
                   Talebiniz alındı
                 </h3>
-                <p className="text-sand-300 leading-relaxed mb-6">
-                  48 saat içinde <strong className="text-sand-50">{phone}</strong> numarasından
+                <p className="text-white/80 leading-relaxed mb-6">
+                  48 saat içinde <strong className="text-white">{phone}</strong> numarasından
                   size ulaşacağız. Beklemek istemiyorsanız aşağıdaki düğme sizi bilgileriniz
                   yazılı hâlde WhatsApp'a götürür.
                 </p>
@@ -137,10 +138,10 @@ export default function TrialCTA() {
               </div>
             ) : (
               <>
-                <h3 className="font-display text-xl font-semibold text-sand-50 mb-1">
+                <h3 className="text-xl font-extrabold text-white mb-1">
                   Deneme dersi isteyin
                 </h3>
-                <p className="text-sm text-sand-400 mb-6">
+                <p className="text-sm text-white/60 mb-6">
                   Yıldızlı alanlar zorunlu. Bilgileriniz üçüncü taraflarla paylaşılmaz.
                 </p>
 
@@ -160,7 +161,7 @@ export default function TrialCTA() {
                   </p>
 
                   <div>
-                    <label htmlFor="t-name" className="block text-sm text-sand-300 mb-1.5">
+                    <label htmlFor="t-name" className="block text-sm text-white/80 mb-1.5">
                       Veli adı soyadı *
                     </label>
                     <input
@@ -176,7 +177,7 @@ export default function TrialCTA() {
                   </div>
 
                   <div>
-                    <label htmlFor="t-phone" className="block text-sm text-sand-300 mb-1.5">
+                    <label htmlFor="t-phone" className="block text-sm text-white/80 mb-1.5">
                       Telefon *
                     </label>
                     <input
@@ -193,7 +194,7 @@ export default function TrialCTA() {
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="t-age" className="block text-sm text-sand-300 mb-1.5">
+                      <label htmlFor="t-age" className="block text-sm text-white/80 mb-1.5">
                         Çocuğun yaşı *
                       </label>
                       <select
@@ -213,7 +214,7 @@ export default function TrialCTA() {
                       </select>
                     </div>
                     <div>
-                      <label htmlFor="t-course" className="block text-sm text-sand-300 mb-1.5">
+                      <label htmlFor="t-course" className="block text-sm text-white/80 mb-1.5">
                         İlgilendiği kurs
                       </label>
                       <select
@@ -236,7 +237,7 @@ export default function TrialCTA() {
                   <button
                     type="submit"
                     disabled={!valid || status === 'sending'}
-                    className="btn-primary w-full disabled:opacity-45 disabled:cursor-not-allowed"
+                    className="btn-brand w-full bg-night-950 hover:bg-night-800 disabled:opacity-45 disabled:cursor-not-allowed"
                   >
                     {status === 'sending' ? (
                       <>
@@ -251,13 +252,13 @@ export default function TrialCTA() {
                     )}
                   </button>
 
-                  <p className="text-xs text-sand-500 text-center leading-relaxed">
+                  <p className="text-xs text-white0 text-center leading-relaxed">
                     Daha ayrıntılı form için{' '}
-                    <Link to="/iletisim" className="text-sand-300 underline hover:text-sand-50">
+                    <Link to="/iletisim" className="text-white/80 underline hover:text-white">
                       iletişim sayfasına
                     </Link>{' '}
                     geçebilirsiniz. Gönderdiğinizde{' '}
-                    <Link to="/yasal/kvkk" className="text-sand-300 underline hover:text-sand-50">
+                    <Link to="/yasal/kvkk" className="text-white/80 underline hover:text-white">
                       KVKK metnini
                     </Link>{' '}
                     kabul etmiş olursunuz.
@@ -269,11 +270,12 @@ export default function TrialCTA() {
         </div>
 
         {/* Alt şerit */}
-        <div className="mt-14 pt-8 border-t border-sand-50/15 flex flex-wrap gap-x-10 gap-y-3 text-sm text-sand-400">
+        </div>
+        <div className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-semibold text-night-500">
           <span>Kart bilgisi istemiyoruz</span>
           <span>Otomatik yenilenen abonelik yok</span>
           <span>İlk 2 ders içinde koşulsuz iade</span>
-          <Link to="/fiyatlar" className="text-sand-50 hover:text-brick-400 transition-colors">
+          <Link to="/fiyatlar" className="text-night-950 hover:text-electric-500 transition-colors">
             Fiyatları gör
             <ArrowRight className="w-3.5 h-3.5 inline ml-1" />
           </Link>

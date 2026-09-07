@@ -22,7 +22,7 @@ import {
   courseById,
   totalLessons,
 } from '../data/courses';
-import { TIERS, priceFor, formatTRY, perLesson } from '../data/pricing';
+import { TIERS, priceFor, formatTRY, perLesson, classSizeLabel, lessonLineFor } from '../data/pricing';
 import { SITE, waLink } from '../data/site';
 import { projectsForCourse } from '../data/projects';
 import CourseIcon from '../components/ui/CourseIcon';
@@ -32,6 +32,11 @@ import usePageMeta from '../hooks/usePageMeta';
 import { track } from '../lib/analytics';
 import useStructuredData, { breadcrumb } from '../hooks/useStructuredData';
 import { TIERS as PRICE_TIERS } from '../data/pricing';
+
+const GAIN_TINTS = [
+  'bg-tint-peach', 'bg-tint-sky', 'bg-tint-lime',
+  'bg-tint-rose', 'bg-tint-lilac', 'bg-tint-mint',
+];
 
 export default function CourseDetailPage() {
   const { slug } = useParams();
@@ -116,7 +121,7 @@ export default function CourseDetailPage() {
   return (
     <>
       {/* ─── Başlık ─────────────────────────────────────────────────────── */}
-      <section className="relative bg-ink-950 text-white overflow-hidden">
+      <section className="relative bg-night-950 text-white overflow-hidden">
 
         <div className="container relative py-12 md:py-16">
           <Link
@@ -127,24 +132,24 @@ export default function CourseDetailPage() {
             Tüm kurslar
           </Link>
 
-          <div className="grid lg:grid-cols-[1fr_420px] gap-10 lg:gap-14 items-start">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_420px] gap-10 lg:gap-14 items-start">
             {/* Sol: bilgi */}
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-5">
-                <span className="badge bg-sand-50/10 text-white border border-white/20">
+                <span className="badge bg-white/10 text-white border border-white/20">
                   <CourseIcon name={course.icon} className="w-3.5 h-3.5" />
                   {course.ageRange}
                 </span>
-                <span className="badge bg-sand-50/10 text-white border border-white/20">
+                <span className="badge bg-white/10 text-white border border-white/20">
                   <Signal className="w-3.5 h-3.5" />
                   {course.level}
                 </span>
                 {course.tag && (
-                  <span className="badge bg-brick-500 text-white">{course.tag}</span>
+                  <span className="badge bg-electric-500 text-white">{course.tag}</span>
                 )}
               </div>
 
-              <h1 className="text-display-md font-bold text-white mb-5">{course.title}</h1>
+              <h1 className="text-display-md text-white mb-5">{course.title}</h1>
 
               <p className="text-lg text-white/70 leading-relaxed max-w-2xl mb-8">{course.intro}</p>
 
@@ -162,7 +167,7 @@ export default function CourseDetailPage() {
                   Maks. {course.maxStudents} öğrenci
                 </span>
                 <span className="inline-flex items-center gap-2 text-white/80">
-                  <Star className="w-4 h-4 fill-brick-500 text-brick-500" />
+                  <Star className="w-4 h-4 fill-brick-500 text-electric-500" />
                   {course.rating} · {course.students} öğrenci
                 </span>
               </div>
@@ -170,18 +175,17 @@ export default function CourseDetailPage() {
 
             {/* Sağ: fiyat kartı */}
             <div className="lg:sticky lg:top-28">
-              <div className="bg-sand-50 rounded-lg overflow-hidden">
+              <div className="bg-white rounded-2xl overflow-hidden">
                 <img
                   src={course.image}
                   alt={`${course.title} canlı ders ekranı — ${course.tools.slice(0, 2).join(' ve ')} kullanılıyor`}
                   width={1200}
                   height={800}
-                  fetchPriority="high"
                   className="w-full aspect-[16/9] object-cover"
                 />
 
                 <div className="p-6">
-                  <div className="text-xs font-semibold uppercase tracking-wider text-lead-400 mb-3">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-night-400 mb-3">
                     Paket seçenekleri
                   </div>
 
@@ -193,25 +197,27 @@ export default function CourseDetailPage() {
                           key={t.id}
                           className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${
                             t.popular
-                              ? 'bg-brick-50 ring-brick-200'
-                              : 'bg-sand-50 ring-sand-300/70'
+                              ? 'bg-electric-50 ring-brick-200'
+                              : 'bg-white ring-night-100/70'
                           }`}
                         >
                           <div className="min-w-0">
                             <div className="flex items-center gap-1.5">
-                              <span className="text-sm font-bold text-ink-950">{t.name}</span>
+                              <span className="text-sm font-bold text-night-950">{t.name}</span>
                               {t.popular && (
-                                <span className="text-[10px] font-bold text-brick-600 uppercase">
+                                <span className="text-[10px] font-bold text-electric-500 uppercase">
                                   Popüler
                                 </span>
                               )}
                             </div>
-                            <div className="text-xs text-lead-400">{t.classSize}</div>
+                            <div className="text-xs text-night-400">
+                              {classSizeLabel(t, course)} · {lessonLineFor(t, course)}
+                            </div>
                           </div>
                           <div className="text-right shrink-0">
-                            <div className="text-sm font-bold text-ink-950">{formatTRY(p)}</div>
-                            <div className="text-[11px] text-lead-400">
-                              ders başı {formatTRY(perLesson(p, course.weeks))}
+                            <div className="text-sm font-bold text-night-950">{formatTRY(p)}</div>
+                            <div className="text-[11px] text-night-400">
+                              ders başı ~{formatTRY(perLesson(p, course.weeks))}
                             </div>
                           </div>
                         </div>
@@ -234,9 +240,9 @@ export default function CourseDetailPage() {
                     WhatsApp'tan sor
                   </a>
 
-                  <p className="mt-4 text-xs text-lead-400 text-center leading-relaxed">
+                  <p className="mt-4 text-xs text-night-400 text-center leading-relaxed">
                     Peşin ödemede %10 indirim · 9 taksite kadar faizsiz ·{' '}
-                    <Link to="/fiyatlar" className="text-brick-600 hover:underline">
+                    <Link to="/fiyatlar" className="text-electric-500 hover:underline">
                       tüm ödeme planları
                     </Link>
                   </p>
@@ -248,15 +254,15 @@ export default function CourseDetailPage() {
       </section>
 
       {/* ─── Veliye not ─────────────────────────────────────────────────── */}
-      <section className="bg-brick-50 border-b border-brick-100">
+      <section className="bg-electric-50 border-b border-brick-100">
         <div className="container py-8">
           <div className="flex gap-4 max-w-4xl">
-            <span className="w-10 h-10 rounded-xl bg-brick-500 text-white flex items-center justify-center shrink-0">
+            <span className="w-10 h-10 rounded-xl bg-electric-500 text-white flex items-center justify-center shrink-0">
               <Info className="w-5 h-5" />
             </span>
             <div>
-              <div className="font-bold text-ink-950 mb-1">Velilere not</div>
-              <p className="text-lead-600 leading-relaxed">{course.parentNote}</p>
+              <div className="font-bold text-night-950 mb-1">Velilere not</div>
+              <p className="text-night-600 leading-relaxed">{course.parentNote}</p>
             </div>
           </div>
         </div>
@@ -265,14 +271,13 @@ export default function CourseDetailPage() {
       {/* ─── Kazanımlar ─────────────────────────────────────────────────── */}
       <section className="section">
         <div className="container">
-          <div className="grid lg:grid-cols-[1fr_360px] gap-12">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_360px] gap-12">
             <div>
               <Reveal>
                 <div className="eyebrow mb-4">
-                  <span className="rule" />
                   Kurs Sonunda
                 </div>
-                <h2 className="text-display-sm font-bold text-ink-950 mb-8">
+                <h2 className="text-display-sm text-night-950 mb-8">
                   Çocuğunuz bu kursta ne kazanır?
                 </h2>
               </Reveal>
@@ -280,9 +285,9 @@ export default function CourseDetailPage() {
               <ul className="grid sm:grid-cols-2 gap-4">
                 {course.gains.map((g, i) => (
                   <Reveal as="li" key={g} delay={i * 50}>
-                    <div className="flex gap-3 h-full p-4 rounded-lg bg-sand-50 border border-sand-300">
-                      <CheckCircle2 className="w-5 h-5 text-brick-500 shrink-0 mt-0.5" />
-                      <span className="text-lead-600 leading-relaxed text-sm">{g}</span>
+                    <div className={`flex gap-3 h-full p-5 rounded-2xl ${GAIN_TINTS[i % GAIN_TINTS.length]}`}>
+                      <CheckCircle2 className="w-5 h-5 text-electric-500 shrink-0 mt-0.5" />
+                      <span className="text-night-600 leading-relaxed text-sm">{g}</span>
                     </div>
                   </Reveal>
                 ))}
@@ -290,7 +295,7 @@ export default function CourseDetailPage() {
 
               {/* Bitirme projesi */}
               <Reveal className="mt-8">
-                <div className="rounded-lg bg-ink-950 text-white p-6 md:p-8">
+                <div className="rounded-2xl bg-night-950 text-white p-6 md:p-8">
                   <div className="flex items-center gap-2 text-brick-400 mb-3">
                     <Trophy className="w-5 h-5" />
                     <span className="text-xs font-bold uppercase tracking-wider">
@@ -305,25 +310,25 @@ export default function CourseDetailPage() {
             {/* Yan bilgi */}
             <div className="space-y-5">
               <Reveal>
-                <div className="card p-5">
+                <div className="rounded-2xl bg-tint-sky p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <Target className="w-4 h-4 text-brick-500" />
-                    <h3 className="text-sm font-bold text-ink-950">Ön Koşullar</h3>
+                    <Target className="w-4 h-4 text-electric-500" />
+                    <h3 className="text-sm font-bold text-night-950">Ön Koşullar</h3>
                   </div>
-                  <p className="text-sm text-lead-500 leading-relaxed">{course.prerequisites}</p>
+                  <p className="text-sm text-night-500 leading-relaxed">{course.prerequisites}</p>
                 </div>
               </Reveal>
 
               <Reveal delay={80}>
-                <div className="card p-5">
+                <div className="rounded-2xl bg-tint-lime p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <Monitor className="w-4 h-4 text-brick-500" />
-                    <h3 className="text-sm font-bold text-ink-950">Teknik Gereksinimler</h3>
+                    <Monitor className="w-4 h-4 text-electric-500" />
+                    <h3 className="text-sm font-bold text-night-950">Teknik Gereksinimler</h3>
                   </div>
                   <ul className="space-y-2">
                     {course.requirements.map((r) => (
-                      <li key={r} className="flex gap-2 text-sm text-lead-500 leading-relaxed">
-                        <span className="w-1 h-1 rounded-full bg-sand-400 mt-2 shrink-0" />
+                      <li key={r} className="flex gap-2 text-sm text-night-500 leading-relaxed">
+                        <span className="w-1 h-1 rounded-full bg-night-200 mt-2 shrink-0" />
                         {r}
                       </li>
                     ))}
@@ -332,10 +337,10 @@ export default function CourseDetailPage() {
               </Reveal>
 
               <Reveal delay={160}>
-                <div className="card p-5">
+                <div className="rounded-2xl bg-tint-lilac p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <Wrench className="w-4 h-4 text-brick-500" />
-                    <h3 className="text-sm font-bold text-ink-950">Kullanılan Araçlar</h3>
+                    <Wrench className="w-4 h-4 text-electric-500" />
+                    <h3 className="text-sm font-bold text-night-950">Kullanılan Araçlar</h3>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {course.tools.map((t) => (
@@ -352,17 +357,16 @@ export default function CourseDetailPage() {
       </section>
 
       {/* ─── Müfredat ───────────────────────────────────────────────────── */}
-      <section className="section bg-sand-50 border-y border-sand-300/70">
+      <section className="section bg-white /70">
         <div className="container">
           <Reveal className="max-w-2xl mb-10">
             <div className="eyebrow mb-4">
-              <span className="rule" />
               Haftalık Program
             </div>
-            <h2 className="text-display-sm font-bold text-ink-950 mb-4">
+            <h2 className="text-display-sm text-night-950 mb-4">
               {course.weeks} haftanın tamamı, hafta hafta
             </h2>
-            <p className="text-lg text-lead-500 leading-relaxed">
+            <p className="text-lg text-night-500 leading-relaxed">
               Her hafta iki canlı ders işlenir ve haftanın sonunda öğrencinin elinde çalışan bir
               çıktı kalır. Aşağıdaki başlıklara tıklayarak detayları görebilirsiniz.
             </p>
@@ -374,8 +378,8 @@ export default function CourseDetailPage() {
               return (
                 <Reveal key={w.week} delay={i * 40}>
                   <div
-                    className={`rounded-lg bg-sand-50 border transition-all ${
-                      open ? 'ring-brick-200' : 'ring-sand-300/70'
+                    className={`rounded-2xl bg-white border transition-all ${
+                      open ? 'ring-brick-200' : 'ring-night-100/70'
                     }`}
                   >
                     <button
@@ -393,7 +397,7 @@ export default function CourseDetailPage() {
                     >
                       <span
                         className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center shrink-0 transition-colors ${
-                          open ? 'bg-brick-500 text-white' : 'bg-sand-200 text-ink-950'
+                          open ? 'bg-electric-500 text-white' : 'bg-night-50 text-night-950'
                         }`}
                       >
                         <span className="text-[9px] font-medium uppercase leading-none opacity-70">
@@ -403,16 +407,16 @@ export default function CourseDetailPage() {
                       </span>
 
                       <span className="flex-1 min-w-0">
-                        <span className="block font-bold text-ink-950">{w.title}</span>
+                        <span className="block font-bold text-night-950">{w.title}</span>
                         {!open && (
-                          <span className="block text-xs text-lead-400 truncate mt-0.5">
+                          <span className="block text-xs text-night-400 truncate mt-0.5">
                             {w.topics.length} konu · {w.project}
                           </span>
                         )}
                       </span>
 
                       <ChevronDown
-                        className={`w-5 h-5 text-lead-400 shrink-0 transition-transform ${
+                        className={`w-5 h-5 text-night-400 shrink-0 transition-transform ${
                           open ? 'rotate-180' : ''
                         }`}
                       />
@@ -423,19 +427,19 @@ export default function CourseDetailPage() {
                         <div>
                           <ul className="space-y-2 mb-4">
                             {w.topics.map((t) => (
-                              <li key={t} className="flex gap-2.5 text-sm text-lead-600">
+                              <li key={t} className="flex gap-2.5 text-sm text-night-600">
                                 <CheckCircle2 className="w-4 h-4 text-brick-400 shrink-0 mt-0.5" />
                                 {t}
                               </li>
                             ))}
                           </ul>
-                          <div className="flex gap-2.5 items-start rounded-xl bg-sand-200 border border-sand-300 p-3.5">
-                            <Sparkles className="w-4 h-4 text-ink-800 shrink-0 mt-0.5" />
+                          <div className="flex gap-2.5 items-start rounded-xl bg-night-50 bg-night-50 p-3.5">
+                            <Sparkles className="w-4 h-4 text-night-800 shrink-0 mt-0.5" />
                             <div>
-                              <div className="text-[11px] font-bold uppercase tracking-wider text-ink-900 mb-0.5">
+                              <div className="text-[11px] font-bold uppercase tracking-wider text-night-900 mb-0.5">
                                 Hafta sonunda elinde kalan
                               </div>
-                              <div className="text-sm text-ink-950">{w.project}</div>
+                              <div className="text-sm text-night-950">{w.project}</div>
                             </div>
                           </div>
                         </div>
@@ -451,11 +455,11 @@ export default function CourseDetailPage() {
 
       {/* ─── Bu kursun bitirme projesi ───────────────────────────────────── */}
       {projects.length > 0 && (
-        <section className="section border-t border-sand-300">
+        <section className="section">
           <div className="container">
             <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
               <Reveal>
-                <div className="border border-sand-300 rounded overflow-hidden bg-sand-200">
+                <div className="bg-night-50 rounded overflow-hidden bg-night-50">
                   <img
                     src={projects[0].image}
                     alt={`${projects[0].title} — proje ekranı`}
@@ -469,20 +473,19 @@ export default function CourseDetailPage() {
               </Reveal>
 
               <Reveal delay={100}>
-                <p className="eyebrow mb-5">
-                  <span className="rule" />
+                <p className="eyebrow mb-4">
                   Son Hafta
                 </p>
-                <h2 className="font-display text-display-sm font-semibold text-ink-950 mb-4">
+                <h2 className="text-display-sm text-night-950 mb-4">
                   {projects[0].title}
                 </h2>
-                <p className="text-lg text-lead-600 leading-relaxed mb-6">{projects[0].brief}</p>
+                <p className="text-lg text-night-600 leading-relaxed mb-6">{projects[0].brief}</p>
 
-                <div className="border-l-2 border-brick-500 pl-4 mb-6">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-brick-600 mb-1.5">
+                <div className="border-l-2 border-electric-500 pl-4 mb-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-electric-500 mb-1.5">
                     Çözülmesi gereken problem
                   </p>
-                  <p className="text-lead-700 leading-relaxed">{projects[0].challenge}</p>
+                  <p className="text-night-700 leading-relaxed">{projects[0].challenge}</p>
                 </div>
 
                 <ul className="flex flex-wrap gap-1.5 mb-8">
@@ -508,7 +511,7 @@ export default function CourseDetailPage() {
         <div className="container">
           <div className="max-w-3xl mx-auto">
             <Reveal className="text-center mb-10">
-              <h2 className="text-display-sm font-bold text-ink-950">
+              <h2 className="text-display-sm text-night-950">
                 Bu kurs hakkında sık sorulanlar
               </h2>
             </Reveal>
@@ -516,9 +519,9 @@ export default function CourseDetailPage() {
             <div className="space-y-3">
               {course.faq.map((f, i) => (
                 <Reveal key={f.q} delay={i * 60}>
-                  <div className="card p-5">
-                    <h3 className="font-bold text-ink-950 mb-2">{f.q}</h3>
-                    <p className="text-lead-500 leading-relaxed text-sm">{f.a}</p>
+                  <div className="rounded-2xl bg-night-50 p-6">
+                    <h3 className="font-bold text-night-950 mb-2">{f.q}</h3>
+                    <p className="text-night-500 leading-relaxed text-sm">{f.a}</p>
                   </div>
                 </Reveal>
               ))}
@@ -539,12 +542,12 @@ export default function CourseDetailPage() {
         <section className="pb-4">
           <div className="container">
             <Reveal>
-              <div className="rounded-lg bg-ink-950 text-sand-50 p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6">
+              <div className="rounded-2xl bg-night-950 text-white p-8 md:p-10 flex flex-col md:flex-row md:items-center gap-6">
                 <div className="flex-1">
                   <div className="text-xs font-bold uppercase tracking-wider text-brick-400 mb-2">
                     Bu kurstan sonra
                   </div>
-                  <h2 className="text-2xl font-bold text-white mb-2">{next.title}</h2>
+                  <h2 className="text-2xl font-extrabold text-white mb-2">{next.title}</h2>
                   <p className="text-white/60">{next.summary}</p>
                 </div>
                 <Link to={`/kurslar/${next.slug}`} className="btn-primary shrink-0">
@@ -561,7 +564,7 @@ export default function CourseDetailPage() {
       {related.length > 0 && (
         <section className="section">
           <div className="container">
-            <h2 className="text-2xl font-bold text-ink-950 mb-8">
+            <h2 className="text-2xl font-extrabold text-night-950 mb-8">
               {course.ageRange} için diğer kurslar
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -579,10 +582,10 @@ export default function CourseDetailPage() {
       <section className="pb-16">
         <div className="container">
           <div className="panel p-8 md:p-10 text-center">
-            <h2 className="text-2xl font-bold text-ink-950 mb-3">
+            <h2 className="text-2xl font-extrabold text-night-950 mb-3">
               Emin değil misiniz? Önce deneyin.
             </h2>
-            <p className="text-lead-500 mb-6 max-w-lg mx-auto">
+            <p className="text-night-500 mb-6 max-w-lg mx-auto">
               1 saatlik ücretsiz deneme dersinde çocuğunuz gerçek bir eğitmenle gerçek bir ders
               yapar. Kart bilgisi istemiyoruz, bağlayıcılığı yok.
             </p>

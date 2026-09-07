@@ -73,28 +73,27 @@ export default function ContactPage() {
 
   return (
     <>
-      <section className="section bg-sand-50 border-b border-sand-300/70">
+      <section className="section bg-white /70">
         <div className="container">
-          <div className="grid lg:grid-cols-[1fr_520px] gap-12 items-start">
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_520px] gap-12 items-start">
             {/* ─── Sol: anlatım ─── */}
             <div>
               <Reveal>
                 <div className="eyebrow mb-4">
-                  <span className="rule" />
                   Ücretsiz Deneme Dersi
                 </div>
-                <h1 className="text-display-md font-bold text-ink-950 mb-5">
-                  Önce deneyin, <span className="underline-electric">sonra karar verin</span>
+                <h1 className="text-display-md text-night-950 mb-5">
+                  Önce deneyin, <span className="mark">sonra karar verin</span>
                 </h1>
-                <p className="text-lg text-lead-500 leading-relaxed mb-8">
+                <p className="text-lg text-night-500 leading-relaxed mb-8">
                   Formu doldurun, 48 saat içinde sizi arayalım. Çocuğunuzun yaşını ve ilgi alanını
                   konuşup en uygun eğitmenle 1 saatlik ücretsiz dersi planlayalım.
                 </p>
 
                 <ul className="space-y-3 mb-10">
                   {PERKS.map((p) => (
-                    <li key={p} className="flex items-start gap-3 text-lead-600">
-                      <CheckCircle2 className="w-5 h-5 text-brick-500 shrink-0 mt-0.5" />
+                    <li key={p} className="flex items-start gap-3 text-night-600">
+                      <CheckCircle2 className="w-5 h-5 text-electric-500 shrink-0 mt-0.5" />
                       {p}
                     </li>
                   ))}
@@ -110,12 +109,12 @@ export default function ContactPage() {
                     rel="noopener noreferrer"
                     className="card-hover p-5 flex items-center gap-3"
                   >
-                    <span className="w-11 h-11 rounded border border-sand-400 text-[#1ebe5d] flex items-center justify-center shrink-0">
+                    <span className="w-11 h-11 rounded border border-night-200 text-[#1ebe5d] flex items-center justify-center shrink-0">
                       <MessageCircle className="w-5 h-5" />
                     </span>
                     <span>
-                      <span className="block text-xs text-lead-400">Hemen yazın</span>
-                      <span className="block font-semibold text-ink-950">WhatsApp</span>
+                      <span className="block text-xs text-night-400">Hemen yazın</span>
+                      <span className="block font-semibold text-night-950">WhatsApp</span>
                     </span>
                   </a>
 
@@ -123,39 +122,39 @@ export default function ContactPage() {
                     href={`tel:${SITE.phoneIntl}`}
                     className="card-hover p-5 flex items-center gap-3"
                   >
-                    <span className="w-11 h-11 rounded border border-sand-400 text-ink-950 flex items-center justify-center shrink-0">
+                    <span className="w-11 h-11 rounded border border-night-200 text-night-950 flex items-center justify-center shrink-0">
                       <Phone className="w-5 h-5" />
                     </span>
                     <span>
-                      <span className="block text-xs text-lead-400">Telefon</span>
-                      <span className="block font-semibold text-ink-950">
+                      <span className="block text-xs text-night-400">Telefon</span>
+                      <span className="block font-semibold text-night-950">
                         {SITE.phoneDisplay}
                       </span>
                     </span>
                   </a>
 
                   <a
-                    href={`mailto:${SITE.email}`}
+                    href={`mailto:${SITE.emailOperations}`}
                     className="card-hover p-5 flex items-center gap-3"
                   >
-                    <span className="w-11 h-11 rounded border border-sand-400 text-ink-950 flex items-center justify-center shrink-0">
+                    <span className="w-11 h-11 rounded border border-night-200 text-night-950 flex items-center justify-center shrink-0">
                       <Mail className="w-5 h-5" />
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-xs text-lead-400">E-posta</span>
-                      <span className="block font-semibold text-ink-950 truncate">
-                        {SITE.email}
+                      <span className="block text-xs text-night-400">E-posta</span>
+                      <span className="block font-semibold text-night-950 truncate">
+                        {SITE.emailOperations}
                       </span>
                     </span>
                   </a>
 
                   <div className="card p-5 flex items-center gap-3">
-                    <span className="w-11 h-11 rounded border border-sand-400 text-lead-500 flex items-center justify-center shrink-0">
+                    <span className="w-11 h-11 rounded border border-night-200 text-night-500 flex items-center justify-center shrink-0">
                       <MapPin className="w-5 h-5" />
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-xs text-lead-400">Adres</span>
-                      <span className="block font-semibold text-ink-950 text-sm">
+                      <span className="block text-xs text-night-400">Adres</span>
+                      <span className="block font-semibold text-night-950 text-sm">
                         {SITE.address}
                       </span>
                     </span>
@@ -168,33 +167,33 @@ export default function ContactPage() {
             <div className="lg:sticky lg:top-28">
               {BOOKING_ENABLED && (
                 <div className="mb-6">
-                  <h2 className="font-display text-lg font-semibold text-ink-950 mb-1">
+                  <h2 className="text-lg font-extrabold text-night-950 mb-1">
                     Takvimden saat seçin
                   </h2>
-                  <p className="text-sm text-lead-500 mb-4">
+                  <p className="text-sm text-night-500 mb-4">
                     Uygun bir saat seçin, onay e-postası anında gelsin. Beklemenize gerek yok.
                   </p>
                   <BookingEmbed />
-                  <p className="text-center text-sm text-lead-500 my-6">
+                  <p className="text-center text-sm text-night-500 my-6">
                     veya sizi biz arayalım —
                   </p>
                 </div>
               )}
-              <div className="bg-sand-50 rounded-lg p-6 md:p-8">
+              <div className="bg-white rounded-2xl p-6 md:p-8">
                 {status === 'done' ? (
                   <div className="text-center py-8">
-                    <span className="w-16 h-16 rounded border border-ink-950 text-ink-950 flex items-center justify-center mx-auto mb-5">
+                    <span className="w-16 h-16 rounded border border-night-950 text-night-950 flex items-center justify-center mx-auto mb-5">
                       <CheckCircle2 className="w-8 h-8" />
                     </span>
-                    <h2 className="text-2xl font-bold text-ink-950 mb-3">Talebiniz alındı</h2>
-                    <p className="text-lead-600 leading-relaxed mb-6">
-                      En geç 48 saat içinde <strong className="text-ink-950">{phone}</strong>{' '}
+                    <h2 className="text-2xl font-extrabold text-night-950 mb-3">Talebiniz alındı</h2>
+                    <p className="text-night-600 leading-relaxed mb-6">
+                      En geç 48 saat içinde <strong className="text-night-950">{phone}</strong>{' '}
                       numarasından size ulaşacağız.
                     </p>
 
-                    <div className="border border-sand-300 rounded-lg p-5 mb-6 text-left">
-                      <p className="text-sm text-lead-700 leading-relaxed">
-                        <strong className="text-ink-950">Beklemek istemiyorsanız:</strong>{' '}
+                    <div className="rounded-2xl bg-night-50 p-5 mb-6 text-left">
+                      <p className="text-sm text-night-700 leading-relaxed">
+                        <strong className="text-night-950">Beklemek istemiyorsanız:</strong>{' '}
                         aşağıdaki düğme sizi bilgileriniz yazılmış hâlde WhatsApp'a götürür.
                         Mesai saatleri içinde genellikle birkaç dakika içinde dönüyoruz.
                       </p>
@@ -227,10 +226,10 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <>
-                    <h2 className="text-xl font-bold text-ink-950 mb-1">
+                    <h2 className="text-xl font-extrabold text-night-950 mb-1">
                       Ücretsiz deneme dersi formu
                     </h2>
-                    <p className="text-sm text-lead-400 mb-6">
+                    <p className="text-sm text-night-400 mb-6">
                       Yıldızlı alanlar zorunludur. Bilgileriniz üçüncü taraflarla paylaşılmaz.
                     </p>
 
@@ -252,7 +251,7 @@ export default function ContactPage() {
                       <div>
                         <label
                           htmlFor="name"
-                          className="block text-sm font-medium text-ink-950 mb-1.5"
+                          className="block text-sm font-medium text-night-950 mb-1.5"
                         >
                           Veli adı soyadı *
                         </label>
@@ -264,14 +263,14 @@ export default function ContactPage() {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="Adınız Soyadınız"
-                          className="w-full px-4 py-3 rounded-xl bg-sand-50 border border-sand-300 text-ink-950 placeholder:text-lead-400 focus:ring-2 focus:ring-brick-500 focus:bg-sand-50 transition-all outline-none"
+                          className="w-full px-4 py-3 rounded-xl bg-night-50 text-night-950 placeholder:text-night-400 focus:ring-2 focus:ring-brick-500 focus:bg-white transition-all outline-none"
                         />
                       </div>
 
                       <div>
                         <label
                           htmlFor="phone"
-                          className="block text-sm font-medium text-ink-950 mb-1.5"
+                          className="block text-sm font-medium text-night-950 mb-1.5"
                         >
                           Telefon numarası *
                         </label>
@@ -283,7 +282,7 @@ export default function ContactPage() {
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="05XX XXX XX XX"
-                          className="w-full px-4 py-3 rounded-xl bg-sand-50 border border-sand-300 text-ink-950 placeholder:text-lead-400 focus:ring-2 focus:ring-brick-500 focus:bg-sand-50 transition-all outline-none"
+                          className="w-full px-4 py-3 rounded-xl bg-night-50 text-night-950 placeholder:text-night-400 focus:ring-2 focus:ring-brick-500 focus:bg-white transition-all outline-none"
                         />
                       </div>
 
@@ -291,7 +290,7 @@ export default function ContactPage() {
                         <div>
                           <label
                             htmlFor="age"
-                            className="block text-sm font-medium text-ink-950 mb-1.5"
+                            className="block text-sm font-medium text-night-950 mb-1.5"
                           >
                             Çocuğun yaşı *
                           </label>
@@ -301,7 +300,7 @@ export default function ContactPage() {
                             required
                             value={age}
                             onChange={(e) => setAge(e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl bg-sand-50 border border-sand-300 text-ink-950 focus:ring-2 focus:ring-brick-500 focus:bg-sand-50 transition-all outline-none"
+                            className="w-full px-4 py-3 rounded-xl bg-night-50 text-night-950 focus:ring-2 focus:ring-brick-500 focus:bg-white transition-all outline-none"
                           >
                             <option value="">Seçin</option>
                             {AGES.map((a) => (
@@ -315,7 +314,7 @@ export default function ContactPage() {
                         <div>
                           <label
                             htmlFor="course"
-                            className="block text-sm font-medium text-ink-950 mb-1.5"
+                            className="block text-sm font-medium text-night-950 mb-1.5"
                           >
                             İlgilendiği kurs
                           </label>
@@ -324,7 +323,7 @@ export default function ContactPage() {
                             name="course"
                             value={course}
                             onChange={(e) => setCourse(e.target.value)}
-                            className="w-full px-4 py-3 rounded-xl bg-sand-50 border border-sand-300 text-ink-950 focus:ring-2 focus:ring-brick-500 focus:bg-sand-50 transition-all outline-none"
+                            className="w-full px-4 py-3 rounded-xl bg-night-50 text-night-950 focus:ring-2 focus:ring-brick-500 focus:bg-white transition-all outline-none"
                           >
                             <option value="">Kararsızım</option>
                             {COURSES.map((c) => (
@@ -339,7 +338,7 @@ export default function ContactPage() {
                       <div>
                         <label
                           htmlFor="note"
-                          className="block text-sm font-medium text-ink-950 mb-1.5"
+                          className="block text-sm font-medium text-night-950 mb-1.5"
                         >
                           Eklemek istediğiniz bir şey var mı?
                         </label>
@@ -350,7 +349,7 @@ export default function ContactPage() {
                           value={note}
                           onChange={(e) => setNote(e.target.value)}
                           placeholder="Uygun gün ve saatleriniz, çocuğunuzun daha önceki deneyimi..."
-                          className="w-full px-4 py-3 rounded-xl bg-sand-50 border border-sand-300 text-ink-950 placeholder:text-lead-400 focus:ring-2 focus:ring-brick-500 focus:bg-sand-50 transition-all outline-none resize-none"
+                          className="w-full px-4 py-3 rounded-xl bg-night-50 text-night-950 placeholder:text-night-400 focus:ring-2 focus:ring-brick-500 focus:bg-white transition-all outline-none resize-none"
                         />
                       </div>
 
@@ -373,19 +372,19 @@ export default function ContactPage() {
                       </button>
 
                       <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 pt-2">
-                        <span className="inline-flex items-center gap-1.5 text-xs text-lead-400">
-                          <ShieldCheck className="w-3.5 h-3.5 text-ink-700" />
+                        <span className="inline-flex items-center gap-1.5 text-xs text-night-400">
+                          <ShieldCheck className="w-3.5 h-3.5 text-night-700" />
                           Kart bilgisi istenmez
                         </span>
-                        <span className="inline-flex items-center gap-1.5 text-xs text-lead-400">
-                          <Clock className="w-3.5 h-3.5 text-brick-500" />
+                        <span className="inline-flex items-center gap-1.5 text-xs text-night-400">
+                          <Clock className="w-3.5 h-3.5 text-electric-500" />
                           48 saat içinde dönüş
                         </span>
                       </div>
 
-                      <p className="text-[11px] text-lead-400 text-center leading-relaxed pt-1">
+                      <p className="text-[11px] text-night-400 text-center leading-relaxed pt-1">
                         Formu göndererek{' '}
-                        <Link to="/yasal/kvkk" className="underline hover:text-brick-600">
+                        <Link to="/yasal/kvkk" className="underline hover:text-electric-500">
                           KVKK aydınlatma metnini
                         </Link>{' '}
                         okuduğunuzu kabul etmiş olursunuz.

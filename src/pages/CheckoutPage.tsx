@@ -7,7 +7,10 @@ import {
   PAYMENT_PLANS,
   priceFor,
   totalFor,
-  installmentFor,
+  installmentsFor,
+  installmentLabel,
+  classSizeLabel,
+  lessonLineFor,
   formatTRY,
   perLesson,
 } from '../data/pricing';
@@ -15,6 +18,7 @@ import { waLink, SITE } from '../data/site';
 import { track } from '../lib/analytics';
 import usePageMeta from '../hooks/usePageMeta';
 import { PAYMENT_ONLINE } from '../lib/payment';
+import { PAYMENT_PROVIDER } from '../data/legal-entity';
 
 /**
  * Kayıt özeti sayfası. Kullanıcı kurs + paket + ödeme planını seçer, tam tutarı
@@ -29,6 +33,7 @@ export default function CheckoutPage() {
   const [courseId, setCourseId] = useState(params.get('kurs') ?? COURSES[0].id);
   const [tierId, setTierId] = useState(params.get('paket') ?? TIERS[1].id);
   const [planId, setPlanId] = useState(params.get('plan') ?? 'taksit6');
+  const [sozlesmeOnay, setSozlesmeOnay] = useState(false);
 
   usePageMeta({
     title: 'Kayıt Özeti | Hype Academia',
@@ -42,17 +47,20 @@ export default function CheckoutPage() {
   const calc = useMemo(() => {
     const base = priceFor(tier, course.weeks);
     const total = totalFor(base, plan);
-    return { base, total, monthly: installmentFor(base, plan), diff: total - base };
+    return { base, total, inst: installmentsFor(base, plan), diff: total - base };
   }, [tier, course, plan]);
 
   const orderMessage =
     `Merhaba, kayıt olmak istiyorum.\n\n` +
     `Kurs: ${course.title}\n` +
     `Süre: ${course.weeks} hafta · ${course.weeks * course.lessonsPerWeek} ders\n` +
-    `Paket: ${tier.name} (${tier.classSize})\n` +
+    `Paket: ${tier.name} (${classSizeLabel(tier, course)})
+` +
+    `Ders: ${lessonLineFor(tier, course)}
+` +
     `Ödeme planı: ${plan.name}\n` +
     `Toplam: ${formatTRY(calc.total)}` +
-    (plan.installments > 1 ? ` (${plan.installments} × ${formatTRY(calc.monthly)})` : '');
+    (calc.inst.count > 1 ? ` (${installmentLabel(calc.inst)})` : '');
 
   const Choice = ({
     active,
@@ -69,12 +77,12 @@ export default function CheckoutPage() {
       onClick={onClick}
       className={`text-left px-4 py-3 rounded border transition-colors ${
         active
-          ? 'border-ink-950 bg-ink-950 text-sand-50'
-          : 'border-sand-400 hover:border-ink-950 text-ink-950'
+          ? 'border-night-950 bg-night-950 text-white'
+          : 'border-night-200 hover:border-night-950 text-night-950'
       }`}
     >
       <span className="block text-sm font-semibold">{title}</span>
-      <span className={`block text-xs mt-0.5 ${active ? 'text-sand-300' : 'text-lead-500'}`}>
+      <span className={`block text-xs mt-0.5 ${active ? 'text-night-300' : 'text-night-500'}`}>
         {sub}
       </span>
     </button>
@@ -85,27 +93,26 @@ export default function CheckoutPage() {
       <div className="container">
         <Link
           to="/fiyatlar"
-          className="inline-flex items-center gap-1.5 text-sm text-lead-500 hover:text-ink-950 transition-colors mb-8"
+          className="inline-flex items-center gap-1.5 text-sm text-night-500 hover:text-night-950 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Fiyatlar
         </Link>
 
-        <div className="grid lg:grid-cols-[1fr_400px] gap-12 items-start">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_400px] gap-12 items-start">
           {/* Seçimler */}
           <div>
-            <p className="eyebrow mb-5">
-              <span className="rule" />
+            <p className="eyebrow mb-4">
               Kayıt Özeti
             </p>
-            <h1 className="font-display text-display-md font-semibold text-ink-950 mb-10">
+            <h1 className="text-display-md text-night-950 mb-10">
               Seçiminizi onaylayın
             </h1>
 
             <div className="space-y-9">
               <div>
-                <h2 className="font-display text-lg font-semibold text-ink-950 mb-4">
-                  <span className="font-mono text-xs text-lead-400 mr-3">01</span>
+                <h2 className="text-lg font-extrabold text-night-950 mb-4">
+                  <span className="font-mono text-xs text-night-400 mr-3">01</span>
                   Kurs
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-2">
@@ -122,8 +129,8 @@ export default function CheckoutPage() {
               </div>
 
               <div>
-                <h2 className="font-display text-lg font-semibold text-ink-950 mb-4">
-                  <span className="font-mono text-xs text-lead-400 mr-3">02</span>
+                <h2 className="text-lg font-extrabold text-night-950 mb-4">
+                  <span className="font-mono text-xs text-night-400 mr-3">02</span>
                   Paket
                 </h2>
                 <div className="grid sm:grid-cols-3 gap-2">
@@ -133,15 +140,15 @@ export default function CheckoutPage() {
                       active={tierId === t.id}
                       onClick={() => setTierId(t.id)}
                       title={t.name}
-                      sub={t.classSize}
+                      sub={classSizeLabel(t, course)}
                     />
                   ))}
                 </div>
               </div>
 
               <div>
-                <h2 className="font-display text-lg font-semibold text-ink-950 mb-4">
-                  <span className="font-mono text-xs text-lead-400 mr-3">03</span>
+                <h2 className="text-lg font-extrabold text-night-950 mb-4">
+                  <span className="font-mono text-xs text-night-400 mr-3">03</span>
                   Ödeme planı
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-2">
@@ -160,25 +167,26 @@ export default function CheckoutPage() {
           </div>
 
           {/* Özet */}
-          <aside className="lg:sticky lg:top-28 border border-ink-950 rounded-lg p-6 bg-sand-50">
-            <h2 className="font-display text-lg font-semibold text-ink-950 mb-5">Sipariş özeti</h2>
+          <aside className="lg:sticky lg:top-28 border border-night-950 rounded-2xl p-6 bg-white">
+            <h2 className="text-lg font-extrabold text-night-950 mb-5">Sipariş özeti</h2>
 
-            <dl className="space-y-2.5 text-sm pb-5 border-b border-sand-300">
+            <dl className="space-y-2.5 text-sm pb-5">
               {[
                 ['Kurs', course.shortTitle],
                 ['Süre', `${course.weeks} hafta · ${course.weeks * course.lessonsPerWeek} ders`],
-                ['Paket', `${tier.name} · ${tier.classSize}`],
+                ['Paket', `${tier.name} · ${classSizeLabel(tier, course)}`],
+                ['Ders', lessonLineFor(tier, course)],
                 ['Liste fiyatı', formatTRY(calc.base)],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-3">
-                  <dt className="text-lead-500">{k}</dt>
-                  <dd className="font-medium text-ink-950 text-right">{v}</dd>
+                  <dt className="text-night-500">{k}</dt>
+                  <dd className="font-medium text-night-950 text-right">{v}</dd>
                 </div>
               ))}
               {calc.diff !== 0 && (
                 <div className="flex justify-between gap-3">
-                  <dt className="text-lead-500">{calc.diff < 0 ? 'İndirim' : 'Vade farkı'}</dt>
-                  <dd className="font-semibold text-brick-600 text-right">
+                  <dt className="text-night-500">{calc.diff < 0 ? 'İndirim' : 'Vade farkı'}</dt>
+                  <dd className="font-semibold text-electric-500 text-right">
                     {calc.diff < 0 ? '−' : '+'}
                     {formatTRY(Math.abs(calc.diff))}
                   </dd>
@@ -186,24 +194,52 @@ export default function CheckoutPage() {
               )}
             </dl>
 
-            <div className="py-5 border-b border-sand-300">
-              <div className="text-xs text-lead-500 mb-1">Toplam</div>
-              <div className="font-display text-3xl font-semibold text-ink-950">
+            <div className="py-5">
+              <div className="text-xs text-night-500 mb-1">Toplam</div>
+              <div className="text-3xl font-extrabold text-night-950">
                 {formatTRY(calc.total)}
               </div>
-              {plan.installments > 1 && (
-                <div className="mt-2 text-sm text-lead-600">
-                  {plan.installments} × {formatTRY(calc.monthly)}
+              {calc.inst.count > 1 && (
+                <div className="mt-2 text-sm text-night-600">
+                  {installmentLabel(calc.inst)}
                 </div>
               )}
-              <div className="mt-2 text-xs text-lead-500">
-                Ders başına {formatTRY(perLesson(calc.total, course.weeks))}
+              <div className="mt-2 text-xs text-night-500">
+                Ders başına yaklaşık {formatTRY(perLesson(calc.total, course.weeks))}
               </div>
             </div>
 
-            <div className="pt-5 space-y-3">
+            {/* Ön bilgilendirme ve sözleşme onayı — mesafeli satış mevzuatı gereği */}
+            <div className="pt-5">
+              <label className="flex gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={sozlesmeOnay}
+                  onChange={(e) => setSozlesmeOnay(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 shrink-0 accent-[#1B18FF]"
+                />
+                <span className="text-xs text-night-600 leading-relaxed">
+                  <Link
+                    to="/yasal/on-bilgilendirme-formu"
+                    className="text-night-950 underline hover:text-electric-500"
+                  >
+                    Ön Bilgilendirme Formu
+                  </Link>{' '}
+                  ve{' '}
+                  <Link
+                    to="/yasal/mesafeli-satis-sozlesmesi"
+                    className="text-night-950 underline hover:text-electric-500"
+                  >
+                    Mesafeli Satış Sözleşmesi
+                  </Link>
+                  ’ni okudum, onaylıyorum.
+                </span>
+              </label>
+            </div>
+
+            <div className="pt-4 space-y-3">
               {PAYMENT_ONLINE ? (
-                <button className="btn-primary w-full" disabled>
+                <button className="btn-primary w-full" disabled={!sozlesmeOnay}>
                   Ödemeye geç
                   <ArrowRight className="w-4 h-4" />
                 </button>
@@ -220,7 +256,10 @@ export default function CheckoutPage() {
                       tutar: calc.total,
                     })
                   }
-                  className="btn-primary w-full"
+                  className={`btn-primary w-full ${
+                    sozlesmeOnay ? '' : 'pointer-events-none opacity-45'
+                  }`}
+                  aria-disabled={!sozlesmeOnay}
                 >
                   <MessageCircle className="w-4 h-4" />
                   Bu seçimle kayda geç
@@ -232,21 +271,31 @@ export default function CheckoutPage() {
               </Link>
             </div>
 
-            <div className="mt-5 space-y-2.5 text-xs text-lead-600">
+            <div className="mt-5 space-y-2.5 text-xs text-night-600">
               <p className="flex gap-2">
-                <ShieldCheck className="w-4 h-4 text-ink-950 shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-night-950 shrink-0" />
                 İlk 2 ders içinde koşulsuz iade
               </p>
               <p className="flex gap-2">
-                <Info className="w-4 h-4 text-ink-950 shrink-0" />
+                <Info className="w-4 h-4 text-night-950 shrink-0" />
                 Seçiminiz WhatsApp mesajına yazılı gelir; kayıt görüşmesinde tekrar
                 anlatmanız gerekmez.
               </p>
             </div>
 
-            <p className="mt-5 pt-5 border-t border-sand-300 text-xs text-lead-500 leading-relaxed">
-              Soru için {SITE.phoneDisplay}
-            </p>
+            <div className="mt-5 pt-5">
+              <img
+                src="/odeme/kart-logolari.svg"
+                alt="Kabul edilen ödeme yöntemleri: iyzico ile Öde, Mastercard, Visa, American Express, Troy"
+                width={429}
+                height={32}
+                className="h-6 w-auto mb-3"
+              />
+              <p className="text-xs text-night-500 leading-relaxed">
+                {PAYMENT_PROVIDER.note} Bağlantı SSL sertifikasıyla şifrelenir.
+              </p>
+              <p className="mt-3 text-xs text-night-500">Soru için {SITE.phoneDisplay}</p>
+            </div>
           </aside>
         </div>
       </div>

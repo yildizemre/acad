@@ -37,6 +37,22 @@ async function loadRoutes() {
   return mod.SEO_ROUTES;
 }
 
+/** legal-entity.ts içindeki eksik alanları okur. */
+async function loadMissingLegalFields() {
+  const out = 'node_modules/.legal-entity.mjs';
+  await build({
+    entryPoints: ['src/data/legal-entity.ts'],
+    outfile: out,
+    bundle: true,
+    format: 'esm',
+    platform: 'node',
+    logLevel: 'silent',
+  });
+  const mod = await import(pathToFileURL(out).href + `?t=${Date.now()}`);
+  await rm(out, { force: true });
+  return mod.missingLegalFields();
+}
+
 const esc = (s) =>
   String(s)
     .replace(/&/g, '&amp;')
@@ -120,6 +136,24 @@ async function main() {
       `<meta name="twitter:description" content="${esc(r.description)}" />`,
     );
 
+    // Sayfaya özel paylaşım görseli (kurs sayfalarında o dersin ekranı)
+    if (r.image) {
+      const img = `${origin}${r.image}`;
+      html = setTag(html, /<meta property="og:image"[^>]*\/>/, `<meta property="og:image" content="${img}" />`);
+      html = setTag(html, /<meta name="twitter:image"[^>]*\/>/, `<meta name="twitter:image" content="${img}" />`);
+      html = html.replace(/<meta property="og:image:width"[^>]*\/>/, '<meta property="og:image:width" content="1200" />');
+      html = html.replace(/<meta property="og:image:height"[^>]*\/>/, '<meta property="og:image:height" content="800" />');
+    }
+
+    // İşlevsel ara sayfalar arama sonuçlarına düşmesin
+    if (r.noindex) {
+      html = setTag(
+        html,
+        /<meta name="robots"[^>]*\/>/,
+        '<meta name="robots" content="noindex, follow" />',
+      );
+    }
+
     // Var olan genel noscript bloğunu sayfaya özel olanla değiştir
     html = html.replace(/<noscript>[\s\S]*?<\/noscript>/, noscriptBlock(r, origin));
 
@@ -132,17 +166,27 @@ async function main() {
   // ─── sitemap.xml ───
   const today = new Date().toISOString().slice(0, 10);
   const urls = routes
-    .map(
-      (r) =>
+    .filter((r) => !r.noindex)
+    .map((r) => {
+      const images = (r.images ?? [])
+        .map(
+          (im) =>
+            `\n    <image:image>\n      <image:loc>${origin}${im.url}</image:loc>\n` +
+            `      <image:caption>${esc(im.caption)}</image:caption>\n    </image:image>`,
+        )
+        .join('');
+      return (
         `  <url>\n    <loc>${origin}${r.path}</loc>\n` +
         `    <lastmod>${today}</lastmod>\n` +
         `    <changefreq>monthly</changefreq>\n` +
-        `    <priority>${r.priority}</priority>\n  </url>`,
-    )
+        `    <priority>${r.priority}</priority>${images}\n  </url>`
+      );
+    })
     .join('\n');
   const sitemap =
     '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n' +
+    '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' +
     urls +
     '\n</urlset>\n';
   await writeFile(join(DIST, 'sitemap.xml'), sitemap, 'utf8');
@@ -150,6 +194,20 @@ async function main() {
 
   await rm(TMP, { force: true });
   console.log(`ön işleme: ${written} sayfa + sitemap.xml (${routes.length} adres)`);
+
+  // Tüzel kişilik bilgisi eksikse yüksek sesle uyar.
+  // Eksik alanlar ziyaretçiye gösterilmiyor (sözleşmeden çıkarılıyor) ama
+  // iyzico başvurusu için doldurulmaları şart.
+  const eksik = await loadMissingLegalFields();
+  if (eksik.length > 0) {
+    console.warn('');
+    console.warn('  ⚠  UYARI — sözleşmelerde doldurulmamış alan var:');
+    for (const e of eksik) console.warn(`     · ${e}`);
+    console.warn('     Dosya: src/data/legal-entity.ts');
+    console.warn('     Ziyaretçi bunları görmüyor — sözleşmeden çıkarılıyorlar.');
+    console.warn('     Ama iyzico başvurusu için doldurulmaları ZORUNLU.');
+    console.warn('');
+  }
 }
 
 main().catch((e) => {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://hypeacademia.com/</loc>
     <lastmod>2026-09-07</lastmod>
@@ -11,12 +12,60 @@
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-scratch.svg</image:loc>
+      <image:caption>Scratch ile Oyun Geliştirme ders ekranı</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-python.svg</image:loc>
+      <image:caption>Python Programlama ders ekranı</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-web.svg</image:loc>
+      <image:caption>Web Tasarım &amp; Geliştirme ders ekranı</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-unity.svg</image:loc>
+      <image:caption>Unity ile Oyun Geliştirme ders ekranı</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-ai.svg</image:loc>
+      <image:caption>Yapay Zeka &amp; Makine Öğrenmesi ders ekranı</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-arduino.svg</image:loc>
+      <image:caption>Arduino &amp; Robotik ders ekranı</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://hypeacademia.com/projeler</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/proje-uzay-savasi.svg</image:loc>
+      <image:caption>Uzay Savaşı — Düşman dalgaları, puan ve can sistemi olan, klavyeyle oynanan 2 boyutlu uzay oyunu.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/proje-sulama.svg</image:loc>
+      <image:caption>Otomatik Sulama Sistemi — Toprak nemini ölçen, kuruyunca pompayı çalıştıran ve durumu LCD ekranda gösteren Arduino sistemi.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/proje-portfolyo.svg</image:loc>
+      <image:caption>Kişisel Portfolyo Sitesi — Öğrencinin kendi projelerini sergilediği, telefonda ve bilgisayarda düzgün görünen, gerçekten yayında olan web sitesi.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/proje-platform-oyunu.svg</image:loc>
+      <image:caption>Platform Oyunu — Unity ve C# ile geliştirilmiş, üç bölümlü, takip eden düşmanları olan ve tarayıcıda oynanabilen platform oyunu.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/proje-bitki-tanima.svg</image:loc>
+      <image:caption>Bitki Türü Tanıyan Model — Öğrencinin kendi topladığı fotoğraflarla eğitilmiş, altı bitki türünü ayırt eden görüntü sınıflandırma modeli.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/proje-kelime-oyunu.svg</image:loc>
+      <image:caption>Kelime Ezberleme Uygulaması — Yanlış bilinen kelimeleri daha sık soran ve skorları dosyaya kaydeden Python uygulaması.</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://hypeacademia.com/fiyatlar</loc>
@@ -49,46 +98,64 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://hypeacademia.com/kayit</loc>
-    <lastmod>2026-09-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://hypeacademia.com/kurslar/scratch-ile-oyun-gelistirme</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-scratch.svg</image:loc>
+      <image:caption>Scratch ile Oyun Geliştirme canlı ders ekranı</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://hypeacademia.com/kurslar/python-programlama</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-python.svg</image:loc>
+      <image:caption>Python Programlama canlı ders ekranı</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://hypeacademia.com/kurslar/web-tasarim-ve-gelistirme</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-web.svg</image:loc>
+      <image:caption>Web Tasarım &amp; Geliştirme canlı ders ekranı</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://hypeacademia.com/kurslar/unity-ile-oyun-gelistirme</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-unity.svg</image:loc>
+      <image:caption>Unity ile Oyun Geliştirme canlı ders ekranı</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://hypeacademia.com/kurslar/yapay-zeka-ve-makine-ogrenmesi</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-ai.svg</image:loc>
+      <image:caption>Yapay Zeka &amp; Makine Öğrenmesi canlı ders ekranı</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://hypeacademia.com/kurslar/arduino-ve-robotik</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://hypeacademia.com/images/kurs-arduino.svg</image:loc>
+      <image:caption>Arduino &amp; Robotik canlı ders ekranı</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://hypeacademia.com/rehber/cocugunuz-icin-bilgisayar-secimi</loc>
@@ -134,6 +201,24 @@
   </url>
   <url>
     <loc>https://hypeacademia.com/yasal/kvkk</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://hypeacademia.com/yasal/on-bilgilendirme-formu</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://hypeacademia.com/yasal/mesafeli-satis-sozlesmesi</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://hypeacademia.com/yasal/teslimat-ve-iade</loc>
     <lastmod>2026-09-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>

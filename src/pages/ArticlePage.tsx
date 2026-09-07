@@ -17,19 +17,19 @@ function renderBlock(b: Block, i: number) {
   switch (b.type) {
     case 'h2':
       return (
-        <h2 key={i} className="font-display text-2xl font-semibold text-ink-950 mt-12 mb-4">
+        <h2 key={i} className="text-2xl font-extrabold text-night-950 mt-12 mb-4">
           {b.text}
         </h2>
       );
     case 'h3':
       return (
-        <h3 key={i} className="font-display text-lg font-semibold text-ink-950 mt-8 mb-3">
+        <h3 key={i} className="text-lg font-extrabold text-night-950 mt-8 mb-3">
           {b.text}
         </h3>
       );
     case 'p':
       return (
-        <p key={i} className="text-lead-700 leading-[1.75] mb-5 text-[17px]">
+        <p key={i} className="text-night-700 leading-[1.75] mb-5 text-[17px]">
           {b.text}
         </p>
       );
@@ -37,8 +37,8 @@ function renderBlock(b: Block, i: number) {
       return (
         <ul key={i} className="mb-6 space-y-2.5">
           {b.items.map((it) => (
-            <li key={it} className="flex gap-3 text-lead-700 leading-relaxed text-[17px]">
-              <span className="text-brick-500 font-mono text-sm shrink-0 mt-0.5">—</span>
+            <li key={it} className="flex gap-3 text-night-700 leading-relaxed text-[17px]">
+              <span className="text-electric-500 font-mono text-sm shrink-0 mt-0.5">—</span>
               {it}
             </li>
           ))}
@@ -48,8 +48,8 @@ function renderBlock(b: Block, i: number) {
       return (
         <ol key={i} className="mb-6 space-y-3">
           {b.items.map((it, n) => (
-            <li key={it} className="flex gap-3 text-lead-700 leading-relaxed text-[17px]">
-              <span className="font-mono text-sm text-lead-400 shrink-0 mt-0.5">
+            <li key={it} className="flex gap-3 text-night-700 leading-relaxed text-[17px]">
+              <span className="font-mono text-sm text-night-400 shrink-0 mt-0.5">
                 {String(n + 1).padStart(2, '0')}
               </span>
               {it}
@@ -59,9 +59,9 @@ function renderBlock(b: Block, i: number) {
       );
     case 'callout':
       return (
-        <aside key={i} className="my-8 border-l-2 border-brick-500 bg-sand-200 p-5 rounded-r">
-          <p className="font-semibold text-ink-950 mb-1.5">{b.title}</p>
-          <p className="text-lead-700 leading-relaxed">{b.text}</p>
+        <aside key={i} className="my-8 border-l-2 border-electric-500 bg-night-50 p-5 rounded-r">
+          <p className="font-semibold text-night-950 mb-1.5">{b.title}</p>
+          <p className="text-night-700 leading-relaxed">{b.text}</p>
         </aside>
       );
     case 'table':
@@ -69,11 +69,11 @@ function renderBlock(b: Block, i: number) {
         <div key={i} className="my-8 overflow-x-auto">
           <table className="w-full border-collapse text-left min-w-[480px]">
             <thead>
-              <tr className="border-y border-ink-950">
+              <tr className="border-y border-night-950">
                 {b.head.map((h) => (
                   <th
                     key={h}
-                    className="py-3 pr-5 text-xs font-semibold uppercase tracking-wider text-ink-950"
+                    className="py-3 pr-5 text-xs font-semibold uppercase tracking-wider text-night-950"
                   >
                     {h}
                   </th>
@@ -82,12 +82,12 @@ function renderBlock(b: Block, i: number) {
             </thead>
             <tbody>
               {b.rows.map((row, r) => (
-                <tr key={r} className="border-b border-sand-300">
+                <tr key={r}>
                   {row.map((cell, c) => (
                     <td
                       key={c}
                       className={`py-3 pr-5 align-top text-[15px] ${
-                        c === 0 ? 'font-medium text-ink-950' : 'text-lead-600'
+                        c === 0 ? 'font-medium text-night-950' : 'text-night-600'
                       }`}
                     >
                       {cell}
@@ -156,28 +156,28 @@ export default function ArticlePage() {
     <>
       <article>
         {/* Başlık */}
-        <header className="border-b border-sand-300">
+        <header>
           <div className="container py-12 md:py-16">
             <div className="max-w-3xl">
               <Link
                 to="/rehber"
-                className="inline-flex items-center gap-1.5 text-sm text-lead-500 hover:text-ink-950 transition-colors mb-8"
+                className="inline-flex items-center gap-1.5 text-sm text-night-500 hover:text-night-950 transition-colors mb-8"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Veli Rehberi
               </Link>
 
-              <div className="flex flex-wrap items-center gap-3 text-xs text-lead-500 mb-5">
+              <div className="flex flex-wrap items-center gap-3 text-xs text-night-500 mb-5">
                 <span className="badge-neutral">{article.category}</span>
                 <span>{formatDate(article.published)}</span>
                 <span>·</span>
                 <span>{article.readMinutes} dakika okuma</span>
               </div>
 
-              <h1 className="font-display text-display-md font-semibold text-ink-950">
+              <h1 className="text-display-md text-night-950">
                 {article.title}
               </h1>
-              <p className="mt-5 text-lg text-lead-600 leading-relaxed">{article.excerpt}</p>
+              <p className="mt-5 text-lg text-night-600 leading-relaxed">{article.excerpt}</p>
             </div>
           </div>
         </header>
@@ -190,14 +190,13 @@ export default function ArticlePage() {
 
       {/* İlgili kurslar */}
       {related.length > 0 && (
-        <section className="border-t border-sand-300 bg-sand-50">
+        <section className="bg-white">
           <div className="container py-12">
             <div className="max-w-[680px]">
-              <p className="eyebrow mb-5">
-                <span className="rule" />
+              <p className="eyebrow mb-4">
                 Bu yazıyla ilgili programlar
               </p>
-              <ul className="divide-y divide-sand-300 border-y border-sand-300">
+              <ul className="divide-y divide-night-100">
                 {related.map((c) => (
                   <li key={c.id}>
                     <Link
@@ -205,14 +204,14 @@ export default function ArticlePage() {
                       className="group flex items-baseline justify-between gap-4 py-4"
                     >
                       <span>
-                        <span className="block font-display text-lg font-semibold text-ink-950 group-hover:text-brick-600 transition-colors">
+                        <span className="block text-lg font-extrabold text-night-950 group-hover:text-electric-500 transition-colors">
                           {c.title}
                         </span>
-                        <span className="block text-sm text-lead-500 mt-1">
+                        <span className="block text-sm text-night-500 mt-1">
                           {c.ageRange} · {c.weeks} hafta · {c.level}
                         </span>
                       </span>
-                      <ArrowRight className="w-5 h-5 text-lead-400 shrink-0 group-hover:text-brick-600 transition-colors" />
+                      <ArrowRight className="w-5 h-5 text-night-400 shrink-0 group-hover:text-electric-500 transition-colors" />
                     </Link>
                   </li>
                 ))}
@@ -230,21 +229,21 @@ export default function ArticlePage() {
       )}
 
       {/* Diğer yazılar */}
-      <section className="section border-t border-sand-300">
+      <section className="section">
         <div className="container">
-          <h2 className="font-display text-2xl font-semibold text-ink-950 mb-8">
+          <h2 className="text-2xl font-extrabold text-night-950 mb-8">
             Diğer yazılar
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {others.map((a, i) => (
               <Reveal key={a.slug} delay={i * 60}>
                 <Link to={`/rehber/${a.slug}`} className="group block h-full">
-                  <div className="border-t-2 border-ink-950 pt-4 h-full">
-                    <span className="text-xs text-lead-500">{a.category}</span>
-                    <h3 className="font-display text-lg font-semibold text-ink-950 mt-2 group-hover:text-brick-600 transition-colors">
+                  <div className="border-t-2 border-night-950 pt-4 h-full">
+                    <span className="text-xs text-night-500">{a.category}</span>
+                    <h3 className="text-lg font-extrabold text-night-950 mt-2 group-hover:text-electric-500 transition-colors">
                       {a.title}
                     </h3>
-                    <p className="text-sm text-lead-600 leading-relaxed mt-2">{a.excerpt}</p>
+                    <p className="text-sm text-night-600 leading-relaxed mt-2">{a.excerpt}</p>
                   </div>
                 </Link>
               </Reveal>

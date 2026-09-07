@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,169 +7,118 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    scroll-padding-top: 7rem;
   }
 
   body {
-    /* Kağıt zemin — beyaz kullanmıyoruz */
-    @apply bg-sand-100 text-lead-700 antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-white text-night-600 antialiased;
+    font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
   }
 
   h1, h2, h3, h4 {
-    font-family: 'Fraunces', Georgia, serif;
-    font-optical-sizing: auto;
-    @apply text-ink-950;
+    @apply text-night-950 font-extrabold;
+    letter-spacing: -0.03em;
     text-wrap: balance;
   }
 
-  p {
-    text-wrap: pretty;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
+  p { text-wrap: pretty; }
+  * { box-sizing: border-box; }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-electric-500 ring-offset-2 ring-offset-sand-100;
+    @apply outline-none ring-2 ring-electric-500 ring-offset-2 rounded-lg;
   }
 
   ::selection {
-    @apply bg-electric-500 text-white;
+    @apply bg-marker text-night-950;
   }
 }
 
 @layer components {
-  /* ─── Butonlar ─────────────────────────────────────────────────────────
-     Tuğla rengi SADECE burada. Sayfanın başka yerinde dolgu olarak yok. */
+  /* ─── Butonlar — siyah hap, yüksek kontrast ──────────────────────────── */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg font-semibold
-           transition-colors duration-150 whitespace-nowrap;
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-bold
+           transition-all duration-200 whitespace-nowrap active:scale-[0.98];
   }
 
   .btn-primary {
-    @apply btn bg-brick-500 text-sand-50 px-6 py-3 hover:bg-brick-600;
+    @apply btn bg-night-950 text-white px-7 py-3.5 hover:bg-night-800;
   }
 
-  .btn-secondary {
-    @apply btn bg-ink-950 text-sand-50 px-6 py-3 hover:bg-ink-900;
+  .btn-brand {
+    @apply btn bg-electric-500 text-white px-7 py-3.5 hover:bg-electric-600;
   }
 
   .btn-ghost {
-    @apply btn border border-sand-400 bg-transparent text-ink-950 px-6 py-3
-           hover:border-ink-950 hover:bg-sand-200;
+    @apply btn border-2 border-night-200 bg-white text-night-950 px-7 py-3.5
+           hover:border-night-950;
   }
 
   .btn-outline {
-    @apply btn border border-sand-50/40 text-sand-50 px-6 py-3
-           hover:bg-sand-50 hover:text-ink-950;
+    @apply btn border-2 border-white/50 text-white px-7 py-3.5
+           hover:bg-white hover:text-night-950;
   }
 
-  .btn-lg {
-    @apply text-base px-7 py-3.5;
-  }
+  .btn-lg { @apply text-base px-8 py-4; }
+  .btn-sm { @apply text-sm px-5 py-2.5; }
 
-  .btn-sm {
-    @apply text-sm px-4 py-2.5;
-  }
-
-  /* ─── Yüzeyler ─────────────────────────────────────────────────────────
-     Gölge yok. Derinlik 1px çizgiyle kuruluyor. */
+  /* ─── Yüzeyler — büyük yarıçap, renkli zemin ─────────────────────────── */
   .card {
-    @apply bg-sand-50 rounded-lg border border-sand-300;
+    @apply bg-white rounded-3xl border border-night-100;
   }
 
   .card-hover {
-    @apply card transition-colors duration-200 hover:border-ink-950;
+    @apply card transition-all duration-300 hover:shadow-lift hover:-translate-y-1;
   }
 
   .panel {
-    @apply bg-sand-200 rounded-lg border border-sand-300;
+    @apply bg-night-50 rounded-3xl;
   }
 
-  /* ─── Tipografi ────────────────────────────────────────────────────────
-     Üst başlık artık ortalanmış turuncu bir etiket değil; solda,
-     numaralı, çizgili bir bölüm işareti. */
+  /* ─── Etiketler — dolgulu hap ────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center gap-1.5 text-xs font-bold
+           px-3 py-1.5 rounded-full;
+  }
+
+  .badge-neutral { @apply badge bg-night-100 text-night-700; }
+  .badge-white   { @apply badge bg-white text-night-900; }
+  .badge-marker  { @apply badge bg-marker text-night-950; }
+  .badge-brand   { @apply badge bg-electric-500 text-white; }
+  .badge-dark    { @apply badge bg-night-950 text-white; }
+
   .eyebrow {
-    @apply inline-flex items-center gap-3 text-xs font-semibold uppercase
-           tracking-[0.16em] text-lead-500;
+    @apply inline-flex items-center gap-2 text-sm font-bold text-night-400;
   }
 
-  .rule {
-    @apply h-px w-8 bg-sand-400;
-  }
+  .section { @apply py-16 md:py-24; }
 
   .section-title {
-    @apply font-display text-display-sm font-semibold text-ink-950;
-  }
-
-  .section-subtitle {
-    @apply text-lead-600 text-lg leading-relaxed;
-  }
-
-  /* Etiketler: dolgu yerine ince çerçeve */
-  .badge {
-    @apply inline-flex items-center gap-1.5 text-xs font-semibold
-           px-2.5 py-1 rounded border;
-  }
-
-  .badge-neutral {
-    @apply badge border-sand-400 text-lead-600 bg-transparent;
-  }
-
-  .badge-ink {
-    @apply badge border-ink-950 text-ink-950 bg-transparent;
-  }
-
-  .badge-brick {
-    @apply badge border-brick-500 text-brick-600 bg-transparent;
-  }
-
-  .badge-solid {
-    @apply badge border-ink-950 bg-ink-950 text-sand-50;
-  }
-
-  /* ─── Düzen ────────────────────────────────────────────────────────────
-     Bölümler arası ayrım gölgeyle değil, tam genişlik çizgiyle. */
-  .section {
-    @apply py-16 md:py-24;
-  }
-
-  .section-divider {
-    @apply border-t border-sand-300;
-  }
-
-  /* Sayı ile başlayan bölüm işareti — "01 / Programlar" */
-  .section-index {
-    @apply font-mono text-xs text-lead-400 tracking-widest;
+    @apply text-display-sm font-extrabold text-night-950;
   }
 }
 
 @layer utilities {
-  /* Logo mavisiyle altı çizili vurgu — marka işaretiyle aynı renk */
-  .underline-electric {
-    background-image: linear-gradient(#1b18ff, #1b18ff);
-    background-repeat: no-repeat;
-    background-position: 0 92%;
-    background-size: 100% 0.14em;
+  /* ─── Fosforlu vurgu — başlıkta kelimenin arkasını boyar ─────────────── */
+  .mark {
+    @apply bg-marker px-[0.22em] py-[0.02em] rounded-[0.15em]
+           box-decoration-clone;
   }
 
-  /* Vurgu artık gradyan değil: kelimenin altında tuğla rengi bir kural */
-  .underline-brick {
-    background-image: linear-gradient(#b8432b, #b8432b);
-    background-repeat: no-repeat;
-    background-position: 0 92%;
-    background-size: 100% 0.14em;
+  .mark-brand {
+    @apply bg-electric-500 text-white px-[0.22em] py-[0.02em] rounded-[0.15em]
+           box-decoration-clone;
+  }
+
+  /* Sayı vurgusu — istatistik şeridinde rakamı boyar */
+  .mark-num {
+    @apply inline-flex items-center justify-center rounded-2xl px-3 py-0.5;
   }
 
   .no-scrollbar {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
 
   .animate-delay-100 { animation-delay: 100ms; }
   .animate-delay-200 { animation-delay: 200ms; }
@@ -177,33 +126,21 @@
 }
 
 /* ─── Kaydırma çubuğu ───────────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #f5f1ea;
-}
-::-webkit-scrollbar-thumb {
-  background: #c9bfae;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #ada091;
-}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #f6f7f8; }
+::-webkit-scrollbar-thumb { background: #d9dce1; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b4bac4; }
 
 /* ─── Kaydırınca beliren bölümler ───────────────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(18px);
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
+.reveal.is-visible { opacity: 1; transform: none; }
 
-/* WhatsApp butonu — markanın kendi rengi, paletin dışında kalır */
+/* WhatsApp butonu — markanın kendi rengi */
 .whatsapp-ring::before {
   content: '';
   position: absolute;
@@ -215,23 +152,15 @@
 }
 
 @keyframes ping {
-  75%, 100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
+  75%, 100% { transform: scale(1.5); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
+  .reveal { opacity: 1; transform: none; }
 }

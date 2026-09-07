@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Filter, X, ArrowRight, Sparkles } from 'lucide-react';
 import { COURSES } from '../data/courses';
-import { PATHS, formatTRY } from '../data/pricing';
+import { PATHS, formatTRY, pathInfo } from '../data/pricing';
 import CourseCard from '../components/CourseCard';
 import SectionHeading from '../components/ui/SectionHeading';
 import Reveal from '../components/ui/Reveal';
@@ -36,44 +36,39 @@ export default function CoursesPage() {
   return (
     <>
       {/* Başlık */}
-      <section className="bg-sand-50 border-b border-sand-300/70">
-        <div className="container py-14 md:py-20">
-          <Reveal className="max-w-3xl">
-            <div className="eyebrow mb-4">
-              <span className="rule" />
-              6 Uzmanlık Programı
-            </div>
-            <h1 className="text-display-md font-bold text-ink-950">
-              Her kursun müfredatı <span className="underline-electric">hafta hafta</span> açık
+      <section className="pt-10 md:pt-16">
+        <div className="container">
+          <Reveal className="text-center max-w-3xl mx-auto">
+            <h1 className="text-display-md">
+              Her kursun müfredatı <span className="mark">hafta hafta</span> açık
             </h1>
-            <p className="mt-5 text-lg text-lead-500 leading-relaxed">
-              Çocuğunuzun hangi hafta neyi öğreneceğini, hangi projeyi bitireceğini ve kurs sonunda
-              elinde ne kalacağını kayıt olmadan önce görebilirsiniz. Gizli içerik yok.
+            <p className="mt-6 text-lg md:text-xl text-night-600 leading-relaxed">
+              Çocuğunuzun hangi hafta neyi öğreneceğini, hangi projeyi bitireceğini ve kurs sonunda elinde ne kalacağını kayıt olmadan önce görebilirsiniz. Gizli içerik yok.
             </p>
           </Reveal>
         </div>
       </section>
 
       {/* Filtreler */}
-      <section className="sticky top-20 md:top-24 z-30 bg-sand-50/90 backdrop-blur-lg border-b border-sand-300/70">
+      <section className="sticky top-20 md:top-24 z-30 bg-white/90 backdrop-blur-lg /70">
         <div className="container py-4">
           <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-            <div className="flex items-center gap-2 text-sm font-semibold text-ink-950 shrink-0">
-              <Filter className="w-4 h-4 text-brick-500" />
+            <div className="flex items-center gap-2 text-sm font-semibold text-night-950 shrink-0">
+              <Filter className="w-4 h-4 text-electric-500" />
               Filtrele
             </div>
 
             {/* Yaş */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-1 px-1">
-              <span className="text-xs text-lead-400 shrink-0 hidden sm:inline">Yaş:</span>
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+              <span className="text-xs text-night-400 shrink-0 hidden sm:inline">Yaş:</span>
               {AGES.map((a) => (
                 <button
                   key={a}
                   onClick={() => setAge(age === a ? null : a)}
-                  className={`shrink-0 w-9 h-9 rounded-lg text-sm font-semibold transition-all ${
+                  className={`shrink-0 w-9 h-9 rounded-2xl text-sm font-semibold transition-all ${
                     age === a
-                      ? 'bg-brick-500 text-white'
-                      : 'bg-sand-200 text-lead-600 hover:bg-sand-300'
+                      ? 'bg-electric-500 text-white'
+                      : 'bg-night-50 text-night-600 hover:bg-night-100'
                   }`}
                   aria-pressed={age === a}
                 >
@@ -84,15 +79,15 @@ export default function CoursesPage() {
 
             {/* Seviye */}
             <div className="flex items-center gap-2 shrink-0">
-              <span className="text-xs text-lead-400 hidden sm:inline">Seviye:</span>
+              <span className="text-xs text-night-400 hidden sm:inline">Seviye:</span>
               {LEVELS.map((l) => (
                 <button
                   key={l}
                   onClick={() => setLevel(level === l ? null : l)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  className={`px-3 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
                     level === l
-                      ? 'bg-ink-950 text-white'
-                      : 'bg-sand-200 text-lead-600 hover:bg-sand-300'
+                      ? 'bg-night-950 text-white'
+                      : 'bg-night-50 text-night-600 hover:bg-night-100'
                   }`}
                   aria-pressed={level === l}
                 >
@@ -107,7 +102,7 @@ export default function CoursesPage() {
                   setAge(null);
                   setLevel(null);
                 }}
-                className="inline-flex items-center gap-1 text-xs font-medium text-lead-400 hover:text-brick-600 transition-colors shrink-0 lg:ml-auto"
+                className="inline-flex items-center gap-1 text-xs font-medium text-night-400 hover:text-electric-500 transition-colors shrink-0 lg:ml-auto"
               >
                 <X className="w-3.5 h-3.5" />
                 Temizle
@@ -120,7 +115,7 @@ export default function CoursesPage() {
       {/* Kurslar */}
       <section className="section">
         <div className="container">
-          <p className="text-sm text-lead-400 mb-6">
+          <p className="text-sm text-night-400 mb-6">
             {filtered.length} kurs listeleniyor
             {age !== null && <> · {age} yaş</>}
             {level !== null && <> · {level}</>}
@@ -128,7 +123,7 @@ export default function CoursesPage() {
 
           {filtered.length === 0 ? (
             <div className="panel p-12 text-center">
-              <p className="text-lead-500 mb-4">
+              <p className="text-night-500 mb-4">
                 Bu filtreye uyan kurs yok. Yaş ve seviye kombinasyonunu değiştirmeyi deneyin.
               </p>
               <button
@@ -154,7 +149,7 @@ export default function CoursesPage() {
       </section>
 
       {/* Öğrenme patikaları */}
-      <section className="section bg-sand-50 border-t border-sand-300/70">
+      <section className="section bg-white /70">
         <div className="container">
           <SectionHeading
             eyebrow="Yıllık Programlar"
@@ -164,21 +159,21 @@ export default function CoursesPage() {
 
           <div className="mt-12 grid md:grid-cols-3 gap-6">
             {PATHS.map((p, i) => {
-              const save = p.listPrice - p.price;
+              const info = pathInfo(p);
               return (
                 <Reveal key={p.id} delay={i * 80}>
                   <div className="card p-6 h-full flex flex-col">
                     <div className="flex items-center justify-between mb-4">
                       <span className="badge-neutral">{p.ageRange}</span>
-                      <span className="badge bg-sand-200 text-ink-900 border border-sand-400">
+                      <span className="badge bg-night-50 text-night-900 border border-night-200">
                         <Sparkles className="w-3 h-3" />
-                        {formatTRY(save)} avantaj
+                        {formatTRY(info.save)} avantaj
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-bold text-ink-950 mb-1">{p.name}</h3>
-                    <p className="text-xs text-lead-400 mb-4">{p.duration}</p>
-                    <p className="text-sm text-lead-500 leading-relaxed mb-5">{p.outcome}</p>
+                    <h3 className="text-xl font-extrabold text-night-950 mb-1">{p.name}</h3>
+                    <p className="text-xs text-night-400 mb-4">{info.duration}</p>
+                    <p className="text-sm text-night-500 leading-relaxed mb-5">{p.outcome}</p>
 
                     <div className="flex flex-wrap gap-2 mb-6">
                       {p.courseIds.map((id) => {
@@ -187,7 +182,7 @@ export default function CoursesPage() {
                           <Link
                             key={id}
                             to={`/kurslar/${c.slug}`}
-                            className="badge bg-sand-50 border border-sand-300 text-lead-600 hover:ring-brick-300 hover:text-brick-700 transition-colors"
+                            className="badge bg-night-50 text-night-600 hover:ring-brick-300 hover:text-electric-600 transition-colors"
                           >
                             {c.shortTitle}
                           </Link>
@@ -195,13 +190,13 @@ export default function CoursesPage() {
                       })}
                     </div>
 
-                    <div className="mt-auto pt-5 border-t border-sand-200">
+                    <div className="mt-auto pt-5">
                       <div className="flex items-baseline gap-2 mb-4">
-                        <span className="text-2xl font-bold text-ink-950">
+                        <span className="text-2xl font-extrabold text-night-950">
                           {formatTRY(p.price)}
                         </span>
-                        <span className="text-sm text-lead-400 line-through">
-                          {formatTRY(p.listPrice)}
+                        <span className="text-sm text-night-400 line-through">
+                          {formatTRY(info.listPrice)}
                         </span>
                       </div>
                       <Link to="/iletisim" className="btn-ghost btn-sm w-full">
@@ -215,9 +210,9 @@ export default function CoursesPage() {
             })}
           </div>
 
-          <p className="mt-8 text-center text-sm text-lead-400">
+          <p className="mt-8 text-center text-sm text-night-400">
             Patika fiyatları Kulüp (grup) paketi içindir. Atölye ve Birebir seçenekleri için{' '}
-            <Link to="/fiyatlar" className="text-brick-600 font-medium hover:underline">
+            <Link to="/fiyatlar" className="text-electric-500 font-medium hover:underline">
               fiyat sayfasına
             </Link>{' '}
             bakabilirsiniz.

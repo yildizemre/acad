@@ -9,6 +9,8 @@
 // Tüm tutarlar KDV dahil, Türk Lirası.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { COURSES, totalLessons, type Course } from './courses';
+
 export type TierId = 'kulup' | 'atolye' | 'birebir';
 
 export interface Tier {
@@ -19,7 +21,8 @@ export interface Tier {
   price8: number;
   /** 10 haftalık (20 ders) programın liste fiyatı, TL */
   price10: number;
-  classSize: string;
+  /** Bu katmanın sınıf üst sınırı. Kursun kendi sınırı daha düşükse o geçerli. */
+  maxStudents: number;
   lessonLength: string;
   popular?: boolean;
   bestFor: string;
@@ -35,12 +38,12 @@ export const TIERS: Tier[] = [
     subtitle: 'Grup dersi — arkadaşlarıyla birlikte öğrenir',
     price8: 8900,
     price10: 10900,
-    classSize: 'Maks. 8 öğrenci',
-    lessonLength: 'Haftada 2 ders × 60 dk',
+    maxStudents: 8,
+    lessonLength: 'Haftada 2 canlı ders',
     bestFor: 'İlk kez kodlamayla tanışan, akran ortamında motive olan çocuklar',
     features: [
-      'Haftada 2 canlı online ders (8 haftada toplam 16 ders)',
-      'Maksimum 8 kişilik sabit sınıf, sabit eğitmen',
+      'Haftada 2 canlı online ders — 8 haftalık kursta 16, 10 haftalık kursta 20 ders',
+      'En fazla 8 kişilik sabit sınıf, sabit eğitmen (bazı kurslarda daha az)',
       'Her ders sonunda uygulamalı ödev ve yazılı geri bildirim',
       'Ders kayıtlarına 12 ay boyunca erişim',
       'Aylık veli gelişim raporu',
@@ -56,13 +59,13 @@ export const TIERS: Tier[] = [
     subtitle: 'Küçük grup + aylık birebir mentorluk',
     price8: 13900,
     price10: 16900,
-    classSize: 'Maks. 4 öğrenci',
-    lessonLength: 'Haftada 2 ders × 60 dk',
+    maxStudents: 4,
+    lessonLength: 'Haftada 2 canlı ders',
     popular: true,
     bestFor: 'Hızlı ilerleyen, projesini derinleştirmek isteyen öğrenciler',
     features: [
       'Kulüp paketindeki her şey',
-      'Maksimum 4 kişilik butik sınıf — söz hakkı iki katına çıkar',
+      'En fazla 4 kişilik butik sınıf — söz hakkı iki katına çıkar',
       'Ayda 1 adet 45 dakikalık birebir mentor seansı',
       'Kişiselleştirilmiş bitirme projesi (öğrencinin kendi fikri)',
       'Hafta içi eğitmene mesajla soru sorma hakkı',
@@ -77,8 +80,8 @@ export const TIERS: Tier[] = [
     subtitle: 'Tamamen kişiye özel program ve takvim',
     price8: 24900,
     price10: 29900,
-    classSize: '1 öğrenci — 1 eğitmen',
-    lessonLength: 'Haftada 2 ders × 60 dk (esnek)',
+    maxStudents: 1,
+    lessonLength: 'Haftada 2 canlı ders (esnek saat)',
     bestFor:
       'Yarışmaya hazırlanan, özel ilgi alanı olan veya kendi hızında ilerlemesi gereken öğrenciler',
     features: [
@@ -99,10 +102,7 @@ export interface Path {
   id: string;
   name: string;
   ageRange: string;
-  duration: string;
   courseIds: string[];
-  /** Kulüp katmanında tek tek alınsa ödenecek toplam */
-  listPrice: number;
   /** Patika olarak alındığında ödenecek tutar */
   price: number;
   outcome: string;
@@ -113,9 +113,7 @@ export const PATHS: Path[] = [
     id: 'kesif',
     name: 'Keşif Yılı',
     ageRange: '8–11 yaş',
-    duration: '2 dönem · 16 hafta · 32 ders',
     courseIds: ['scratch', 'robotics'],
-    listPrice: 17800,
     price: 14900,
     outcome:
       'Blok tabanlı kodlamadan fiziksel robotiğe geçer. Yıl sonunda hem kendi oyununu hem kendi robotunu yapmış olur.',
@@ -124,9 +122,7 @@ export const PATHS: Path[] = [
     id: 'uretici',
     name: 'Üretici Yılı',
     ageRange: '11–14 yaş',
-    duration: '2 dönem · 18 hafta · 36 ders',
     courseIds: ['python', 'web'],
-    listPrice: 19800,
     price: 16900,
     outcome:
       'Gerçek metin tabanlı programlamaya geçer. Yıl sonunda internette yayında olan kendi web sitesi ve çalışan Python projeleri olur.',
@@ -135,10 +131,8 @@ export const PATHS: Path[] = [
     id: 'muhendis',
     name: 'Mühendis Yılı',
     ageRange: '14–17 yaş',
-    duration: '2 dönem · 18 hafta · 36 ders',
     courseIds: ['unity', 'ai'],
-    listPrice: 21800,
-    price: 18900,
+    price: 16900,
     outcome:
       'Üniversite düzeyine yaklaşan konularla tanışır. Yıl sonunda yayınlanabilir bir oyunu ve kendi eğittiği bir yapay zeka modeli olur.',
   },
@@ -279,22 +273,126 @@ export function priceFor(tier: Tier, weeks: number): number {
   return weeks >= 10 ? tier.price10 : tier.price8;
 }
 
-/** Bir ödeme planının toplam tutarını hesaplar (10 TL'ye yuvarlanır). */
+/** Bir ödeme planının toplam tutarı (10 TL'ye yuvarlanır — ilan edilen fiyat budur). */
 export function totalFor(base: number, plan: PaymentPlan): number {
   return Math.round((base * plan.multiplier) / 10) * 10;
 }
 
-/** Aylık taksit tutarını hesaplar. */
-export function installmentFor(base: number, plan: PaymentPlan): number {
-  return Math.round(totalFor(base, plan) / plan.installments / 10) * 10;
+export interface Installments {
+  count: number;
+  /** İlk taksitlerin tutarı, TL */
+  monthly: number;
+  /** Son taksidin tutarı — bölme tam çıkmadığında farklıdır */
+  last: number;
+  /** Taksitlerin tamamı eşit mi */
+  equal: boolean;
+  total: number;
 }
 
-/** 12345 → "12.345 TL" */
+/**
+ * Taksitleri kuruş hassasiyetinde böler ve TOPLAMLA BİREBİR eşleşmesini garanti eder.
+ *
+ * Basit bölme + yuvarlama yapılırsa taksitlerin çarpımı toplamı tutmaz
+ * (13.900 / 6 = 2.316,66… → 6 × 2.320 = 13.920 gibi). Bunu önlemek için
+ * hesap kuruş üzerinden tam sayıyla yapılır, artan kuruş son takside bindirilir.
+ */
+export function installmentsFor(base: number, plan: PaymentPlan): Installments {
+  const total = totalFor(base, plan);
+  const n = plan.installments;
+  const totalKurus = Math.round(total * 100);
+  const perKurus = Math.floor(totalKurus / n);
+  const lastKurus = totalKurus - perKurus * (n - 1);
+  return {
+    count: n,
+    monthly: perKurus / 100,
+    last: lastKurus / 100,
+    equal: perKurus === lastKurus,
+    total,
+  };
+}
+
+/** 12345 → "12.345 TL" · 2316.66 → "2.316,66 TL" */
 export function formatTRY(value: number): string {
-  return `${value.toLocaleString('tr-TR')} TL`;
+  const hasKurus = Math.round(value * 100) % 100 !== 0;
+  return `${value.toLocaleString('tr-TR', {
+    minimumFractionDigits: hasKurus ? 2 : 0,
+    maximumFractionDigits: 2,
+  })} TL`;
 }
 
-/** Ders başına düşen maliyet — velinin en çok merak ettiği rakam. */
-export function perLesson(base: number, weeks: number): number {
-  return Math.round(base / (weeks * 2) / 5) * 5;
+/** Taksit planını tek satırda okunur biçimde anlatır. */
+export function installmentLabel(inst: Installments): string {
+  if (inst.count <= 1) return 'Tek çekim';
+  if (inst.equal) return `${inst.count} × ${formatTRY(inst.monthly)}`;
+  return `${inst.count - 1} × ${formatTRY(inst.monthly)} + son taksit ${formatTRY(inst.last)}`;
+}
+
+/** Ders başına düşen maliyet. Yaklaşık bir değerdir, tam sayıya yuvarlanır. */
+export function perLesson(total: number, weeks: number): number {
+  return Math.round(total / (weeks * 2));
+}
+
+// ─── Kurs + paket birleşimi ──────────────────────────────────────────────────
+// Sınıf mevcudu ve ders süresi hem katmana hem kursa bağlı. Unity ve Yapay Zeka
+// kurslarında sınıf zaten 6 kişiyle sınırlı; Kulüp paketinin 8 sınırı bu
+// kurslarda geçerli değil. Aşağıdaki fonksiyonlar bu ikisini birleştirir.
+
+/** Katman ve kursun sınırlarından düşük olanı geçerlidir. */
+export function classSizeFor(tier: Tier, course?: Course): number {
+  if (tier.maxStudents === 1) return 1;
+  return course ? Math.min(tier.maxStudents, course.maxStudents) : tier.maxStudents;
+}
+
+export function classSizeLabel(tier: Tier, course?: Course): string {
+  const n = classSizeFor(tier, course);
+  if (n === 1) return '1 öğrenci — 1 eğitmen';
+  return course ? `${n} öğrenci` : `En fazla ${n} öğrenci`;
+}
+
+/** Ders süresi kursa özeldir; paket süreyi değil yoğunluğu belirler. */
+export function lessonLineFor(tier: Tier, course?: Course): string {
+  if (!course) return tier.lessonLength;
+  const esnek = tier.maxStudents === 1 ? ' (esnek saat)' : '';
+  return `Haftada ${course.lessonsPerWeek} ders × ${course.lessonMinutes} dk${esnek}`;
+}
+
+/** Tüm kurslardaki ders sürelerinin aralığı — genel paket sayfasında kullanılır. */
+export function lessonMinutesRange(courses: Course[]): string {
+  const mins = courses.map((c) => c.lessonMinutes);
+  const lo = Math.min(...mins);
+  const hi = Math.max(...mins);
+  return lo === hi ? `${lo} dk` : `${lo}–${hi} dk (kursa göre)`;
+}
+
+// ─── Patika özeti ────────────────────────────────────────────────────────────
+// Süre, ders sayısı ve karşılaştırma fiyatı elle girilmez; kurslardan hesaplanır.
+// Böylece bir kursun süresi değiştiğinde patika bilgisi kendiliğinden düzelir.
+
+export interface PathInfo {
+  courses: Course[];
+  weeks: number;
+  lessons: number;
+  /** Kurslar tek tek Kulüp katmanında alınsa ödenecek toplam */
+  listPrice: number;
+  /** Patika fiyatıyla arasındaki fark */
+  save: number;
+  /** "2 dönem · 18 hafta · 36 ders" */
+  duration: string;
+}
+
+export function pathInfo(path: Path): PathInfo {
+  const courses = path.courseIds
+    .map((id) => COURSES.find((c) => c.id === id))
+    .filter((c): c is Course => Boolean(c));
+  const weeks = courses.reduce((n, c) => n + c.weeks, 0);
+  const lessons = courses.reduce((n, c) => n + totalLessons(c), 0);
+  const listPrice = courses.reduce((n, c) => n + priceFor(TIERS[0], c.weeks), 0);
+  return {
+    courses,
+    weeks,
+    lessons,
+    listPrice,
+    save: listPrice - path.price,
+    duration: `${courses.length} dönem · ${weeks} hafta · ${lessons} ders`,
+  };
 }

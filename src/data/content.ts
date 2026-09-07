@@ -4,6 +4,8 @@
 // Footer modallarına gömülü olan içerik buraya taşındı; artık gerçek sayfalar.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { COMMERCE_DOCS } from './legal-docs';
+
 export interface Faq {
   q: string;
   a: string;
@@ -266,7 +268,7 @@ export const REFUND_POLICY = [
     title: 'İlk 2 Ders İçinde İptal',
     result: 'Tam iade',
     detail:
-      'İlk iki ders içinde iptal talebinde bulunulursa ödemenin tamamı koşulsuz iade edilir. Gerekçe sormuyoruz.',
+      'İkinci ders bitene kadar talep ederseniz ödemenin tamamı koşulsuz iade edilir. Gerekçe sormuyoruz, önceden haber verme şartı aranmaz.',
     positive: true,
   },
   {
@@ -285,16 +287,48 @@ export const REFUND_POLICY = [
   },
 ] as const;
 
-export const REFUND_NOTE =
-  'İptal talepleri en geç 48 saat öncesinden yazılı olarak (e-posta veya WhatsApp) iletilmelidir. İade işlemleri talep onayından sonra 7 iş günü içinde aynı ödeme yöntemine yapılır.';
+/**
+ * Not: "48 saat" kuralı iade hakkıyla ilgili DEĞİLDİR. İade penceresi ders
+ * sayısına bağlıdır (ilk 2 ders). 48 saat yalnızca tek bir dersi erteleme
+ * veya telafiye alma talepleri için geçerlidir. İkisi karıştırılmasın diye
+ * ayrı ayrı yazıldı.
+ */
+export const REFUND_NOTES = [
+  {
+    title: 'İade talebi nasıl yapılır?',
+    text: 'E-posta veya WhatsApp üzerinden yazılı olarak bildirmeniz yeterlidir. Önceden haber verme zorunluluğu yoktur — ilk iki ders içindeyseniz talep gününde geçerlidir. Gerekçe sormuyoruz.',
+  },
+  {
+    title: 'İade ne zaman hesabınıza geçer?',
+    text: 'Talebin onayından sonra 7 iş günü içinde, ödemeyi yaptığınız yönteme iade edilir. Taksitli ödemelerde bankanın iade süresi birkaç gün uzayabilir.',
+  },
+  {
+    title: '48 saat kuralı neyle ilgili?',
+    text: 'Yalnızca tek bir dersi erteleme veya telafiye alma taleplerini kapsar; dersten en az 24 saat önce bildirmeniz gerekir. İade hakkınızla hiçbir ilgisi yoktur.',
+  },
+];
 
 // ─── Hukuki metinler ─────────────────────────────────────────────────────────
+
+export interface LegalSection {
+  /** Madde numarası — "MADDE 1" gibi bir başlık üretilir */
+  article?: string;
+  heading?: string;
+  body?: string;
+  list?: string[];
+  /** Ad–değer tablosu (taraf bilgileri, hizmet künyesi) */
+  rows?: [string, string][];
+  /** Vurgulanacak uyarı kutusu */
+  note?: string;
+}
 
 export interface LegalDoc {
   slug: string;
   title: string;
   updated: string;
-  sections: { heading?: string; body?: string; list?: string[] }[];
+  /** Sayfa başında görünen kısa açıklama */
+  intro?: string;
+  sections: LegalSection[];
 }
 
 export const LEGAL_DOCS: LegalDoc[] = [
@@ -408,8 +442,11 @@ export const LEGAL_DOCS: LegalDoc[] = [
   },
 ];
 
+/** Gizlilik/KVKK/koşullar + ticari sözleşmeler — tek liste. */
+export const ALL_LEGAL_DOCS: LegalDoc[] = [...LEGAL_DOCS, ...COMMERCE_DOCS];
+
 export function legalBySlug(slug: string): LegalDoc | undefined {
-  return LEGAL_DOCS.find((d) => d.slug === slug);
+  return ALL_LEGAL_DOCS.find((d) => d.slug === slug);
 }
 
 // ─── Açık pozisyonlar ────────────────────────────────────────────────────────

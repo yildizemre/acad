@@ -12,9 +12,9 @@
 
 import { COURSES, totalLessons } from '../data/courses';
 import { ARTICLES_BY_DATE } from '../data/articles';
-import { LEGAL_DOCS } from '../data/content';
+import { ALL_LEGAL_DOCS } from '../data/content';
 import { PROJECTS } from '../data/projects';
-import { TIERS, priceFor, formatTRY } from '../data/pricing';
+import { TIERS, priceFor, formatTRY, classSizeLabel } from '../data/pricing';
 import { SITE } from '../data/site';
 
 export interface SeoRoute {
@@ -31,6 +31,12 @@ export interface SeoRoute {
   links?: { label: string; href: string }[];
   /** Sitemap önceliği */
   priority: string;
+  /** Sayfaya özel paylaşım görseli — verilmezse genel og.png kullanılır */
+  image?: string;
+  /** Sitemap'e eklenecek görseller (Google Görseller için) */
+  images?: { url: string; caption: string }[];
+  /** Arama motorunun indekslememesi gereken sayfalar */
+  noindex?: boolean;
 }
 
 const courseLinks = COURSES.map((c) => ({
@@ -79,6 +85,7 @@ export const SEO_ROUTES: SeoRoute[] = [
       (c) =>
         `${c.title} — ${c.ageRange}, ${c.level}, ${c.weeks} hafta / ${totalLessons(c)} canlı ders, ${formatTRY(priceFor(TIERS[0], c.weeks))} başlangıç fiyatı`,
     ),
+    images: COURSES.map((c) => ({ url: c.image, caption: `${c.title} ders ekranı` })),
     links: [...courseLinks, { label: 'Fiyatlar', href: '/fiyatlar' }],
   },
   {
@@ -91,6 +98,10 @@ export const SEO_ROUTES: SeoRoute[] = [
     summary:
       'Her kurs bir bitirme projesiyle sonuçlanır ve öğrenci bunu Demo Günü’nde canlı sunar. Aşağıda her programın ürettiği proje ve öğrencinin yolda çözmesi gereken problem yazılıdır.',
     facts: PROJECTS.map((p) => `${p.title} — ${p.brief}`),
+    images: PROJECTS.map((p) => ({
+      url: p.image,
+      caption: `${p.title} — ${p.brief}`,
+    })),
     links: [...courseLinks],
   },
   {
@@ -105,7 +116,7 @@ export const SEO_ROUTES: SeoRoute[] = [
     facts: [
       ...TIERS.map(
         (t) =>
-          `${t.name} paketi — ${t.classSize}, ${t.lessonLength}. 8 haftalık program ${formatTRY(t.price8)}, 10 haftalık program ${formatTRY(t.price10)}`,
+          `${t.name} paketi — ${classSizeLabel(t)}, ${t.lessonLength}. 8 haftalık program ${formatTRY(t.price8)}, 10 haftalık program ${formatTRY(t.price10)}`,
       ),
       'Peşin ödemede %10 indirim, 9 taksite kadar faizsiz',
       'Kardeş indirimi %15, erken kayıt indirimi %10',
@@ -169,7 +180,8 @@ export const SEO_ROUTES: SeoRoute[] = [
   },
   {
     path: '/kayit',
-    priority: '0.6',
+    priority: '0.4',
+    noindex: true,
     title: 'Kayıt Özeti | Hype Academia',
     description:
       'Seçtiğiniz kurs, paket ve ödeme planının toplam tutarını görün ve tek adımda kayda geçin.',
@@ -187,6 +199,8 @@ export const SEO_ROUTES: SeoRoute[] = [
     description: `${c.summary} ${c.weeks} hafta, ${totalLessons(c)} canlı ders, maksimum ${c.maxStudents} öğrenci. Haftalık müfredat, ön koşullar ve fiyatlar sayfada.`,
     h1: c.title,
     summary: c.intro,
+    image: c.image,
+    images: [{ url: c.image, caption: `${c.title} canlı ders ekranı` }],
     facts: [
       `Yaş aralığı: ${c.ageRange} · Seviye: ${c.level}`,
       `Süre: ${c.weeks} hafta, ${totalLessons(c)} canlı ders (haftada ${c.lessonsPerWeek} ders × ${c.lessonMinutes} dakika)`,
@@ -226,13 +240,22 @@ export const SEO_ROUTES: SeoRoute[] = [
   })),
 
   // ─── Hukuki metinler ───
-  ...LEGAL_DOCS.map<SeoRoute>((d) => ({
+  ...ALL_LEGAL_DOCS.map<SeoRoute>((d) => ({
     path: `/yasal/${d.slug}`,
     priority: '0.3',
     title: `${d.title} | Hype Academia`,
-    description: `Hype Academia ${d.title.toLowerCase()} — son güncelleme ${d.updated}.`,
+    description: d.intro ?? `Hype Academia ${d.title.toLowerCase()} — son güncelleme ${d.updated}.`,
     h1: d.title,
-    summary: d.sections.find((s) => s.body)?.body ?? d.title,
-    links: LEGAL_DOCS.map((x) => ({ label: x.title, href: `/yasal/${x.slug}` })),
+    summary: d.intro ?? d.sections.find((x) => x.body)?.body ?? d.title,
+    // Sözleşme maddelerini de bota göster: satıcı bilgileri ve iade koşulları
+    // JavaScript çalıştırmadan okunabilsin.
+    facts: d.sections.flatMap((x) => [
+      ...(x.heading ? [x.article ? `MADDE ${x.article} — ${x.heading}` : x.heading] : []),
+      ...(x.body ? [x.body] : []),
+      ...(x.rows ?? []).map(([k, v]) => `${k}: ${v}`),
+      ...(x.list ?? []),
+      ...(x.note ? [x.note] : []),
+    ]),
+    links: ALL_LEGAL_DOCS.map((x) => ({ label: x.title, href: `/yasal/${x.slug}` })),
   })),
 ];

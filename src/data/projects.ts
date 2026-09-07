@@ -30,9 +30,12 @@ export interface Project {
   skills: string[];
   image: string;
   kind: ProjectKind;
-  /** scratch: proje numarası · itch: upload numarası */
+  /** scratch: proje numarası · itch: upload numarası — girilirse sayfada oynanır */
   embedId?: string;
-  url?: string;
+  /** Projeyi kendi sitesinde açan bağlantı (yayında olan site, itch.io sayfası) */
+  demoUrl?: string;
+  /** 20–40 saniyelik ekran kaydı (mp4/webm veya YouTube) */
+  videoUrl?: string;
   /**
    * Gerçek bir öğrenciye ait yayınlanmış işlerde doldurulur.
    * Boşken kart "bitirme projesi" olarak sunulur, kimseye atfedilmez.
@@ -117,6 +120,22 @@ export const PROJECTS: Project[] = [
 
 export function projectsForCourse(courseId: string): Project[] {
   return PROJECTS.filter((p) => p.courseId === courseId);
+}
+
+/**
+ * Kart üzerinde gösterilecek tür etiketi.
+ * Ziyaretçinin "bu gerçek bir öğrencinin işi mi, yoksa müfredatın tanımı mı?"
+ * sorusunu tahmine bırakmıyoruz.
+ */
+export function projectKindLabel(p: Project): { label: string; real: boolean } {
+  return p.student
+    ? { label: 'Öğrenci projesi', real: true }
+    : { label: 'Müfredat projesi', real: false };
+}
+
+/** Projenin oynanabilir veya açılabilir bir hâli var mı? */
+export function hasDemo(p: Project): boolean {
+  return Boolean(p.embedId || p.demoUrl || p.videoUrl);
 }
 
 /** Gömülü oynatma adresi — yoksa undefined döner. */

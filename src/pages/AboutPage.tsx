@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, BadgeCheck, Mail, Target, Eye, CheckCircle2 } from 'lucide-react';
 import { TEACHERS, VALUES, JOBS, PROCESS } from '../data/content';
 import { SITE, STATS } from '../data/site';
+import { SELLER, BRAND, sellerName, sellerRows } from '../data/legal-entity';
 import SectionHeading from '../components/ui/SectionHeading';
 import Reveal from '../components/ui/Reveal';
 import usePageMeta from '../hooks/usePageMeta';
@@ -16,18 +17,17 @@ export default function AboutPage() {
   return (
     <>
       {/* ─── Başlık ─────────────────────────────────────────────────────── */}
-      <section className="bg-sand-50 border-b border-sand-300/70">
+      <section className="bg-white /70">
         <div className="container py-14 md:py-20">
           <Reveal className="max-w-3xl">
             <div className="eyebrow mb-4">
-              <span className="rule" />
               {SITE.foundedYear}'den beri
             </div>
-            <h1 className="text-display-md font-bold text-ink-950">
+            <h1 className="text-display-md text-night-950">
               Sanayiye yapay zeka çözümü üreten bir ekip,{' '}
-              <span className="underline-electric">çocuklara ders veriyor</span>
+              <span className="mark">çocuklara ders veriyor</span>
             </h1>
-            <p className="mt-5 text-lg text-lead-500 leading-relaxed">
+            <p className="mt-5 text-lg text-night-500 leading-relaxed">
               {SITE.name}, {SITE.foundedYear} yılında {SITE.parentInstitution} bünyesinde kuruldu.
               Kurucu ekibimiz bilgisayarla görü, derin öğrenme ve görüntü işleme alanlarında
               Türkiye'nin önde gelen sanayi kuruluşlarına çözüm geliştiriyor. Yıllar içinde
@@ -38,11 +38,16 @@ export default function AboutPage() {
           <Reveal delay={120} className="mt-10">
             <dl className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {STATS.map((s) => (
-                <div key={s.label} className="bg-sand-50 rounded-lg border border-sand-300 p-5">
+                <div key={s.label} className="bg-white rounded-2xl bg-night-50 p-5">
                   <dt className="sr-only">{s.label}</dt>
                   <dd>
-                    <span className="block text-3xl font-bold text-ink-950">{s.value}</span>
-                    <span className="block text-sm text-lead-400 mt-1">{s.label}</span>
+                    <span className="block text-3xl font-bold text-night-950">{s.value}</span>
+                    <span className="block text-sm text-night-400 mt-1">{s.label}</span>
+                    {s.note && (
+                      <span className="block text-xs text-night-500 mt-2 leading-snug">
+                        {s.note}
+                      </span>
+                    )}
                   </dd>
                 </div>
               ))}
@@ -57,11 +62,11 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <Reveal>
               <div className="card p-7 h-full">
-                <span className="w-11 h-11 rounded border border-sand-400 text-ink-950 flex items-center justify-center mb-4">
+                <span className="w-11 h-11 rounded border border-night-200 text-night-950 flex items-center justify-center mb-4">
                   <Target className="w-5 h-5" />
                 </span>
-                <h2 className="text-xl font-bold text-ink-950 mb-3">Misyonumuz</h2>
-                <p className="text-lead-500 leading-relaxed">
+                <h2 className="text-xl font-extrabold text-night-950 mb-3">Misyonumuz</h2>
+                <p className="text-night-500 leading-relaxed">
                   Sektörel yetkinliği genç nesle aktarmak; problem çözen, yaratıcı ve özgüvenli
                   dijital liderler yetiştirmek.
                 </p>
@@ -69,11 +74,11 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={100}>
               <div className="card p-7 h-full">
-                <span className="w-11 h-11 rounded border border-sand-400 text-ink-950 flex items-center justify-center mb-4">
+                <span className="w-11 h-11 rounded border border-night-200 text-night-950 flex items-center justify-center mb-4">
                   <Eye className="w-5 h-5" />
                 </span>
-                <h2 className="text-xl font-bold text-ink-950 mb-3">Vizyonumuz</h2>
-                <p className="text-lead-500 leading-relaxed">
+                <h2 className="text-xl font-extrabold text-night-950 mb-3">Vizyonumuz</h2>
+                <p className="text-night-500 leading-relaxed">
                   Türkiye'yi teknoloji ihraç eden bir ülkeye dönüştürecek nesli yetiştirmek ve
                   ülkemizin global teknoloji ekosistemindeki payını artırmak.
                 </p>
@@ -82,9 +87,9 @@ export default function AboutPage() {
           </div>
 
           <Reveal className="mt-10">
-            <div className="max-w-4xl mx-auto flex gap-3 rounded-lg bg-sand-200 border border-sand-300 p-5">
-              <BadgeCheck className="w-5 h-5 text-ink-700 shrink-0 mt-0.5" />
-              <p className="text-sm text-ink-950 leading-relaxed">
+            <div className="max-w-4xl mx-auto flex gap-3 rounded-2xl bg-night-50 bg-night-50 p-5">
+              <BadgeCheck className="w-5 h-5 text-night-700 shrink-0 mt-0.5" />
+              <p className="text-sm text-night-950 leading-relaxed">
                 Verdiğimiz tüm tamamlama sertifikaları Türkiye Cumhuriyeti E-Devlet sistemi
                 üzerinden doğrulanabilmektedir.
               </p>
@@ -94,7 +99,7 @@ export default function AboutPage() {
       </section>
 
       {/* ─── Değerler ───────────────────────────────────────────────────── */}
-      <section className="section bg-sand-50 border-y border-sand-300/70">
+      <section className="section bg-white /70">
         <div className="container">
           <SectionHeading
             eyebrow="Değerlerimiz"
@@ -106,10 +111,10 @@ export default function AboutPage() {
               <Reveal key={v.title} delay={i * 60}>
                 <div className="card p-6 h-full">
                   <div className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-brick-500 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-electric-500 shrink-0 mt-0.5" />
                     <div>
-                      <h3 className="font-bold text-ink-950 mb-1.5">{v.title}</h3>
-                      <p className="text-sm text-lead-500 leading-relaxed">{v.desc}</p>
+                      <h3 className="font-bold text-night-950 mb-1.5">{v.title}</h3>
+                      <p className="text-sm text-night-500 leading-relaxed">{v.desc}</p>
                     </div>
                   </div>
                 </div>
@@ -141,18 +146,18 @@ export default function AboutPage() {
                         className="w-12 h-12 rounded object-cover shrink-0"
                       />
                     ) : (
-                      <span className="w-12 h-12 rounded bg-ink-950 text-sand-50 flex items-center justify-center font-semibold shrink-0">
+                      <span className="w-12 h-12 rounded bg-night-950 text-white flex items-center justify-center font-semibold shrink-0">
                         {t.initials}
                       </span>
                     )}
                     <div className="min-w-0">
-                      <div className="font-semibold text-ink-950">
+                      <div className="font-semibold text-night-950">
                         {t.profile ? (
                           <a
                             href={t.profile}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-brick-600 transition-colors"
+                            className="hover:text-electric-500 transition-colors"
                           >
                             {t.name}
                           </a>
@@ -160,13 +165,13 @@ export default function AboutPage() {
                           t.name
                         )}
                       </div>
-                      <div className="text-brick-600 text-xs font-semibold">{t.title}</div>
+                      <div className="text-electric-500 text-xs font-semibold">{t.title}</div>
                     </div>
                   </div>
-                  <p className="text-sm text-lead-500 leading-relaxed mb-3">{t.exp}</p>
-                  <div className="text-xs text-lead-400">
+                  <p className="text-sm text-night-500 leading-relaxed mb-3">{t.exp}</p>
+                  <div className="text-xs text-night-400">
                     Verdiği kurslar:{' '}
-                    <span className="text-ink-950 font-medium">{t.courses}</span>
+                    <span className="text-night-950 font-medium">{t.courses}</span>
                   </div>
                 </div>
               </Reveal>
@@ -176,7 +181,7 @@ export default function AboutPage() {
       </section>
 
       {/* ─── Süreç ──────────────────────────────────────────────────────── */}
-      <section id="surec" className="section bg-sand-50 border-y border-sand-300/70">
+      <section id="surec" className="section bg-white /70">
         <div className="container">
           <SectionHeading
             eyebrow="Nasıl Çalışır"
@@ -188,19 +193,91 @@ export default function AboutPage() {
             {PROCESS.map((step, i) => (
               <Reveal key={step.n} delay={i * 60}>
                 <div className="card p-5 flex gap-4">
-                  <span className="w-11 h-11 rounded-xl bg-brick-500 text-white flex items-center justify-center font-bold shrink-0">
+                  <span className="w-11 h-11 rounded-xl bg-electric-500 text-white flex items-center justify-center font-bold shrink-0">
                     {step.n}
                   </span>
                   <div>
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <h3 className="font-bold text-ink-950">{step.title}</h3>
+                      <h3 className="font-bold text-night-950">{step.title}</h3>
                       <span className="badge-neutral">{step.duration}</span>
                     </div>
-                    <p className="text-sm text-lead-500 leading-relaxed">{step.desc}</p>
+                    <p className="text-sm text-night-500 leading-relaxed">{step.desc}</p>
                   </div>
                 </div>
               </Reveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Kurumsal kimlik ───────────────────────────────────────────── */}
+      <section id="kurumsal" className="section">
+        <div className="container">
+          <div className="max-w-3xl">
+            <p className="eyebrow mb-4">
+              Kurumsal Kimlik
+            </p>
+            <h2 className="text-display-sm text-night-950 mb-5">
+              Kim satıyor, kime ödeme yapıyorsunuz?
+            </h2>
+            <p className="text-lg text-night-600 leading-relaxed mb-8">
+              {BRAND.name}, {SELLER.shortName} bünyesinde faaliyet gösteren bir eğitim
+              markasıdır. Sitede yaptığınız satın almalarda satıcı ve fatura kesen taraf{' '}
+              {sellerName}&apos;dır. Bunu saklamıyoruz; ödeme yaptığınız kurumu bilmeniz
+              gerektiğini düşünüyoruz.
+            </p>
+
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse text-left text-sm min-w-[420px]">
+                <tbody>
+                  {sellerRows().map(([k, v]) => (
+                    <tr key={k} className="align-top">
+                      <th
+                        scope="row"
+                        className="py-2.5 pr-6 font-medium text-night-950 whitespace-nowrap w-1/3"
+                      >
+                        {k}
+                      </th>
+                      <td className="py-2.5 text-night-700">{v}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-2">
+              {[
+                ['Mesafeli Satış Sözleşmesi', '/yasal/mesafeli-satis-sozlesmesi'],
+                ['Ön Bilgilendirme Formu', '/yasal/on-bilgilendirme-formu'],
+                ['Teslimat ve İade Şartları', '/yasal/teslimat-ve-iade'],
+                ['Gizlilik Politikası', '/yasal/gizlilik'],
+                ['KVKK Aydınlatma Metni', '/yasal/kvkk'],
+              ].map(([label, to]) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className="badge-neutral hover:border-night-950 hover:text-night-950 transition-colors"
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-8 pt-8">
+              <img
+                src="/odeme/kart-logolari.svg"
+                alt="Kabul edilen ödeme yöntemleri: iyzico ile Öde, Mastercard, Visa, American Express, Troy"
+                width={429}
+                height={32}
+                loading="lazy"
+                className="h-7 w-auto mb-3"
+              />
+              <p className="text-sm text-night-600 leading-relaxed">
+                Ödemeler iyzico altyapısı üzerinden 3D Secure doğrulamasıyla alınır. Kart
+                bilgileriniz bizim sunucularımızda saklanmaz. Site SSL sertifikası ile
+                şifrelenmiş bağlantı üzerinden yayınlanır.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -219,12 +296,12 @@ export default function AboutPage() {
               <Reveal key={j.pos} delay={i * 50}>
                 <div className="card p-5">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <h3 className="font-bold text-ink-950">{j.pos}</h3>
-                    <span className="badge bg-brick-50 text-brick-700 border border-brick-200">
+                    <h3 className="font-bold text-night-950">{j.pos}</h3>
+                    <span className="badge bg-electric-50 text-electric-600 border border-brick-200">
                       {j.type}
                     </span>
                   </div>
-                  <p className="text-sm text-lead-500 leading-relaxed">{j.detail}</p>
+                  <p className="text-sm text-night-500 leading-relaxed">{j.detail}</p>
                 </div>
               </Reveal>
             ))}
@@ -232,12 +309,12 @@ export default function AboutPage() {
             <Reveal>
               <div className="panel p-6 flex flex-col sm:flex-row sm:items-center gap-4 mt-6">
                 <div className="flex items-center gap-3 flex-1">
-                  <Mail className="w-5 h-5 text-brick-500 shrink-0" />
-                  <p className="text-sm text-lead-600">
+                  <Mail className="w-5 h-5 text-electric-500 shrink-0" />
+                  <p className="text-sm text-night-600">
                     CV ve kısa bir tanıtım metnini{' '}
                     <a
                       href={`mailto:${SITE.emailCareer}`}
-                      className="font-semibold text-ink-950 hover:text-brick-600 transition-colors"
+                      className="font-semibold text-night-950 hover:text-electric-500 transition-colors"
                     >
                       {SITE.emailCareer}
                     </a>{' '}
@@ -253,8 +330,8 @@ export default function AboutPage() {
       {/* ─── Kapanış ────────────────────────────────────────────────────── */}
       <section className="pb-16">
         <div className="container">
-          <div className="rounded-lg bg-ink-950 text-white p-8 md:p-12 text-center">
-            <h2 className="text-display-sm font-bold text-white mb-4">
+          <div className="rounded-2xl bg-night-950 text-white p-8 md:p-12 text-center">
+            <h2 className="text-display-sm text-white mb-4">
               Ekibimizle tanışmanın en iyi yolu bir ders yapmak
             </h2>
             <p className="text-white/60 text-lg max-w-xl mx-auto mb-8">

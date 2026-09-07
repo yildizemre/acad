@@ -42,6 +42,8 @@ export interface Course {
   students: string;
   rating: string;
   tag?: string;
+  /** Kartın zemin rengi — her kursun kendi kimliği olsun diye */
+  tint: 'peach' | 'rose' | 'lime' | 'sky' | 'lilac' | 'mint';
   image: string;
   /** Kart üzerindeki tek cümlelik özet */
   summary: string;
@@ -79,6 +81,7 @@ export const COURSES: Course[] = [
     students: '320',
     rating: '4.9',
     tag: 'En Popüler',
+    tint: 'peach',
     image: '/images/kurs-scratch.svg',
     summary:
       'Blok tabanlı görsel kodlamayla kendi oyunlarını sıfırdan yapar. Kod yazmayı bilmeye gerek yok.',
@@ -230,6 +233,7 @@ export const COURSES: Course[] = [
     students: '280',
     rating: '4.8',
     tag: 'Yeni Dönem',
+    tint: 'sky',
     image: '/images/kurs-python.svg',
     summary:
       'Gerçek yazılımcıların kullandığı dille tanışır. Bloklardan klavyeye geçişin ilk adımı.',
@@ -380,6 +384,7 @@ export const COURSES: Course[] = [
     maxStudents: 8,
     students: '215',
     rating: '4.9',
+    tint: 'lime',
     image: '/images/kurs-web.svg',
     summary:
       'HTML, CSS, JavaScript ve React ile internette gerçekten yayında olan siteler yapar.',
@@ -553,6 +558,7 @@ export const COURSES: Course[] = [
     students: '190',
     rating: '5.0',
     tag: 'Favori',
+    tint: 'lilac',
     image: '/images/kurs-unity.svg',
     summary:
       'Profesyonel oyun motoruyla C# yazarak 2D ve 3D oyunlar geliştirir, yayınlar.',
@@ -726,6 +732,7 @@ export const COURSES: Course[] = [
     students: '160',
     rating: '4.8',
     tag: 'Yeni',
+    tint: 'mint',
     image: '/images/kurs-ai.svg',
     summary:
       'Yapay zekayı kullanmayı değil, nasıl çalıştığını ve kendi modelini nasıl eğiteceğini öğrenir.',
@@ -884,6 +891,7 @@ export const COURSES: Course[] = [
     students: '240',
     rating: '4.9',
     tag: 'Donanım Seti Dahil',
+    tint: 'rose',
     image: '/images/kurs-arduino.svg',
     summary:
       'Kodun ekrandan çıkıp fiziksel dünyayı hareket ettirdiği kurs. Donanım seti adrese gönderilir.',

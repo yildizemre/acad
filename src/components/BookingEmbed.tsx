@@ -20,10 +20,10 @@ export default function BookingEmbed() {
   const src = `https://cal.com/${CAL_LINK}?embed=true&theme=light&hideEventTypeDetails=false`;
 
   return (
-    <div className="border border-sand-300 rounded-lg overflow-hidden bg-sand-50">
+    <div className="rounded-2xl bg-night-50 overflow-hidden bg-white">
       {!loaded && (
-        <div className="flex flex-col items-center justify-center gap-3 h-[640px] text-lead-500">
-          <CalendarDays className="w-6 h-6 text-lead-400" />
+        <div className="flex flex-col items-center justify-center gap-3 h-[640px] text-night-500">
+          <CalendarDays className="w-6 h-6 text-night-400" />
           <span className="text-sm">Takvim yükleniyor…</span>
         </div>
       )}

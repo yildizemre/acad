@@ -43,12 +43,26 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+    # SSL: Netlify alan adı bağlandığında Let's Encrypt sertifikasını otomatik
+    # kurar ve HTTP'yi HTTPS'e yönlendirir (Domain management → HTTPS →
+    # "Force HTTPS" açık olmalı). Aşağıdaki başlık tarayıcıya bir yıl boyunca
+    # yalnızca HTTPS kullanmasını söyler.
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
 
 # ─── Notlar ───────────────────────────────────────────────────────────────────
-# Deneme dersi formu bildirim e-postası:
+# ─── Form bildirimleri ────────────────────────────────────────────────────────
+# Deneme dersi formu gönderimleri şu adrese düşmeli:
+#
+#     emre.yildiz@hypevisionlab.com
+#
+# Netlify bu ayarı yalnızca panelden kabul ediyor, dosyadan yapılamıyor:
 #   Netlify Dashboard → Site configuration → Forms → Form notifications
 #   → Add notification → Email notification
-#   Form adı: deneme-dersi
+#   Event: New form submission   ·   Form: deneme-dersi
+#   Email to notify: emre.yildiz@hypevisionlab.com
+#
+# İlk deploy'dan sonra siteden bir test formu gönderip panelde
+# Forms → deneme-dersi altında göründüğünü doğrulayın.
 #
 # Ortam değişkenleri (analitik, takvim, ödeme):
 #   Site configuration → Environment variables — bkz. .env.example

@@ -5,43 +5,48 @@ import { courseById } from '../../data/courses';
 import SectionHeading from '../ui/SectionHeading';
 import Reveal from '../ui/Reveal';
 
-/**
- * Stok fotoğraf galerisinin yerini aldı. Velinin gerçekten merak ettiği şey
- * "sekiz hafta sonunda ortada ne olacak" sorusu.
- */
+const TINT: Record<string, string> = {
+  peach: 'bg-tint-peach',
+  rose: 'bg-tint-rose',
+  lime: 'bg-tint-lime',
+  sky: 'bg-tint-sky',
+  lilac: 'bg-tint-lilac',
+  mint: 'bg-tint-mint',
+};
+
 export default function ProjectsTeaser() {
   const featured = PROJECTS.slice(0, 3);
 
   return (
-    <section className="section border-t border-sand-300">
+    <section className="section">
       <div className="container">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-          <SectionHeading
-            index="06"
-            eyebrow="Bitirme Projeleri"
-            title="Anlatmak yerine gösterelim"
-            subtitle="Her kurs bir bitirme projesiyle sonuçlanıyor. Öğrenci son hafta bunu ailesine ve sınıfına canlı sunuyor."
-          />
-          <Link to="/projeler" className="btn-ghost shrink-0">
-            Tüm projeleri gör
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+        <SectionHeading
+          eyebrow="Bitirme Projeleri"
+          title={
+            <>
+              8 hafta sonunda <span className="mark">elinde ne kalıyor?</span>
+            </>
+          }
+          subtitle="Her kurs bir bitirme projesiyle sonuçlanıyor. Öğrenci son hafta bunu ailesine ve sınıfına canlı sunuyor."
+        />
 
-        <div className="grid md:grid-cols-3 gap-x-8 gap-y-10">
+        <div className="mt-14 grid md:grid-cols-3 gap-5">
           {featured.map((p, i) => {
             const course = courseById(p.courseId);
             return (
               <Reveal key={p.id} delay={i * 70}>
-                <Link to="/projeler" className="group block border-t-2 border-ink-950 pt-5 h-full">
-                  <div className="flex items-center justify-between gap-3 mb-4">
-                    <span className="font-mono text-xs text-lead-400">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    {course && <span className="badge-neutral">{course.shortTitle}</span>}
+                <Link
+                  to="/projeler"
+                  className={`group flex flex-col h-full rounded-3xl p-6 transition-transform duration-300 hover:-translate-y-1 ${
+                    course ? TINT[course.tint] : 'bg-night-50'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-5">
+                    {course && <span className="badge-white">{course.shortTitle}</span>}
+                    <span className="badge-white">Müfredat projesi</span>
                   </div>
 
-                  <div className="border border-sand-300 rounded overflow-hidden mb-4 bg-sand-200">
+                  <div className="rounded-2xl overflow-hidden bg-white/60 mb-5">
                     <img
                       src={p.image}
                       alt={`${p.title} — öğrenci bitirme projesi ekranı`}
@@ -53,15 +58,27 @@ export default function ProjectsTeaser() {
                     />
                   </div>
 
-                  <h3 className="font-display text-xl font-semibold text-ink-950 group-hover:text-brick-600 transition-colors">
-                    {p.title}
-                  </h3>
-                  <p className="text-sm text-lead-600 leading-relaxed mt-2">{p.brief}</p>
+                  <h3 className="text-xl font-extrabold text-night-950 mb-2">{p.title}</h3>
+                  <p className="text-night-700 leading-relaxed mb-5">{p.brief}</p>
+
+                  <span className="mt-auto inline-flex items-center gap-2 font-bold text-night-950">
+                    İncele
+                    <span className="w-8 h-8 rounded-full bg-night-950 text-white flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </span>
                 </Link>
               </Reveal>
             );
           })}
         </div>
+
+        <Reveal className="mt-10 text-center">
+          <Link to="/projeler" className="btn-ghost">
+            Tüm projeleri gör
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

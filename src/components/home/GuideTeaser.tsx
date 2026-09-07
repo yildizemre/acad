@@ -4,50 +4,60 @@ import { ARTICLES_BY_DATE, formatDate } from '../../data/articles';
 import SectionHeading from '../ui/SectionHeading';
 import Reveal from '../ui/Reveal';
 
+const TINTS = ['bg-tint-lime', 'bg-tint-sky', 'bg-tint-rose'];
+
 export default function GuideTeaser() {
   const latest = ARTICLES_BY_DATE.slice(0, 3);
 
   return (
-    <section className="section bg-sand-50 border-t border-sand-300">
+    <section className="section">
       <div className="container">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
-          <SectionHeading
-            index="07"
-            eyebrow="Veli Rehberi"
-            title="Karar vermeden önce okuyun"
-            subtitle="Kayıt olmasanız da işinize yarayacak yazılar. Kendi kursumuza yönlendirmediği yerlerde de dürüst olmaya çalışıyoruz."
-          />
-          <Link to="/rehber" className="btn-ghost shrink-0">
-            Tüm yazılar
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+        <SectionHeading
+          eyebrow="Veli Rehberi"
+          title={
+            <>
+              Karar vermeden önce <span className="mark">okuyun</span>
+            </>
+          }
+          subtitle="Kayıt olmasanız da işinize yarayacak yazılar. Kendi kursumuza yönlendirmediği yerlerde de dürüst olmaya çalışıyoruz."
+        />
 
-        <ul className="divide-y divide-sand-300 border-y border-sand-300">
+        <div className="mt-14 grid md:grid-cols-3 gap-5">
           {latest.map((a, i) => (
-            <Reveal as="li" key={a.slug} delay={i * 60}>
+            <Reveal key={a.slug} delay={i * 70}>
               <Link
                 to={`/rehber/${a.slug}`}
-                className="group grid md:grid-cols-[auto_1fr_auto] gap-x-6 gap-y-2 items-baseline py-5"
+                className={`group flex flex-col h-full rounded-3xl p-7 transition-transform duration-300 hover:-translate-y-1 ${
+                  TINTS[i % TINTS.length]
+                }`}
               >
-                <span className="font-mono text-xs text-lead-400">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span>
-                  <span className="block font-display text-lg font-semibold text-ink-950 group-hover:text-brick-600 transition-colors">
-                    {a.title}
+                <div className="flex items-center gap-2 mb-5">
+                  <span className="badge-white">{a.category}</span>
+                  <span className="badge-white">{a.readMinutes} dk</span>
+                </div>
+                <h3 className="text-xl font-extrabold text-night-950 mb-3 leading-tight">
+                  {a.title}
+                </h3>
+                <p className="text-night-700 leading-relaxed mb-6">{a.excerpt}</p>
+                <div className="mt-auto flex items-center justify-between">
+                  <span className="text-sm font-semibold text-night-600">
+                    {formatDate(a.published)}
                   </span>
-                  <span className="block mt-1.5 text-sm text-lead-600 leading-relaxed max-w-2xl">
-                    {a.excerpt}
+                  <span className="w-9 h-9 rounded-full bg-night-950 text-white flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                    <ArrowRight className="w-4 h-4" />
                   </span>
-                </span>
-                <span className="text-xs text-lead-500 whitespace-nowrap">
-                  {formatDate(a.published)} · {a.readMinutes} dk
-                </span>
+                </div>
               </Link>
             </Reveal>
           ))}
-        </ul>
+        </div>
+
+        <Reveal className="mt-10 text-center">
+          <Link to="/rehber" className="btn-ghost">
+            Tüm yazılar
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

@@ -26,10 +26,10 @@ function PageFallback() {
   return (
     <div className="container py-32">
       <div className="max-w-2xl space-y-4" aria-hidden="true">
-        <div className="h-3 w-24 bg-sand-300 rounded" />
-        <div className="h-10 w-3/4 bg-sand-300 rounded" />
-        <div className="h-4 w-full bg-sand-200 rounded" />
-        <div className="h-4 w-5/6 bg-sand-200 rounded" />
+        <div className="h-3 w-24 bg-night-100 rounded" />
+        <div className="h-10 w-3/4 bg-night-100 rounded" />
+        <div className="h-4 w-full bg-night-50 rounded" />
+        <div className="h-4 w-5/6 bg-night-50 rounded" />
       </div>
       <span className="sr-only">Sayfa yükleniyor</span>
     </div>
@@ -43,12 +43,12 @@ export default function App() {
       {/* Klavye ve ekran okuyucu kullanıcıları menüyü atlayabilsin */}
       <a
         href="#icerik"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-ink-950 focus:text-sand-50 focus:px-5 focus:py-3 focus:rounded"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-night-950 focus:text-white focus:px-5 focus:py-3 focus:rounded"
       >
         İçeriğe atla
       </a>
       <Navbar />
-      <main id="icerik" className="flex-1 pt-20 md:pt-24">
+      <main id="icerik" className="flex-1 pt-24 md:pt-32">
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<HomePage />} />

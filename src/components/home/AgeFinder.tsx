@@ -1,44 +1,51 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Search } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { coursesForAge } from '../../data/courses';
-import CourseIcon from '../ui/CourseIcon';
 import SectionHeading from '../ui/SectionHeading';
 import Reveal from '../ui/Reveal';
 
 const AGES = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
-/**
- * Velinin en hızlı cevap istediği soru: "benim çocuğuma hangisi uygun?"
- * Yaşı seçince uygun kursları anında listeler.
- */
+const TINT: Record<string, string> = {
+  peach: 'bg-tint-peach',
+  rose: 'bg-tint-rose',
+  lime: 'bg-tint-lime',
+  sky: 'bg-tint-sky',
+  lilac: 'bg-tint-lilac',
+  mint: 'bg-tint-mint',
+};
+
+/** Velinin en hızlı cevap istediği soru: "benim çocuğuma hangisi uygun?" */
 export default function AgeFinder() {
   const [age, setAge] = useState<number | null>(null);
   const matches = age !== null ? coursesForAge(age) : [];
 
   return (
-    <section id="yas-bul" className="section bg-sand-50 border-y border-sand-300/70">
+    <section id="yas-bul" className="section">
       <div className="container">
         <SectionHeading
-          index="01"
-          eyebrow="30 Saniyede Cevap"
-          title="Çocuğunuz kaç yaşında?"
+          title={
+            <>
+              Çocuğunuz <span className="mark">kaç yaşında?</span>
+            </>
+          }
           subtitle="Yaşı seçin, ona uygun programları hemen görün. Her kursun yaş aralığı pedagojik olarak belirlenmiştir."
         />
 
-        {/* Yaş seçici */}
         <Reveal className="mt-10">
-          <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             {AGES.map((a) => (
               <button
                 key={a}
                 onClick={() => setAge(age === a ? null : a)}
                 aria-pressed={age === a}
-                className={`w-14 h-14 md:w-16 md:h-16 rounded font-display text-lg font-semibold transition-colors ${
-                  age === a
-                    ? 'bg-brick-500 text-white scale-105'
-                    : 'bg-sand-50 text-ink-950 border border-sand-300 hover:ring-brick-300 hover:-translate-y-0.5'
-                }`}
+                className={`w-16 h-16 md:w-20 md:h-20 rounded-full text-xl md:text-2xl font-extrabold
+                  transition-all duration-200 ${
+                    age === a
+                      ? 'bg-night-950 text-white scale-105'
+                      : 'bg-night-50 text-night-950 hover:bg-marker hover:scale-105'
+                  }`}
               >
                 {a}
               </button>
@@ -46,41 +53,38 @@ export default function AgeFinder() {
           </div>
         </Reveal>
 
-        {/* Sonuç */}
-        <div className="mt-10 max-w-4xl mx-auto">
+        <div className="mt-12 max-w-5xl mx-auto">
           {age === null ? (
-            <div className="text-center py-10 text-lead-400 text-sm flex flex-col items-center gap-3">
-              <Search className="w-8 h-8 text-lead-300" />
+            <p className="text-center text-night-400 font-semibold">
               Yaş seçince uygun kurslar burada listelenir
-            </div>
+            </p>
           ) : (
             <>
-              <p className="text-center text-lead-500 mb-6">
-                <span className="font-semibold text-ink-950">{age} yaş</span> için{' '}
-                <span className="font-semibold text-brick-600">{matches.length} program</span>{' '}
-                uygun:
+              <p className="text-center text-lg text-night-700 mb-8">
+                <span className="font-extrabold text-night-950">{age} yaş</span> için{' '}
+                <span className="mark font-extrabold">{matches.length} program</span> uygun
               </p>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {matches.map((c, i) => (
                   <Reveal key={c.id} delay={i * 60}>
                     <Link
                       to={`/kurslar/${c.slug}`}
-                      className="card-hover p-5 flex items-start gap-4 h-full group"
+                      className={`group block rounded-3xl p-6 h-full transition-transform duration-300 hover:-translate-y-1 ${
+                        TINT[c.tint] ?? 'bg-night-50'
+                      }`}
                     >
-                      <span className="w-11 h-11 rounded border border-sand-400 text-ink-950 flex items-center justify-center shrink-0 group-hover:border-brick-500 group-hover:text-brick-600 transition-colors">
-                        <CourseIcon name={c.icon} className="w-5 h-5" />
+                      <span className="badge-white mb-4">{c.level}</span>
+                      <span className="block text-xl font-extrabold text-night-950 mb-2">
+                        {c.shortTitle}
                       </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block font-bold text-ink-950 leading-snug mb-1">
-                          {c.shortTitle}
-                        </span>
-                        <span className="block text-xs text-lead-400 mb-2">
-                          {c.level} · {c.weeks} hafta
-                        </span>
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-brick-600">
-                          Müfredatı gör
-                          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                      <span className="block text-sm text-night-700 mb-5">
+                        {c.weeks} hafta · maks. {c.maxStudents} kişi
+                      </span>
+                      <span className="inline-flex items-center gap-2 font-bold text-night-950">
+                        Müfredatı gör
+                        <span className="w-8 h-8 rounded-full bg-night-950 text-white flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                          <ArrowRight className="w-4 h-4" />
                         </span>
                       </span>
                     </Link>
@@ -88,9 +92,9 @@ export default function AgeFinder() {
                 ))}
               </div>
 
-              <div className="mt-8 text-center">
+              <div className="mt-10 text-center">
                 <Link to="/iletisim" className="btn-primary">
-                  Hangisi olduğundan emin değilim, konuşalım
+                  Emin değilim, birlikte karar verelim
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

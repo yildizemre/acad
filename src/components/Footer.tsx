@@ -4,13 +4,11 @@ import {
   Phone,
   MapPin,
   Instagram,
-  Youtube,
   ArrowRight,
-  BadgeCheck,
-  ShieldCheck,
 } from 'lucide-react';
 import { COURSES } from '../data/courses';
 import { SITE, WA_URL } from '../data/site';
+import { SELLER, BRAND, sellerName, sellerRows } from '../data/legal-entity';
 
 const kurumsal = [
   { label: 'Hakkımızda', to: '/hakkimizda' },
@@ -25,7 +23,9 @@ const kurumsal = [
 const destek = [
   { label: 'Fiyatlar & Paketler', to: '/fiyatlar' },
   { label: 'Ödeme Seçenekleri', to: '/fiyatlar#odeme' },
-  { label: 'İptal & İade Politikası', to: '/fiyatlar#iade' },
+  { label: 'Teslimat ve İade Şartları', to: '/yasal/teslimat-ve-iade' },
+  { label: 'Mesafeli Satış Sözleşmesi', to: '/yasal/mesafeli-satis-sozlesmesi' },
+  { label: 'Ön Bilgilendirme Formu', to: '/yasal/on-bilgilendirme-formu' },
   { label: 'Gizlilik Politikası', to: '/yasal/gizlilik' },
   { label: 'Kullanım Koşulları', to: '/yasal/kullanim-kosullari' },
   { label: 'KVKK Aydınlatma Metni', to: '/yasal/kvkk' },
@@ -33,18 +33,22 @@ const destek = [
 
 const socials = [
   { icon: Instagram, label: 'Instagram', href: SITE.instagram },
-  { icon: Youtube, label: 'YouTube', href: SITE.youtube },
 ];
 
 export default function Footer() {
+  // Yalnızca doldurulmuş kurumsal bilgiler gösterilir; boş alan hiç yazılmaz
+  const kurumsal2 = sellerRows().filter(([k]) =>
+    ['Vergi Dairesi / No', 'MERSİS No', 'Ticaret Sicil No', 'Adres'].includes(k),
+  );
+
   return (
-    <footer id="iletisim" className="bg-ink-950 text-white">
+    <footer id="iletisim" className="bg-night-950 text-white">
       {/* Kapanış çağrısı */}
       <div className="border-b border-white/10">
         <div className="container py-14 md:py-16">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div className="max-w-xl">
-              <h2 className="text-display-sm font-bold text-white">
+              <h2 className="text-display-sm text-white">
                 Çocuğunuz için doğru kursu birlikte bulalım
               </h2>
               <p className="mt-3 text-white/60 text-lg">
@@ -112,7 +116,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-9 h-9 rounded-xl bg-sand-50/10 hover:bg-brick-500 flex items-center justify-center transition-colors"
+                  className="w-9 h-9 rounded-xl bg-white/10 hover:bg-electric-500 flex items-center justify-center transition-colors"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -180,19 +184,36 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Güven rozetleri */}
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-wrap gap-3">
-          <span className="inline-flex items-center gap-2 bg-sand-50/5 border border-white/10 rounded px-4 py-2 text-xs font-medium text-white/70">
-            <BadgeCheck className="w-4 h-4 text-brick-400" />
-            E-Devlet onaylı sertifika
-          </span>
-          <span className="inline-flex items-center gap-2 bg-sand-50/5 border border-white/10 rounded px-4 py-2 text-xs font-medium text-white/70">
-            <ShieldCheck className="w-4 h-4 text-brick-400" />
-            İlk 2 ders içinde koşulsuz iade
-          </span>
-          <span className="inline-flex items-center gap-2 bg-sand-50/5 border border-white/10 rounded px-4 py-2 text-xs font-medium text-white/70">
-            KVKK uyumlu veri işleme
-          </span>
+        {/* Ödeme ve güvenlik */}
+        <div className="mt-12 pt-8 border-t border-white/15 grid md:grid-cols-[1fr_auto] gap-8 items-center">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-night-400">
+            <span>SSL sertifikası ile şifreli bağlantı</span>
+            <span>3D Secure ile ödeme</span>
+            <span>E-Devlet onaylı sertifika</span>
+            <span>İlk 2 ders içinde koşulsuz iade</span>
+          </div>
+          <img
+            src="/odeme/kart-logolari-beyaz.svg"
+            alt="Kabul edilen ödeme yöntemleri: iyzico ile Öde, Mastercard, Visa, American Express, Troy"
+            width={456}
+            height={32}
+            loading="lazy"
+            className="h-7 w-auto md:justify-self-end"
+          />
+        </div>
+
+        {/* Kurumsal kimlik — yalnızca bilinen bilgiler yazılır */}
+        <div className="mt-8 pt-6 border-t border-white/15 text-xs text-night-400 leading-relaxed max-w-3xl">
+          <p>
+            <span className="text-night-200">{BRAND.name}</span>, {SELLER.shortName} bünyesinde
+            faaliyet gösteren bir markadır. Satış ve faturalandırma işlemleri{' '}
+            <span className="text-night-200">{sellerName}</span> tarafından yapılır.
+          </p>
+          {kurumsal2.length > 0 && (
+            <p className="mt-1.5">
+              {kurumsal2.map(([k, v]) => `${k}: ${v}`).join(' · ')}
+            </p>
+          )}
         </div>
       </div>
 

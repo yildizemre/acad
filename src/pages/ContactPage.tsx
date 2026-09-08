@@ -38,7 +38,7 @@ export default function ContactPage() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle');
 
   usePageMeta({
-    title: 'Ücretsiz Deneme Dersi & İletişim | Hype Academia',
+    title: 'Ücretsiz Kodlama Deneme Dersi — Çocuklar İçin | Hype Academia',
     description:
       'Formu doldurun, 48 saat içinde sizi arayalım ve çocuğunuz için ücretsiz deneme dersini planlayalım. Kart bilgisi istenmez.',
   });

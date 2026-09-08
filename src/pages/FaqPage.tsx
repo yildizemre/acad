@@ -12,7 +12,7 @@ export default function FaqPage() {
   const [open, setOpen] = useState<string | null>(null);
 
   usePageMeta({
-    title: 'Sıkça Sorulan Sorular | Hype Academia',
+    title: 'Çocuk Kodlama Kursu — Sıkça Sorulan Sorular | Hype Academia',
     description:
       'Dersler, ödeme, iade, teknik gereksinimler ve kayıt süreci hakkında en çok sorulan soruların cevapları.',
   });

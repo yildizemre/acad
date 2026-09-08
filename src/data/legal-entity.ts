@@ -28,7 +28,7 @@ export const SELLER = {
   mersis: '',
   tradeRegistryNo: '',
   phone: '+90 541 862 91 90',
-  email: 'emre.yildiz@hypevisionlab.com',
+  email: 'info@hypevisionlab.com',
   /** Kayıtlı elektronik posta — varsa yazın */
   kep: '',
   website: 'https://hypeacademia.com',

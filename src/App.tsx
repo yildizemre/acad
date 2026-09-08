@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import PromoModal from './components/PromoModal';
 import ScrollToTop from './components/ScrollToTop';
 import HomePage from './pages/HomePage';
 
@@ -69,6 +70,7 @@ export default function App() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <PromoModal />
     </div>
   );
 }

@@ -1,109 +1,146 @@
 # -*- coding: utf-8 -*-
 """
-Sayfaya özel paylaşım görsellerini (og:image) üretir.
+Paylaşım görsellerini (og:image) üretir — WhatsApp, Facebook, X, LinkedIn.
 
-NEDEN AYRI ÜRETİLİYOR
----------------------
-WhatsApp, Facebook ve X paylaşım önizlemelerinde SVG DESTEKLENMEZ. Kurs
-sayfalarının og:image'ı olarak ders ekranı SVG'sini verirsek önizleme boş çıkar.
-Bu yüzden her kurs ve her rehber yazısı için 1200x630 PNG kart üretiyoruz.
+NEDEN GEREKLİ
+-------------
+WhatsApp ve Facebook önizlemelerinde **SVG desteklenmez**. Kurs sayfalarının
+og:image'ı ders ekranı SVG'siydi; link paylaşıldığında hiç görsel çıkmıyordu.
+Bu betik her sayfa için 1200x630 PNG kart üretir.
 
-Kartta ne var: marka logosu, kursun adı, yaş aralığı, süre ve başlangıç fiyatı.
-Küçültülmüş bir ekran görüntüsünden çok daha okunur.
+TASARIM
+-------
+Sitenin yeni dili: beyaz zemin, kalın siyah başlık, fosforlu vurgu, marka
+mavisi. Kurs kartları o kursun kendi renginde çıkar.
 
 Çalıştırmak için:  python scripts/og-gorseller.py
-Çıktı:             public/og/kurs-*.png ve public/og/rehber-*.png
+Çıktı:             public/og.png (ana sayfa) ve public/og/*.png
 """
 import io
 import json
 import os
-import re
 import subprocess
-import sys
 from PIL import Image, ImageDraw, ImageFont
 
 W, H = 1200, 630
-SAND = (245, 241, 234)
-INK = (14, 32, 56)
-LEAD = (82, 94, 114)
+WHITE = (255, 255, 255)
+NIGHT = (15, 18, 22)
+GREY = (100, 109, 124)
 BLUE = (27, 24, 255)
-LINE = (201, 191, 174)
+MARKER = (216, 248, 78)
+
+TINTS = {
+    'peach': (255, 234, 223),
+    'rose': (252, 228, 242),
+    'lime': (237, 249, 206),
+    'sky': (226, 236, 254),
+    'lilac': (237, 231, 254),
+    'mint': (220, 245, 236),
+}
 
 FD = 'C:/Windows/Fonts/'
 
 
-def font(name, size):
-    for f in (name, 'arial.ttf'):
-        p = FD + f
+def font(names, size):
+    for n in names:
+        p = FD + n
         if os.path.exists(p):
             return ImageFont.truetype(p, size)
     return ImageFont.load_default()
 
 
-SERIF = lambda s: font('georgiab.ttf', s)   # noqa: E731
-SANS = lambda s: font('arial.ttf', s)       # noqa: E731
-SANSB = lambda s: font('arialbd.ttf', s)    # noqa: E731
+def BLACK(s):   # başlıklar — en kalın kesit
+    return font(['seguibl.ttf', 'ariblk.ttf', 'arialbd.ttf'], s)
 
 
-def wrap(draw, text, fnt, max_w):
-    """Metni verilen genişliğe göre satırlara böler."""
+def BOLD(s):
+    return font(['segoeuib.ttf', 'arialbd.ttf'], s)
+
+
+def REG(s):
+    return font(['segoeui.ttf', 'arial.ttf'], s)
+
+
+def wrap(d, text, f, max_w):
+    """Metni genişliğe göre satırlara böler."""
     words, lines, cur = text.split(), [], ''
     for w in words:
-        deneme = (cur + ' ' + w).strip()
-        if draw.textlength(deneme, font=fnt) <= max_w:
-            cur = deneme
+        t = (cur + ' ' + w).strip()
+        if d.textlength(t, font=f) <= max_w or not cur:
+            cur = t
         else:
-            if cur:
-                lines.append(cur)
+            lines.append(cur)
             cur = w
     if cur:
         lines.append(cur)
     return lines
 
 
-def card(eyebrow, title, facts, max_lines=3):
-    img = Image.new('RGB', (W, H), SAND)
-    d = ImageDraw.Draw(img)
+def draw_marked(d, x, y, line, f, mark_words, fill=NIGHT):
+    """
+    Satırı çizer; `mark_words` içindeki kelimelerin arkasını fosforlu boyar.
+    Kodland'daki vurgu efektinin aynısı.
+    """
+    cx = x
+    space = d.textlength(' ', font=f)
+    asc, desc = f.getmetrics()
+    for word in line.split():
+        temiz = word.strip('.,!?:;').lower()
+        w = d.textlength(word, font=f)
+        if temiz in mark_words:
+            pad = f.size * 0.14
+            d.rounded_rectangle(
+                [cx - pad, y - f.size * 0.06, cx + w + pad, y + asc + desc * 0.25],
+                radius=f.size * 0.16, fill=MARKER,
+            )
+        d.text((cx, y), word, font=f, fill=fill)
+        cx += w + space
 
-    # Sağ kenarda mürekkep bloğu ve marka mavisi şerit
-    d.rectangle([W - 118, 0, W, H], fill=INK)
-    d.rectangle([W - 118, 0, W - 114, H], fill=BLUE)
 
-    # Logo
+def paste_logo(img, x, y, width=270):
     try:
         logo = Image.open('public/logo.png').convert('RGBA')
-        tw = 300
-        logo = logo.resize((tw, round(logo.height * tw / logo.width)), Image.LANCZOS)
-        img.paste(logo, (78, 62), logo)
-        top = 62 + logo.height + 44
+        logo = logo.resize((width, round(logo.height * width / logo.width)), Image.LANCZOS)
+        img.paste(logo, (x, y), logo)
+        return logo.height
     except Exception:
-        top = 120
+        return 0
 
-    d.text((78, top), eyebrow.upper(), font=SANSB(20), fill=LEAD)
 
-    # Başlık — sığmazsa punto küçültülür
-    y = top + 44
-    for size in (60, 54, 48, 42):
-        f = SERIF(size)
-        lines = wrap(d, title, f, W - 78 - 170)
-        if len(lines) <= max_lines:
-            break
-    for i, line in enumerate(lines[:max_lines]):
-        d.text((78, y + i * (size + 12)), line, font=f, fill=INK)
-    y += len(lines[:max_lines]) * (size + 12) + 14
+def card(bg, eyebrow, title, mark_words, facts, title_size=68):
+    img = Image.new('RGB', (W, H), bg)
+    d = ImageDraw.Draw(img)
 
-    d.rectangle([78, y, 78 + 190, y + 5], fill=BLUE)
+    # Sağ alt köşede marka mavisi yay — boşluğu dolduruyor
+    d.ellipse([W - 190, H - 190, W + 260, H + 260], fill=BLUE)
 
-    # Alt bant — künye
-    d.line([(78, H - 92), (W - 170, H - 92)], fill=LINE, width=2)
-    d.text((78, H - 70), '   ·   '.join(facts), font=SANS(24), fill=LEAD)
+    lh = paste_logo(img, 70, 58)
+    y = 58 + lh + 40
+
+    if eyebrow:
+        d.text((70, y), eyebrow.upper(), font=BOLD(22), fill=GREY)
+        y += 42
+
+    f = BLACK(title_size)
+    lines = wrap(d, title, f, W - 70 - 250)
+    while len(lines) > 3 and title_size > 40:
+        title_size -= 6
+        f = BLACK(title_size)
+        lines = wrap(d, title, f, W - 70 - 250)
+    for line in lines[:3]:
+        draw_marked(d, 70, y, line, f, mark_words)
+        y += title_size + 14
+
+    # Alt bant
+    if facts:
+        d.text((70, H - 74), '   ·   '.join(facts), font=REG(25), fill=GREY)
     return img
 
 
 def load_data():
     """TypeScript veri dosyalarını esbuild ile derleyip okur."""
-    tmp = 'node_modules/.og-data.mjs'
     entry = 'node_modules/.og-entry.ts'
+    out = 'node_modules/.og-data.mjs'
     io.open(entry, 'w', encoding='utf-8').write(
         "export { COURSES, totalLessons } from '../src/data/courses';\n"
         "export { ARTICLES_BY_DATE } from '../src/data/articles';\n"
@@ -111,27 +148,27 @@ def load_data():
     )
     subprocess.run(
         ['npx', 'esbuild', entry, '--bundle', '--format=esm', '--platform=node',
-         f'--outfile={tmp}', '--log-level=silent'],
+         f'--outfile={out}', '--log-level=silent'],
         check=True, shell=(os.name == 'nt'),
     )
-    out = subprocess.run(
-        ['node', '-e', f'''
-        import("./{tmp}").then(m => {{
-          const kurslar = m.COURSES.map(c => ({{
-            id: c.id, slug: c.slug, title: c.title, ageRange: c.ageRange,
-            level: c.level, weeks: c.weeks, lessons: m.totalLessons(c),
-            price: m.formatTRY(m.priceFor(m.TIERS[0], c.weeks)),
-          }}));
-          const yazilar = m.ARTICLES_BY_DATE.map(a => ({{
+    res = subprocess.run(
+        ['node', '--input-type=module', '-e', f'''
+        const m = await import("./{out}");
+        console.log(JSON.stringify({{
+          kurslar: m.COURSES.map(c => ({{
+            id: c.id, title: c.title, ageRange: c.ageRange, level: c.level,
+            tint: c.tint, weeks: c.weeks, lessons: m.totalLessons(c),
+            price: m.formatTRY(m.priceFor(m.TIERS[0], c)),
+          }})),
+          yazilar: m.ARTICLES_BY_DATE.map(a => ({{
             slug: a.slug, title: a.title, category: a.category, min: a.readMinutes,
-          }}));
-          console.log(JSON.stringify({{ kurslar, yazilar }}));
-        }});
+          }})),
+        }}));
         '''],
         capture_output=True, text=True, encoding='utf-8', check=True,
     )
-    data = json.loads(out.stdout.strip().splitlines()[-1])
-    for f in (tmp, entry):
+    data = json.loads(res.stdout.strip().splitlines()[-1])
+    for f in (entry, out):
         try:
             os.remove(f)
         except OSError:
@@ -143,22 +180,54 @@ if __name__ == '__main__':
     os.makedirs('public/og', exist_ok=True)
     data = load_data()
 
+    # ── Ana sayfa — sloganıyla ──
+    card(
+        WHITE, '2020’den beri · Gebze Teknik Üniversitesi',
+        'Çocuğunuz ekranın üretici tarafına geçsin',
+        {'üretici'},
+        ['8–17 yaş', 'canlı online dersler', 'ilk ders ücretsiz'],
+        title_size=70,
+    ).save('public/og.png', 'PNG', optimize=True)
+    print(f'public/og.png  {os.path.getsize("public/og.png") // 1024} KB')
+
+    # ── Kurs sayfaları — her biri kendi renginde ──
     for c in data['kurslar']:
         img = card(
+            TINTS.get(c['tint'], WHITE),
             f"{c['ageRange']}  ·  {c['level']}",
             c['title'],
+            set(),
             [f"{c['weeks']} hafta", f"{c['lessons']} canlı ders", f"{c['price']}’den başlayan"],
+            title_size=62,
         )
-        path = f"public/og/kurs-{c['id']}.png"
-        img.save(path, 'PNG', optimize=True)
-        print(f"{path}  {os.path.getsize(path) // 1024} KB")
+        p = f"public/og/kurs-{c['id']}.png"
+        img.save(p, 'PNG', optimize=True)
+        print(f'{p}  {os.path.getsize(p) // 1024} KB')
 
+    # ── Rehber yazıları ──
     for a in data['yazilar']:
         img = card(
-            f"Veli Rehberi  ·  {a['category']}",
-            a['title'],
+            WHITE, f"Veli Rehberi  ·  {a['category']}",
+            a['title'], set(),
             [f"{a['min']} dakika okuma", 'hypeacademia.com/rehber'],
+            title_size=58,
         )
-        path = f"public/og/rehber-{a['slug']}.png"
-        img.save(path, 'PNG', optimize=True)
-        print(f"{path}  {os.path.getsize(path) // 1024} KB")
+        p = f"public/og/rehber-{a['slug']}.png"
+        img.save(p, 'PNG', optimize=True)
+        print(f'{p}  {os.path.getsize(p) // 1024} KB')
+
+    # ── Öne çıkan diğer sayfalar ──
+    digerleri = [
+        ('fiyatlar', TINTS['sky'], 'Fiyatlar', 'Fiyatlarımız burada yazıyor',
+         {'yazıyor'}, ['3 paket', '9 taksite kadar faizsiz', 'ilk 2 ders koşulsuz iade']),
+        ('kurslar', TINTS['lime'], 'Programlar', 'Her kursun müfredatı hafta hafta açık',
+         {'hafta'}, ['6 program', '8–17 yaş', 'kayıt olmadan görülebilir']),
+        ('projeler', TINTS['peach'], 'Bitirme Projeleri', '8 hafta sonunda elinde ne kalıyor?',
+         {'kalıyor?'}, ['oyunlar', 'web siteleri', 'robotlar', 'yapay zeka modelleri']),
+        ('iletisim', TINTS['rose'], 'Ücretsiz Deneme Dersi', 'Önce deneyin, sonra karar verin',
+         {'deneyin,'}, ['1 saat', 'kart bilgisi istenmez', 'bağlayıcılığı yok']),
+    ]
+    for slug, bg, eyebrow, title, marks, facts in digerleri:
+        p = f'public/og/{slug}.png'
+        card(bg, eyebrow, title, marks, facts, title_size=64).save(p, 'PNG', optimize=True)
+        print(f'{p}  {os.path.getsize(p) // 1024} KB')

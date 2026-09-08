@@ -20,7 +20,7 @@ import usePageMeta from '../hooks/usePageMeta';
  */
 export default function HomePage() {
   usePageMeta({
-    title: 'Hype Academia | 8–17 Yaş Online Yazılım, Kodlama ve Yapay Zeka Eğitimi',
+    title: 'Çocuklar İçin Kodlama Kursu | 8–17 Yaş Online Yazılım Eğitimi — Hype Academia',
     description:
       '8–17 yaş arası çocuklara Python, Scratch, Unity, Web Geliştirme, Yapay Zeka ve Arduino Robotik eğitimi. Hafta hafta açık müfredat, şeffaf fiyatlar, ücretsiz deneme dersi.',
   });

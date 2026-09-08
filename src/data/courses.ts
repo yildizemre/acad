@@ -39,6 +39,14 @@ export interface Course {
   lessonsPerWeek: number;
   lessonMinutes: number;
   maxStudents: number;
+  /**
+   * Bu kursun paket fiyatına eklenen fark, TL.
+   *
+   * Paket fiyatı (Kulüp / Atölye / Birebir) ders formatına göre belirlenir;
+   * bu alan kursun kendi maliyetini üstüne ekler — donanım seti, lisans,
+   * daha küçük sınıf, daha uzun ders gibi. Girilmezse fark yoktur.
+   */
+  priceExtra?: number;
   students: string;
   rating: string;
   tag?: string;
@@ -230,6 +238,8 @@ export const COURSES: Course[] = [
     lessonsPerWeek: 2,
     lessonMinutes: 60,
     maxStudents: 8,
+    // Ek: Python geliştirme ortamı ve bireysel kod incelemesi
+    priceExtra: 1500,
     students: '280',
     rating: '4.8',
     tag: 'Yeni Dönem',
@@ -382,6 +392,8 @@ export const COURSES: Course[] = [
     lessonsPerWeek: 2,
     lessonMinutes: 60,
     maxStudents: 8,
+    // Ek: yayına alınan site için alan adı ve barındırma
+    priceExtra: 1500,
     students: '215',
     rating: '4.9',
     tint: 'lime',
@@ -555,6 +567,8 @@ export const COURSES: Course[] = [
     lessonsPerWeek: 2,
     lessonMinutes: 75,
     maxStudents: 6,
+    // Ek: 6 kişilik sınıf ve 75 dakikalık ders
+    priceExtra: 1500,
     students: '190',
     rating: '5.0',
     tag: 'Favori',
@@ -729,6 +743,8 @@ export const COURSES: Course[] = [
     lessonsPerWeek: 2,
     lessonMinutes: 75,
     maxStudents: 6,
+    // Ek: bulut işlem gücü (model eğitimi), 6 kişilik sınıf, 75 dakikalık ders
+    priceExtra: 3500,
     students: '160',
     rating: '4.8',
     tag: 'Yeni',
@@ -888,6 +904,8 @@ export const COURSES: Course[] = [
     lessonsPerWeek: 2,
     lessonMinutes: 60,
     maxStudents: 8,
+    // Ek: adrese gönderilen 30 parçalık Arduino seti — öğrencide kalır
+    priceExtra: 6000,
     students: '240',
     rating: '4.9',
     tag: 'Donanım Seti Dahil',

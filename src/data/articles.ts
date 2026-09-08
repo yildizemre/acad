@@ -380,6 +380,184 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  // ───────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'yapay-zeka-caginda-kodlama-ogrenmek',
+    title: 'Yapay zeka kod yazıyorsa çocuğum niye öğrensin?',
+    excerpt:
+      'Velilerin bize en çok sorduğu soru bu. Kısa cevap: kod yazmak zaten işin kolay kısmıydı. Zorlaşan kısmın ne olduğunu ve okulda öğretilmediğini anlatıyoruz.',
+    category: 'Karar Rehberi',
+    readMinutes: 8,
+    published: '2026-07-14',
+    author: 'Hype Academia',
+    relatedCourseIds: ['python', 'ai'],
+    body: [
+      {
+        type: 'p',
+        text: 'Bu soruyu soran veli haksız değil. Bugün bir yapay zeka aracına “bana hesap makinesi yaz” dediğinizde çalışan kod çıkıyor. O hâlde çocuğa döngü, koşul, değişken öğretmenin anlamı ne? Cevabı dürüst vermek gerekiyor; çünkü bu soruya kaçamak cevap veren bir kursa zaten güvenilmez.',
+      },
+      { type: 'h2', text: 'Yapay zekanın gerçekten yaptığı şey' },
+      {
+        type: 'p',
+        text: 'Yapay zeka, iyi tarif edilmiş bir işi hızlı yapıyor. Tarifi yapan hâlâ insan. “Uygulamam çöküyor, neden?” sorusunda yapay zeka size beş ihtimal sıralar; hangisinin doğru olduğunu anlamak, deneyip elemek ve sonucu doğrulamak size kalır. Bu, kod yazmaktan farklı bir beceri: problem çözme becerisi.',
+      },
+      {
+        type: 'p',
+        text: 'Kod yazmayı hiç bilmeyen biri, yapay zekanın ürettiği kodun doğru olup olmadığını anlayamaz. Yanlış çalışan ama hata da vermeyen kodu fark edemez. Sektörde bugün en pahalı hatalar tam buradan çıkıyor.',
+      },
+      { type: 'h2', text: 'Değişen ne, değişmeyen ne' },
+      {
+        type: 'table',
+        head: ['Beceri', 'On yıl önce', 'Bugün'],
+        rows: [
+          ['Sözdizimini ezberlemek', 'Önemliydi', 'Neredeyse gereksiz'],
+          ['Problemi parçalara ayırmak', 'Önemliydi', 'Daha da önemli'],
+          ['Hata ayıklamak', 'Önemliydi', 'Daha da önemli'],
+          ['Doğru soruyu sormak', 'Orta', 'Belirleyici'],
+          ['Sonucu doğrulamak', 'Orta', 'Belirleyici'],
+          ['Sıfırdan kod yazmak', 'Zorunlu', 'Çoğu zaman gereksiz'],
+        ],
+      },
+      {
+        type: 'callout',
+        title: 'Asıl mesele',
+        text: 'Kodlama dersinin çocuğa kazandırdığı şey bir dil değil, bir düşünme biçimi: problemi parçalara ayırmak, her parçayı ayrı test etmek, hata mesajını okuyup nedeni bulmak. Bu beceriler yapay zeka yüzünden değersizleşmedi; tam tersine ayırt edici beceri hâline geldi.',
+      },
+      { type: 'h2', text: 'Peki derste yapay zeka kullanıyor muyuz?' },
+      {
+        type: 'p',
+        text: 'İlk kurslarda hayır. Çocuk kendi hatasını kendi bulmayı öğrenmeden yapay zekaya sormaya alışırsa, öğrenmesi gereken asıl şeyi atlamış oluyor — çarpım tablosunu öğrenmeden hesap makinesi kullanmak gibi. Python ve üzeri seviyelerde ise yapay zekayı bilinçli kullanmayı ayrıca öğretiyoruz: nasıl soru sorulur, gelen cevap nasıl doğrulanır, nerede güvenilmez.',
+      },
+      { type: 'h2', text: 'Kısa cevap' },
+      {
+        type: 'p',
+        text: 'Çocuğunuz büyüdüğünde muhtemelen satır satır kod yazmayacak. Ama yazılımın nasıl çalıştığını bilen biri olarak, bilmeyenlere göre çok daha güçlü olacak. Öğrettiğimiz şey bir meslek değil, bir okuryazarlık.',
+      },
+    ],
+  },
+
+  // ───────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'cocugum-ilgi-gostermiyor-ne-yapmali',
+    title: 'Çocuğum kodlamaya ilgi göstermiyor, zorlamalı mıyım?',
+    excerpt:
+      'İlgisizlik çoğu zaman ilgisizlik değil, yanlış giriş kapısıdır. Hangi durumda beklemek, hangi durumda kapıyı değiştirmek gerektiğini ayırıyoruz.',
+    category: 'Veli Rehberi',
+    readMinutes: 6,
+    published: '2026-08-11',
+    author: 'Hype Academia',
+    relatedCourseIds: ['scratch', 'robotics', 'unity'],
+    body: [
+      {
+        type: 'p',
+        text: 'Bu soruyu soran velilerin çoğu aslında şunu soruyor: “Ben mi zorluyorum, yoksa çocuğum henüz gerçekten denemedi mi?” İkisini ayırmanın pratik bir yolu var.',
+      },
+      { type: 'h2', text: 'Önce şunu ayırın: neyi reddediyor?' },
+      {
+        type: 'ul',
+        items: [
+          'Bilgisayarı mı reddediyor? — Bu nadiren olur, genelde tersi olur.',
+          '“Ders” kelimesini mi reddediyor? — Okuldan yorgun geliyorsa çok yaygın.',
+          'Kodlamanın kendisini mi? — Bunu ancak bir kez deneyince anlarsınız.',
+          'Yalnız çalışmayı mı? — Bazı çocuklar tek başına değil, grupta öğrenir.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Deneme dersine kadar üçüncü maddeye cevap veremezsiniz. “İlgisiz” denen çocukların çoğu, kodlamayı bir ders gibi değil kendi oyununu yapma yolu gibi gördüğü anda tavır değiştiriyor.',
+      },
+      { type: 'h2', text: 'Giriş kapısını değiştirin' },
+      {
+        type: 'p',
+        text: 'Kodlamaya tek bir kapıdan girilmiyor. Çocuğunuzun neyi sevdiğine göre farklı kapılar var; yanlış kapıdan giren çocuk kodlamayı değil, o kapıyı sevmiyor olabilir.',
+      },
+      {
+        type: 'table',
+        head: ['Çocuğunuz şunu seviyorsa', 'Doğru giriş kapısı'],
+        rows: [
+          ['Oyun oynamak', 'Scratch veya Unity — kendi oyununu yapar'],
+          ['Elleriyle bir şey kurmak', 'Arduino & Robotik — kod fiziksel dünyayı hareket ettirir'],
+          ['Çizim, tasarım, görsellik', 'Web geliştirme — tasarım ile kod birlikte ilerler'],
+          ['“Nasıl çalışıyor” diye sormak', 'Python — mantığın kendisi'],
+          ['Hayvanlar, uzay, doğa', 'Yapay zeka — kendi topladığı veriyle model eğitir'],
+        ],
+      },
+      {
+        type: 'callout',
+        title: 'Zorlamayın, ama tek denemeyle de vazgeçmeyin',
+        text: 'Bir deneme dersinden sonra “istemiyorum” diyen çocuk genellikle kodlamayı değil, o dersin biçimini reddediyor. İkinci denemeyi farklı bir kapıdan yapın. Üçüncüden sonra hâlâ ilgi yoksa gerçekten yoktur; o zaman bırakın ve bir yıl sonra tekrar bakın.',
+      },
+      { type: 'h2', text: 'Zorlamanın gerçek bedeli' },
+      {
+        type: 'p',
+        text: 'İstemeyerek katılan çocuk sınıfın hızını düşürmüyor, kendi ilişkisini bozuyor. Zorla götürülen bir kurstan sonra çocuk kodlamayı “bana yaptırılan şey” diye hatırlıyor ve bu etiketi silmek yıllar alıyor. Beklemek, kötü bir ilk deneyimden her zaman daha ucuzdur.',
+      },
+      { type: 'h2', text: 'İşe yarayan üç pratik' },
+      {
+        type: 'ol',
+        items: [
+          'Kararı çocuğa bırakın ama seçenekleri siz daraltın: “Kursa gidecek misin?” değil, “oyun mu yapmak istersin, robot mu?”',
+          'İlk hedefi küçük tutun: 8 hafta değil, bir deneme dersi. Uzun taahhüt çocuğu ürkütüyor.',
+          'Çıktıyı görünür yapın: yaptığı oyunu ailece oynayın. Kendi işini birinin oynadığını gören çocuk kolay kolay durmuyor.',
+        ],
+      },
+    ],
+  },
+
+  // ───────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'ne-kadar-surede-ne-ogrenir',
+    title: '8 haftada ne öğrenir, bir yılda nereye gelir?',
+    excerpt:
+      'Kurs tanıtımları süreyi genellikle belirsiz bırakır. Biz hafta hafta neyin gerçekçi, neyin abartı olduğunu yazdık — kendi programımız dahil.',
+    category: 'Yol Haritası',
+    readMinutes: 7,
+    published: '2026-08-28',
+    author: 'Hype Academia',
+    relatedCourseIds: ['scratch', 'python', 'web'],
+    body: [
+      {
+        type: 'p',
+        text: '“3 ayda yazılımcı olur” cümlesini kuran her kursu eleyin. Bu, yetişkinlerde bile doğru değil; haftada iki saat ders yapan bir çocukta hiç değil. Aşağıdaki tablo kendi gözlemimize dayanıyor ve bizim programımız için de geçerli.',
+      },
+      { type: 'h2', text: 'Gerçekçi zaman çizelgesi' },
+      {
+        type: 'table',
+        head: ['Süre', 'Ne olur', 'Ne olmaz'],
+        rows: [
+          ['1–2 hafta', 'Arayüzü tanır, ilk çalışan çıktısını alır', 'Kendi başına proje kuramaz'],
+          ['3–4 hafta', 'Döngü ve koşulu kavrar, verilen örneği değiştirebilir', 'Sıfırdan yazamaz'],
+          ['5–8 hafta', 'Kendi fikrini kurar, hatasını kendi arar', 'Karmaşık sistem tasarlayamaz'],
+          ['2. dönem', 'Metin tabanlı dile geçer, dosya ve veriyle çalışır', 'Profesyonel iş çıkaramaz'],
+          ['1 yıl', 'Yayınlanabilir proje üretir, portfolyosu olur', 'Meslek sahibi olmaz'],
+          ['2–3 yıl', 'Kendi öğrenme yolunu kurar, yeni dili tek başına öğrenir', '—'],
+        ],
+      },
+      {
+        type: 'callout',
+        title: 'Asıl eşik 5. hafta',
+        text: 'Öğrencilerin çoğunda dönüm noktası 5. hafta civarında oluyor: o zamana kadar verilen örneği değiştiriyorlar, o haftadan sonra kendi fikirlerini kurmaya başlıyorlar. Bu eşiği geçmeden biten kurslar “hiçbir şey öğrenmedi” hissi bırakıyor. 8 haftalık asgari süreyi bu yüzden koyduk.',
+      },
+      { type: 'h2', text: 'Hızı belirleyen üç şey' },
+      {
+        type: 'ol',
+        items: [
+          'Ders arası çalışma. Haftada 20 dakika ödev yapan çocuk hiç yapmayana göre belirgin şekilde hızlı ilerliyor. Uzun süre değil, düzen belirleyici.',
+          'Sınıf mevcudu. 8 kişilik sınıfta öğrenci başına düşen söz hakkı, 20 kişilik sınıfın iki katından fazla. Fark ilk haftada değil, dördüncü haftadan sonra açılıyor.',
+          'Projenin çocuğa ait olması. Verilen ödevi yapan çocuk öğreniyor; kendi fikrini kovalayan çocuk öğrenmeyi bırakmıyor.',
+        ],
+      },
+      { type: 'h2', text: 'Bir yılın sonunda elinde ne olur?' },
+      {
+        type: 'p',
+        text: 'İki dönem tamamlayan bir öğrencinin elinde tipik olarak şunlar oluyor: yayınlanmış iki bitirme projesi, kendi adına açılmış bir GitHub hesabı, bir sunum deneyimi ve en önemlisi şu cümle: “takıldığımda ne yapacağımı biliyorum.” Bu sonuncusu ölçülmesi en zor, ama en kalıcı olanı.',
+      },
+      {
+        type: 'p',
+        text: 'Kurs seçerken şunu sorun: “8 hafta sonunda çocuğumun elinde tam olarak ne olacak?” Cevap bir dosya adı veya bir bağlantı değilse, ortada cevap yok demektir.',
+      },
+    ],
+  },
 ];
 
 // ─── Yardımcılar ─────────────────────────────────────────────────────────────

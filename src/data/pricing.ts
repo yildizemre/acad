@@ -114,7 +114,7 @@ export const PATHS: Path[] = [
     name: 'Keşif Yılı',
     ageRange: '8–11 yaş',
     courseIds: ['scratch', 'robotics'],
-    price: 14900,
+    price: 19900,
     outcome:
       'Blok tabanlı kodlamadan fiziksel robotiğe geçer. Yıl sonunda hem kendi oyununu hem kendi robotunu yapmış olur.',
   },
@@ -123,7 +123,7 @@ export const PATHS: Path[] = [
     name: 'Üretici Yılı',
     ageRange: '11–14 yaş',
     courseIds: ['python', 'web'],
-    price: 16900,
+    price: 19400,
     outcome:
       'Gerçek metin tabanlı programlamaya geçer. Yıl sonunda internette yayında olan kendi web sitesi ve çalışan Python projeleri olur.',
   },
@@ -132,7 +132,7 @@ export const PATHS: Path[] = [
     name: 'Mühendis Yılı',
     ageRange: '14–17 yaş',
     courseIds: ['unity', 'ai'],
-    price: 16900,
+    price: 20900,
     outcome:
       'Üniversite düzeyine yaklaşan konularla tanışır. Yıl sonunda yayınlanabilir bir oyunu ve kendi eğittiği bir yapay zeka modeli olur.',
   },
@@ -268,9 +268,23 @@ export const DISCOUNT_RULE =
 
 // ─── Hesaplama yardımcıları ──────────────────────────────────────────────────
 
-/** Katman ve kurs süresine göre liste fiyatını döner. */
-export function priceFor(tier: Tier, weeks: number): number {
-  return weeks >= 10 ? tier.price10 : tier.price8;
+/**
+ * Liste fiyatı = paketin süre fiyatı + kursun kendi farkı.
+ *
+ * İkinci parametreye kursun kendisi verilirse `priceExtra` alanı da eklenir
+ * (Arduino seti, bulut işlem gücü, daha küçük sınıf gibi). Sadece hafta sayısı
+ * verilirse kursa özel fark hesaba katılmaz — kurs seçilmemiş genel paket
+ * tablolarında bu kullanılır.
+ */
+export function priceFor(tier: Tier, course: Course | number): number {
+  const weeks = typeof course === 'number' ? course : course.weeks;
+  const extra = typeof course === 'number' ? 0 : course.priceExtra ?? 0;
+  return (weeks >= 10 ? tier.price10 : tier.price8) + extra;
+}
+
+/** Kursun paket fiyatına eklediği fark — sıfırsa gösterilmez. */
+export function courseExtraFor(course?: Course): number {
+  return course?.priceExtra ?? 0;
 }
 
 /** Bir ödeme planının toplam tutarı (10 TL'ye yuvarlanır — ilan edilen fiyat budur). */
@@ -386,7 +400,7 @@ export function pathInfo(path: Path): PathInfo {
     .filter((c): c is Course => Boolean(c));
   const weeks = courses.reduce((n, c) => n + c.weeks, 0);
   const lessons = courses.reduce((n, c) => n + totalLessons(c), 0);
-  const listPrice = courses.reduce((n, c) => n + priceFor(TIERS[0], c.weeks), 0);
+  const listPrice = courses.reduce((n, c) => n + priceFor(TIERS[0], c), 0);
   return {
     courses,
     weeks,

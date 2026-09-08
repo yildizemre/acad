@@ -53,13 +53,13 @@
 # ─── Form bildirimleri ────────────────────────────────────────────────────────
 # Deneme dersi formu gönderimleri şu adrese düşmeli:
 #
-#     emre.yildiz@hypevisionlab.com
+#     info@hypevisionlab.com
 #
 # Netlify bu ayarı yalnızca panelden kabul ediyor, dosyadan yapılamıyor:
 #   Netlify Dashboard → Site configuration → Forms → Form notifications
 #   → Add notification → Email notification
 #   Event: New form submission   ·   Form: deneme-dersi
-#   Email to notify: emre.yildiz@hypevisionlab.com
+#   Email to notify: info@hypevisionlab.com
 #
 # İlk deploy'dan sonra siteden bir test formu gönderip panelde
 # Forms → deneme-dersi altında göründüğünü doğrulayın.

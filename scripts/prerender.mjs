@@ -142,7 +142,8 @@ async function main() {
       html = setTag(html, /<meta property="og:image"[^>]*\/>/, `<meta property="og:image" content="${img}" />`);
       html = setTag(html, /<meta name="twitter:image"[^>]*\/>/, `<meta name="twitter:image" content="${img}" />`);
       html = html.replace(/<meta property="og:image:width"[^>]*\/>/, '<meta property="og:image:width" content="1200" />');
-      html = html.replace(/<meta property="og:image:height"[^>]*\/>/, '<meta property="og:image:height" content="800" />');
+      html = html.replace(/<meta property="og:image:height"[^>]*\/>/, '<meta property="og:image:height" content="630" />');
+      html = setTag(html, /<meta property="og:image:type"[^>]*\/>/, '<meta property="og:image:type" content="image/png" />');
     }
 
     // İşlevsel ara sayfalar arama sonuçlarına düşmesin

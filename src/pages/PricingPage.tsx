@@ -19,6 +19,7 @@ import {
   DISCOUNTS,
   DISCOUNT_RULE,
   priceFor,
+  courseExtraFor,
   totalFor,
   installmentsFor,
   installmentLabel,
@@ -35,13 +36,29 @@ import Reveal from '../components/ui/Reveal';
 import usePageMeta from '../hooks/usePageMeta';
 import { track } from '../lib/analytics';
 
+/**
+ * Kurs farkının nereden geldiğini tek satırda söyler. Rakamın açıklaması
+ * yoksa veli onu keyfî bir zam gibi okuyor.
+ */
+const EXTRA_NOTES: Record<string, string> = {
+  python: 'Geliştirme ortamı ve bireysel kod incelemesi',
+  web: 'Alan adı ve barındırma — site yayında kalır',
+  unity: '6 kişilik sınıf, 75 dakikalık ders',
+  ai: 'Bulut işlem gücü, 6 kişilik sınıf, 75 dakikalık ders',
+  robotics: 'Adrese gönderilen 30 parçalık Arduino seti',
+};
+
+function extraNote(courseId: string): string {
+  return EXTRA_NOTES[courseId] ?? '';
+}
+
 export default function PricingPage() {
   const [courseId, setCourseId] = useState(COURSES[0].id);
   const [tierId, setTierId] = useState(TIERS[1].id);
   const [planId, setPlanId] = useState('taksit6');
 
   usePageMeta({
-    title: 'Fiyatlar, Paketler ve Ödeme Planları | Hype Academia',
+    title: 'Çocuk Kodlama Kursu Fiyatları 2026 — Paketler ve Taksit | Hype Academia',
     description:
       'Kulüp, Atölye ve Birebir paket fiyatları, taksit seçenekleri, indirimler ve iade politikası. Hesaplayıcı ile ödeyeceğiniz tutarı anında görün.',
   });
@@ -51,9 +68,15 @@ export default function PricingPage() {
   const plan = PAYMENT_PLANS.find((p) => p.id === planId)!;
 
   const calc = useMemo(() => {
-    const base = priceFor(tier, course.weeks);
+    const base = priceFor(tier, course);
     const total = totalFor(base, plan);
-    return { base, total, inst: installmentsFor(base, plan), diff: total - base };
+    return {
+      base,
+      extra: courseExtraFor(course),
+      total,
+      inst: installmentsFor(base, plan),
+      diff: total - base,
+    };
   }, [tier, course, plan]);
 
   // Seçim değiştikçe hangi kombinasyonların ilgi gördüğünü ölçüyoruz
@@ -93,7 +116,7 @@ export default function PricingPage() {
           <SectionHeading
             eyebrow="3 Paket"
             title="Aynı müfredat, üç farklı yoğunluk"
-            subtitle="Aşağıdaki fiyatlar 8 haftalık (16 ders) programlar içindir. 10 haftalık Web ve Unity kursları için fiyatlar kart üzerinde ayrıca belirtilmiştir."
+            subtitle="Aşağıdaki fiyatlar 8 haftalık (16 ders) programın paket fiyatıdır. 10 haftalık Web ve Unity kursları kart üzerinde ayrıca yazılıdır. Bazı kurslar donanım, lisans veya daha küçük sınıf nedeniyle bu fiyatın üstüne kendi farkını ekler — hesaplayıcıda kalem kalem görürsünüz."
           />
 
           <div className="mt-12 grid lg:grid-cols-3 gap-6 items-start">
@@ -373,6 +396,25 @@ export default function PricingPage() {
                       {lessonLineFor(tier, course)}
                     </dd>
                   </div>
+                  {calc.extra > 0 && (
+                    <>
+                      <div className="flex justify-between gap-3">
+                        <dt className="text-night-400">Paket fiyatı</dt>
+                        <dd className="font-medium text-night-950 text-right">
+                          {formatTRY(calc.base - calc.extra)}
+                        </dd>
+                      </div>
+                      <div className="flex justify-between gap-3">
+                        <dt className="text-night-400">
+                          Kurs farkı
+                          <span className="block text-xs text-night-400/80">{extraNote(course.id)}</span>
+                        </dt>
+                        <dd className="font-medium text-night-950 text-right">
+                          +{formatTRY(calc.extra)}
+                        </dd>
+                      </div>
+                    </>
+                  )}
                   <div className="flex justify-between gap-3">
                     <dt className="text-night-400">Liste fiyatı</dt>
                     <dd className="font-medium text-night-950 text-right">
@@ -435,7 +477,7 @@ export default function PricingPage() {
       </section>
 
       {/* ─── Patikalar ──────────────────────────────────────────────────── */}
-      <section className="section">
+      <section id="patikalar" className="section scroll-mt-32">
         <div className="container">
           <SectionHeading
             eyebrow="Paket Avantajı"

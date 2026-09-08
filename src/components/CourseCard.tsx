@@ -15,7 +15,7 @@ const TINT: Record<string, string> = {
 };
 
 export default function CourseCard({ course }: { course: Course; index?: number }) {
-  const from = priceFor(TIERS[0], course.weeks);
+  const from = priceFor(TIERS[0], course);
 
   return (
     <article

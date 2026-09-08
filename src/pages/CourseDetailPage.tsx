@@ -45,7 +45,7 @@ export default function CourseDetailPage() {
 
   usePageMeta({
     title: course
-      ? `${course.title} — ${course.ageRange} | Hype Academia`
+      ? `Çocuklar İçin ${course.shortTitle} Kursu — ${course.ageRange} Online | Hype Academia`
       : 'Kurs bulunamadı | Hype Academia',
     description: course
       ? `${course.summary} ${course.weeks} hafta, ${totalLessons(course)} canlı ders. Haftalık müfredat, ön koşullar ve fiyatlar.`
@@ -79,7 +79,7 @@ export default function CourseDetailPage() {
             },
             offers: {
               '@type': 'Offer',
-              price: priceFor(PRICE_TIERS[0], course.weeks),
+              price: priceFor(PRICE_TIERS[0], course),
               priceCurrency: 'TRY',
               category: 'Paid',
               availability: 'https://schema.org/InStock',
@@ -191,7 +191,7 @@ export default function CourseDetailPage() {
 
                   <div className="space-y-2 mb-5">
                     {TIERS.map((t) => {
-                      const p = priceFor(t, course.weeks);
+                      const p = priceFor(t, course);
                       return (
                         <div
                           key={t.id}
@@ -224,6 +224,25 @@ export default function CourseDetailPage() {
                       );
                     })}
                   </div>
+
+                  {/* Fiyat paketin üstüne kursun kendi farkını ekliyorsa
+                      nedenini burada söylüyoruz — rakam açıklamasız kalmasın. */}
+                  {course.priceExtra ? (
+                    <p className="mb-5 rounded-xl bg-night-50 p-3.5 text-xs leading-relaxed text-night-600">
+                      <span className="font-bold text-night-950">
+                        Bu kursta paket fiyatına {formatTRY(course.priceExtra)} eklenir.
+                      </span>{' '}
+                      {course.id === 'robotics'
+                        ? 'Adrese gönderilen 30 parçalık Arduino seti fiyata dahildir ve set öğrencide kalır.'
+                        : course.id === 'ai'
+                          ? 'Model eğitimi için kullanılan bulut işlem gücü, 6 kişilik sınıf ve 75 dakikalık ders süresi bu farkın karşılığıdır.'
+                          : course.id === 'unity'
+                            ? '6 kişilik sınıf ve 75 dakikalık ders süresi bu farkın karşılığıdır.'
+                            : course.id === 'web'
+                              ? 'Öğrencinin sitesinin yayında kalması için alan adı ve barındırma ücreti dahildir.'
+                              : 'Geliştirme ortamı kurulumu ve bireysel kod incelemesi bu farkın karşılığıdır.'}
+                    </p>
+                  ) : null}
 
                   <Link to="/iletisim" className="btn-primary w-full mb-2">
                     Ücretsiz Deneme Dersi Al

@@ -12,15 +12,14 @@ export const SITE = {
   phoneIntl: '+905418629190',
   whatsapp: '905418629190',
   /** Sitede görünen ve tüm mailto bağlantılarının gittiği adres */
-  email: 'emre.yildiz@hypevisionlab.com',
-  emailPress: 'basin@hypeacademia.com',
-  emailCareer: 'kariyer@hypeacademia.com',
-  emailKvkk: 'kvkk@hypeacademia.com',
-  /**
-   * Form bildirimleri ve operasyonel yazışmalar buraya düşer.
-   * Sitede görünen adres info@hypeacademia.com; bu adres arka planda çalışır.
-   */
-  emailOperations: 'emre.yildiz@hypevisionlab.com',
+  email: 'info@hypevisionlab.com',
+  // Basın, kariyer ve KVKK yazışmaları da aynı kutuya düşüyor. Ayrı adresler
+  // açılırsa buradan değiştirmek yeterli; sayfalar bu alanları okuyor.
+  emailPress: 'info@hypevisionlab.com',
+  emailCareer: 'info@hypevisionlab.com',
+  emailKvkk: 'info@hypevisionlab.com',
+  /** Form bildirimleri ve operasyonel yazışmalar buraya düşer. */
+  emailOperations: 'info@hypevisionlab.com',
   address: 'Gebze Teknik Üniversitesi, Gebze / Kocaeli',
   panelUrl: 'https://panel.hypeacademia.com',
   instagram: 'https://instagram.com/hypeacademia',

@@ -1,9 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, ArrowRight, LogIn } from 'lucide-react';
-import { COURSES } from '../data/courses';
+import { Menu, X, ChevronDown, ArrowRight, LogIn, Sparkles } from 'lucide-react';
+import { COURSES, totalLessons } from '../data/courses';
+import { PATHS, TIERS, priceFor, formatTRY, pathInfo } from '../data/pricing';
 import { SITE } from '../data/site';
 import CourseIcon from './ui/CourseIcon';
+
+/** Kurs kartının üzerine gelince aldığı zemin — her kursun kendi rengi. */
+const TINT: Record<string, string> = {
+  peach: 'group-hover:bg-tint-peach',
+  rose: 'group-hover:bg-tint-rose',
+  lime: 'group-hover:bg-tint-lime',
+  sky: 'group-hover:bg-tint-sky',
+  lilac: 'group-hover:bg-tint-lilac',
+  mint: 'group-hover:bg-tint-mint',
+};
 
 const NAV = [
   { label: 'Kurslar', to: '/kurslar', hasMenu: true },
@@ -96,34 +107,95 @@ export default function Navbar() {
                   </NavLink>
 
                   {coursesOpen && (
-                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[520px]">
-                      <div className="bg-white rounded-2xl bg-night-50 p-2 grid grid-cols-2 gap-1">
-                        {COURSES.map((c) => (
-                          <Link
-                            key={c.id}
-                            to={`/kurslar/${c.slug}`}
-                            className="flex items-start gap-3 p-3 rounded-xl hover:bg-white transition-colors group"
-                          >
-                            <span className="w-9 h-9 rounded border border-night-200 text-night-950 flex items-center justify-center shrink-0 group-hover:border-electric-500 group-hover:text-electric-500 transition-colors">
-                              <CourseIcon name={c.icon} className="w-5 h-5" />
-                            </span>
-                            <span className="min-w-0">
-                              <span className="block text-sm font-semibold text-night-950 truncate">
-                                {c.shortTitle}
-                              </span>
-                              <span className="block text-xs text-night-400">
-                                {c.ageRange} · {c.weeks} hafta
-                              </span>
-                            </span>
-                          </Link>
-                        ))}
-                        <Link
-                          to="/kurslar"
-                          className="col-span-2 mt-1 flex items-center justify-between px-3 py-2.5 rounded-xl bg-night-950 text-white text-sm font-semibold hover:bg-night-900 transition-colors"
-                        >
-                          Tüm kursları ve müfredatları gör
-                          <ArrowRight className="w-4 h-4" />
-                        </Link>
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-[860px] max-w-[calc(100vw-2rem)]">
+                      <div className="overflow-hidden rounded-3xl bg-white shadow-lift ring-1 ring-night-100">
+                        <div className="grid grid-cols-[minmax(0,1fr)_270px]">
+                          {/* Sol: kurslar */}
+                          <div className="p-4">
+                            <p className="px-3 pb-3 pt-1 text-[11px] font-bold uppercase tracking-wider text-night-400">
+                              6 program · 8–17 yaş
+                            </p>
+                            <div className="grid grid-cols-2 gap-1">
+                              {COURSES.map((c) => (
+                                <Link
+                                  key={c.id}
+                                  to={`/kurslar/${c.slug}`}
+                                  className={`group flex items-start gap-3 rounded-2xl p-3 transition-colors ${TINT[c.tint]}`}
+                                >
+                                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-night-50 text-night-950 transition-colors group-hover:bg-white">
+                                    <CourseIcon name={c.icon} className="h-5 w-5" />
+                                  </span>
+                                  <span className="min-w-0 flex-1">
+                                    <span className="block truncate text-sm font-extrabold text-night-950">
+                                      {c.shortTitle}
+                                    </span>
+                                    <span className="mt-0.5 block text-xs text-night-500">
+                                      {c.ageRange} · {c.weeks} hafta / {totalLessons(c)} ders
+                                    </span>
+                                    <span className="mt-1 block text-xs font-bold text-night-950">
+                                      {formatTRY(priceFor(TIERS[0], c))}&apos;den başlar
+                                    </span>
+                                  </span>
+                                </Link>
+                              ))}
+                            </div>
+
+                            <Link
+                              to="/kurslar"
+                              className="mt-2 flex items-center justify-between rounded-2xl bg-night-950 px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-night-900"
+                            >
+                              Tüm müfredatları hafta hafta gör
+                              <ArrowRight className="h-4 w-4" />
+                            </Link>
+                          </div>
+
+                          {/* Sağ: yıllık patikalar ve deneme dersi */}
+                          <div className="border-l border-night-100 bg-night-50/60 p-4">
+                            <p className="px-1 pb-3 pt-1 text-[11px] font-bold uppercase tracking-wider text-night-400">
+                              Yıllık patikalar
+                            </p>
+                            <div className="space-y-1">
+                              {PATHS.map((p) => {
+                                const bilgi = pathInfo(p);
+                                return (
+                                  <Link
+                                    key={p.id}
+                                    to="/fiyatlar#patikalar"
+                                    className="block rounded-2xl px-3 py-2.5 transition-colors hover:bg-white"
+                                  >
+                                    <span className="block text-sm font-extrabold text-night-950">
+                                      {p.name}
+                                    </span>
+                                    <span className="block text-xs text-night-500">
+                                      {p.ageRange} · {bilgi.courses.map((c) => c.shortTitle).join(' + ')}
+                                    </span>
+                                    <span className="mt-0.5 block text-xs font-bold text-electric-500">
+                                      {formatTRY(bilgi.save)} avantaj
+                                    </span>
+                                  </Link>
+                                );
+                              })}
+                            </div>
+
+                            <div className="mt-4 rounded-2xl bg-marker p-4">
+                              <p className="flex items-center gap-1.5 text-xs font-extrabold text-night-950">
+                                <Sparkles className="h-3.5 w-3.5" />
+                                Hangisi doğru, emin değil misiniz?
+                              </p>
+                              <p className="mt-1.5 text-xs leading-relaxed text-night-800">
+                                Ücretsiz deneme dersinde çocuğunuzun seviyesini birlikte görelim.
+                                Kart bilgisi istemiyoruz.
+                              </p>
+                              <Link
+                                to="/iletisim"
+                                className="mt-3 inline-flex items-center gap-1.5 text-xs font-extrabold text-night-950 underline decoration-2 underline-offset-4"
+                              >
+                                Deneme dersi al
+                                <ArrowRight className="h-3.5 w-3.5" />
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}

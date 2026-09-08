@@ -68,7 +68,9 @@ export type EventName =
   | 'kurs_goruntulendi'
   | 'mufredat_haftasi_acildi'
   | 'fiyat_hesaplandi'
-  | 'panel_girisi_tiklandi';
+  | 'panel_girisi_tiklandi'
+  | 'kampanya_gosterildi'
+  | 'kampanya_tiklandi';
 
 export function track(event: EventName, props: Record<string, string | number> = {}): void {
   const clean = Object.fromEntries(

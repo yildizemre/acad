@@ -45,7 +45,7 @@ export default function CheckoutPage() {
   const plan = PAYMENT_PLANS.find((p) => p.id === planId) ?? PAYMENT_PLANS[2];
 
   const calc = useMemo(() => {
-    const base = priceFor(tier, course.weeks);
+    const base = priceFor(tier, course);
     const total = totalFor(base, plan);
     return { base, total, inst: installmentsFor(base, plan), diff: total - base };
   }, [tier, course, plan]);

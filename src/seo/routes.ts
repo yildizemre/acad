@@ -14,6 +14,7 @@ import { COURSES, totalLessons } from '../data/courses';
 import { ARTICLES_BY_DATE } from '../data/articles';
 import { ALL_LEGAL_DOCS } from '../data/content';
 import { PROJECTS } from '../data/projects';
+import { STUDENT_VIDEOS } from '../data/videos';
 import { TIERS, priceFor, formatTRY, classSizeLabel } from '../data/pricing';
 import { SITE } from '../data/site';
 
@@ -58,9 +59,9 @@ export const SEO_ROUTES: SeoRoute[] = [
   {
     path: '/',
     priority: '1.0',
-    title: 'Hype Academia | 8–17 Yaş Online Yazılım, Kodlama ve Yapay Zeka Eğitimi',
+    title: 'Çocuklar İçin Kodlama Kursu | 8–17 Yaş Online Yazılım Eğitimi — Hype Academia',
     description:
-      '8–17 yaş arası çocuklara canlı online Python, Scratch, Unity, Web, Yapay Zeka ve Arduino Robotik eğitimi. Hafta hafta açık müfredat, sitede yazılı fiyatlar, ücretsiz deneme dersi.',
+      'Çocuklar için online kodlama kursu: Scratch, Python, Unity, yapay zeka, robotik. 8–17 yaş, canlı ders, küçük sınıf. Müfredat ve fiyatlar açık, ilk ders ücretsiz.',
     h1: 'Çocuğunuz ekranın üretici tarafına geçsin',
     summary: `${SITE.foundedYear} yılında ${SITE.parentInstitution} bünyesinde kurulan Hype Academia, 8–17 yaş arası çocuklara canlı online yazılım, robotik ve yapay zeka eğitimi verir. Müfredat hafta hafta açıktır, fiyatlar sitede yazılıdır, ilk ders ücretsizdir.`,
     facts: [
@@ -70,46 +71,62 @@ export const SEO_ROUTES: SeoRoute[] = [
       'Her ders kaydedilir, 12 ay erişilebilir',
       `İletişim: ${SITE.phoneDisplay} · ${SITE.email}`,
     ],
+    images: STUDENT_VIDEOS.map((v) => ({
+      url: `/videos/${v.id}.jpg`,
+      caption: `${v.title} — ${v.tool} ile yapılmış öğrenci çalışması`,
+    })),
     links: [...mainLinks, ...courseLinks],
   },
   {
     path: '/kurslar',
+    image: '/og/kurslar.png',
     priority: '0.9',
-    title: 'Kurslar ve Haftalık Müfredatlar | Hype Academia',
+    title: 'Çocuklar İçin Kodlama Kursları — Scratch, Python, Robotik | Hype Academia',
     description:
-      'Scratch, Python, Web Geliştirme, Unity, Yapay Zeka ve Arduino Robotik kursları. Her kursun hafta hafta müfredatı, ön koşulları ve fiyatı kayıt olmadan görülebilir.',
+      'Çocuklar için 6 kodlama kursu: Scratch, Python, web, Unity, yapay zeka, robotik. Her kursun haftalık müfredatı, yaş aralığı ve fiyatı kayıt olmadan görülebilir.',
     h1: 'Her kursun müfredatı hafta hafta açık',
     summary:
       'Çocuğunuzun hangi hafta neyi öğreneceğini, hangi projeyi bitireceğini ve kurs sonunda elinde ne kalacağını kayıt olmadan önce görebilirsiniz.',
     facts: COURSES.map(
       (c) =>
-        `${c.title} — ${c.ageRange}, ${c.level}, ${c.weeks} hafta / ${totalLessons(c)} canlı ders, ${formatTRY(priceFor(TIERS[0], c.weeks))} başlangıç fiyatı`,
+        `${c.title} — ${c.ageRange}, ${c.level}, ${c.weeks} hafta / ${totalLessons(c)} canlı ders, ${formatTRY(priceFor(TIERS[0], c))} başlangıç fiyatı`,
     ),
     images: COURSES.map((c) => ({ url: c.image, caption: `${c.title} ders ekranı` })),
     links: [...courseLinks, { label: 'Fiyatlar', href: '/fiyatlar' }],
   },
   {
     path: '/projeler',
+    image: '/og/projeler.png',
     priority: '0.8',
-    title: 'Bitirme Projeleri — Kurs Sonunda Ne Üretiliyor? | Hype Academia',
+    title: 'Öğrenci Projeleri — Çocuklar Kodlamayla Ne Üretiyor? | Hype Academia',
     description:
-      'Her kursun son haftasında öğrencinin ürettiği iş: oyunlar, web siteleri, robotik sistemler ve yapay zeka modelleri. Kurs sonunda elinizde ne kalacağını görün.',
+      'Çocuklar kodlama kursunda ne üretiyor? Öğrencilerin kendi ekranlarından dokuz kayıt: Unity oyunları, telefon uygulamaları, 3B tasarımlar ve masaüstü yazılım.',
     h1: '8 hafta sonunda elinde ne kalıyor?',
     summary:
-      'Her kurs bir bitirme projesiyle sonuçlanır ve öğrenci bunu Demo Günü’nde canlı sunar. Aşağıda her programın ürettiği proje ve öğrencinin yolda çözmesi gereken problem yazılıdır.',
-    facts: PROJECTS.map((p) => `${p.title} — ${p.brief}`),
-    images: PROJECTS.map((p) => ({
-      url: p.image,
-      caption: `${p.title} — ${p.brief}`,
-    })),
+      'Öğrencilerimizin kendi ekranlarından alınmış dokuz kayıt ve her kursun bitirme projesi. Öğrencinin yolda çözmek zorunda kaldığı asıl problem de yazılıdır.',
+    facts: [
+      ...STUDENT_VIDEOS.map((v) => `${v.title} (${v.tool}) — ${v.blurb}`),
+      ...PROJECTS.map((p) => `${p.title} — ${p.brief}`),
+    ],
+    images: [
+      ...STUDENT_VIDEOS.map((v) => ({
+        url: `/videos/${v.id}.jpg`,
+        caption: `${v.title} — ${v.tool} ile yapılmış öğrenci çalışmasının ekran kaydı`,
+      })),
+      ...PROJECTS.map((p) => ({
+        url: p.image,
+        caption: `${p.title} — ${p.brief}`,
+      })),
+    ],
     links: [...courseLinks],
   },
   {
     path: '/fiyatlar',
+    image: '/og/fiyatlar.png',
     priority: '0.9',
-    title: 'Fiyatlar, Paketler ve Ödeme Planları | Hype Academia',
+    title: 'Çocuk Kodlama Kursu Fiyatları 2026 — Paketler ve Taksit | Hype Academia',
     description:
-      'Kulüp, Atölye ve Birebir paket fiyatları, faizsiz taksit seçenekleri, kardeş ve erken kayıt indirimleri ile iade politikası. Hesaplayıcıyla ödeyeceğiniz tutarı anında görün.',
+      'Çocuk kodlama kursu fiyatları: 8.900 TL’den başlayan paketler, 9 taksite kadar faizsiz, peşin ödemede %10 indirim. Hesaplayıcıyla tutarı anında görün.',
     h1: 'Fiyatlarımız burada yazıyor',
     summary:
       'Müfredat her pakette aynıdır; değişen tek şey çocuğunuza ayrılan eğitmen zamanıdır. Sınıf küçüldükçe fiyat artar, çünkü öğrenci başına düşen ilgi artar.',
@@ -127,7 +144,7 @@ export const SEO_ROUTES: SeoRoute[] = [
   {
     path: '/rehber',
     priority: '0.8',
-    title: 'Veli Rehberi — Çocuklar ve Kodlama | Hype Academia',
+    title: 'Çocuklar ve Kodlama — Velilere Rehber Yazılar | Hype Academia',
     description:
       'Çocuğum kaç yaşında kodlamaya başlamalı, Scratch mi Python mı, kurs seçerken nelere dikkat etmeli? Velilere yönelik rehber yazılar.',
     h1: 'Karar vermeden önce okuyun',
@@ -163,10 +180,11 @@ export const SEO_ROUTES: SeoRoute[] = [
   },
   {
     path: '/iletisim',
+    image: '/og/iletisim.png',
     priority: '0.8',
-    title: 'Ücretsiz Deneme Dersi ve İletişim | Hype Academia',
+    title: 'Ücretsiz Kodlama Deneme Dersi — Çocuklar İçin | Hype Academia',
     description:
-      'Formu doldurun, 48 saat içinde arayalım ve çocuğunuz için 1 saatlik ücretsiz deneme dersini planlayalım. Kart bilgisi istenmez.',
+      'Çocuğunuz için ücretsiz kodlama deneme dersi alın. 1 saatlik canlı ders, gerçek eğitmenle. Kart bilgisi istenmez, bağlayıcılığı yok.',
     h1: 'Önce deneyin, sonra karar verin',
     summary:
       '1 saatlik ücretsiz deneme dersinde çocuğunuz gerçek bir eğitmenle gerçek bir ders yapar. Bağlayıcılığı yoktur, kart bilgisi istenmez.',
@@ -195,17 +213,17 @@ export const SEO_ROUTES: SeoRoute[] = [
   ...COURSES.map<SeoRoute>((c) => ({
     path: `/kurslar/${c.slug}`,
     priority: '0.8',
-    title: `${c.title} — ${c.ageRange} Online Kurs | Hype Academia`,
-    description: `${c.summary} ${c.weeks} hafta, ${totalLessons(c)} canlı ders, maksimum ${c.maxStudents} öğrenci. Haftalık müfredat, ön koşullar ve fiyatlar sayfada.`,
+    title: `Çocuklar İçin ${c.shortTitle} Kursu — ${c.ageRange} Online | Hype Academia`,
+    description: `${c.ageRange} çocuklar için online ${c.shortTitle} kursu. ${c.weeks} hafta, ${totalLessons(c)} canlı ders, en fazla ${c.maxStudents} kişilik sınıf. Haftalık müfredat ve fiyat sayfada.`,
     h1: c.title,
     summary: c.intro,
-    image: c.image,
+    image: `/og/kurs-${c.id}.png`,
     images: [{ url: c.image, caption: `${c.title} canlı ders ekranı` }],
     facts: [
       `Yaş aralığı: ${c.ageRange} · Seviye: ${c.level}`,
       `Süre: ${c.weeks} hafta, ${totalLessons(c)} canlı ders (haftada ${c.lessonsPerWeek} ders × ${c.lessonMinutes} dakika)`,
       `Sınıf: en fazla ${c.maxStudents} öğrenci`,
-      `Başlangıç fiyatı: ${formatTRY(priceFor(TIERS[0], c.weeks))}`,
+      `Başlangıç fiyatı: ${formatTRY(priceFor(TIERS[0], c))}`,
       `Ön koşul: ${c.prerequisites}`,
       `Kullanılan araçlar: ${c.tools.join(', ')}`,
       ...c.curriculum.map((w) => `${w.week}. hafta — ${w.title}: ${w.topics.join('; ')}. Çıktı: ${w.project}`),
@@ -227,6 +245,7 @@ export const SEO_ROUTES: SeoRoute[] = [
     description: a.excerpt,
     h1: a.title,
     summary: a.excerpt,
+    image: `/og/rehber-${a.slug}.png`,
     facts: a.body
       .filter((b): b is { type: 'h2'; text: string } => b.type === 'h2')
       .map((b) => b.text),
@@ -244,7 +263,10 @@ export const SEO_ROUTES: SeoRoute[] = [
     path: `/yasal/${d.slug}`,
     priority: '0.3',
     title: `${d.title} | Hype Academia`,
-    description: d.intro ?? `Hype Academia ${d.title.toLowerCase()} — son güncelleme ${d.updated}.`,
+    // Uzun sözleşme girişleri arama sonucunda kesiliyor; 155 karaktere sığdır
+    description: (d.intro ?? `Hype Academia ${d.title.toLowerCase()}.`)
+      .slice(0, 152)
+      .replace(/[\s,;]+\S*$/, '') + '…',
     h1: d.title,
     summary: d.intro ?? d.sections.find((x) => x.body)?.body ?? d.title,
     // Sözleşme maddelerini de bota göster: satıcı bilgileri ve iade koşulları

@@ -16,7 +16,7 @@ export default function CoursesPage() {
   const [level, setLevel] = useState<string | null>(null);
 
   usePageMeta({
-    title: 'Kurslar ve Müfredatlar | Hype Academia',
+    title: 'Çocuklar İçin Kodlama Kursları — Scratch, Python, Robotik | Hype Academia',
     description:
       '8–17 yaş arası çocuklar için Scratch, Python, Web, Unity, Yapay Zeka ve Arduino kursları. Hafta hafta müfredat, fiyatlar ve ön koşullar.',
   });

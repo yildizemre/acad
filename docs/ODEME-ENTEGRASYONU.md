@@ -167,10 +167,10 @@ farkı ayrıca görünür ve tahsil edilen tutar (`total_amount`) sitede göster
 tutardan yüksek olabilir. Bu, bildirimde ayrı bir alan olarak kaydedilir ve
 kayıt e-postasında "Tahsil edilen" satırında görünür.
 
-> **Dikkat:** `PAYMENT_PLANS` içinde "12 Taksit" planının `multiplier` değeri
-> `1.05`. PayTR'da vade farkını zaten banka eklediği için bu %5 üstüne biner ve
-> müşteri iki kez vade farkı ödemiş olur. Bunu düzeltmek için `pricing.ts`
-> içinde o planın `multiplier` değerini `1` yapmanız yeterli.
+> **Bu yüzden hiçbir kart taksiti planının `multiplier` değeri 1'den büyük
+> olamaz.** "12 Taksit" planında eskiden `1.05` yazıyordu; tahsilat elle
+> yapılırken doğruydu, ama PayTR'da vade farkını banka eklediği için müşteri
+> iki kez ödemiş olurdu. Entegrasyonla birlikte `1`'e çekildi.
 
 **"Aylık Esnek" planı online ödemeye kapalıdır.**
 Taahhütsüz, ay ay ödenen ve istenildiği ay bırakılabilen bir plan tek bir kart

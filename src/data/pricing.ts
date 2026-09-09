@@ -144,7 +144,13 @@ export interface PaymentPlan {
   id: string;
   name: string;
   badge?: string;
-  /** Liste fiyatına uygulanan çarpan. 0.90 = %10 indirim, 1.05 = %5 vade farkı */
+  /**
+   * Liste fiyatına uygulanan çarpan. 0.90 = %10 indirim.
+   *
+   * ⚠️ Kart taksitlerinde 1'den BÜYÜK değer kullanmayın: vade farkını banka
+   *    zaten ödeme ekranında ekliyor, buraya da eklenirse müşteri iki kez öder.
+   *    (Online tahsile kapalı planlar bu kuralın dışındadır.)
+   */
   multiplier: number;
   installments: number;
   description: string;
@@ -199,10 +205,17 @@ export const PAYMENT_PLANS: PaymentPlan[] = [
   {
     id: 'taksit12',
     name: '12 Taksit',
-    badge: '%5 vade farkı',
-    multiplier: 1.05,
+    badge: 'Vade farkı bankanızın',
+    // ⚠️ Bu değer BİLEREK 1'dir, elle %5'e çevirmeyin.
+    //
+    // PayTR entegrasyonundan önce vade farkını biz hesaplıyorduk (1.05) çünkü
+    // tahsilatı elle yapıyorduk. Artık taksiti bankanın kendisi uyguluyor ve
+    // vade farkını ödeme ekranında kendisi ekliyor. Buraya 1.05 yazılırsa
+    // müşteri iki kez vade farkı öder: bir bizim eklediğimiz, bir bankanın.
+    multiplier: 1,
     installments: 12,
-    description: 'En düşük aylık tutar. Banka vade farkı nedeniyle toplam tutar %5 artar.',
+    description:
+      'En düşük aylık tutar. Vade farkı bankanız tarafından belirlenir ve ödeme ekranında toplam tutarla birlikte gösterilir.',
   },
   {
     id: 'aylik',

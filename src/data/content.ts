@@ -81,7 +81,7 @@ export const FAQS: Faq[] = [
   {
     category: 'odeme',
     q: 'Taksit imkânı var mı?',
-    a: 'Evet. 3, 6 ve 9 taksit faizsizdir. 12 taksitte %5 vade farkı uygulanır. Peşin ödemede %10 indirim vardır. Ayrıca taahhütsüz aylık ödeme seçeneğimiz mevcuttur.',
+    a: 'Evet. Kurs ücretini 12 taksite kadar bölebilirsiniz; anlaşmalı bankaların kartlarında 9 taksite kadar vade farkı yoktur. Daha uzun vadelerde vade farkını bankanız belirler ve ödeme ekranında toplam tutarla birlikte görürsünüz. Peşin ödemede %10 indirim vardır. Ayrıca taahhütsüz aylık ödeme seçeneğimiz mevcuttur.',
   },
   {
     category: 'odeme',

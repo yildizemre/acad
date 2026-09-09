@@ -126,7 +126,7 @@ export const SEO_ROUTES: SeoRoute[] = [
     priority: '0.9',
     title: 'Çocuk Kodlama Kursu Fiyatları 2026 — Paketler ve Taksit | Hype Academia',
     description:
-      'Çocuk kodlama kursu fiyatları: 8.900 TL’den başlayan paketler, 9 taksite kadar faizsiz, peşin ödemede %10 indirim. Hesaplayıcıyla tutarı anında görün.',
+      'Çocuk kodlama kursu fiyatları: 8.900 TL’den başlayan paketler, 12 taksite kadar ödeme, peşin ödemede %10 indirim. Hesaplayıcıyla tutarı anında görün.',
     h1: 'Fiyatlarımız burada yazıyor',
     summary:
       'Müfredat her pakette aynıdır; değişen tek şey çocuğunuza ayrılan eğitmen zamanıdır. Sınıf küçüldükçe fiyat artar, çünkü öğrenci başına düşen ilgi artar.',
@@ -135,7 +135,7 @@ export const SEO_ROUTES: SeoRoute[] = [
         (t) =>
           `${t.name} paketi — ${classSizeLabel(t)}, ${t.lessonLength}. 8 haftalık program ${formatTRY(t.price8)}, 10 haftalık program ${formatTRY(t.price10)}`,
       ),
-      'Peşin ödemede %10 indirim, 9 taksite kadar faizsiz',
+      'Peşin ödemede %10 indirim, 12 taksite kadar ödeme imkânı',
       'Kardeş indirimi %15, erken kayıt indirimi %10',
       'İlk 2 ders içinde koşulsuz iade',
     ],

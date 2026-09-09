@@ -56,6 +56,8 @@ sayfasına ulaştığında ödeme henüz kesinleşmemiş olabilir. Bu yüzden si
 | `netlify/functions/paytr-token.mts` | 1. ADIM — `POST /api/paytr/token` |
 | `netlify/functions/paytr-bildirim.mts` | 2. ADIM — `POST /api/paytr/bildirim` |
 | `netlify/functions/paytr-durum.mts` | `GET /api/paytr/durum?no=…` |
+| `netlify/functions/gunluk-rapor.mts` | Her sabah 07:00 (TSİ) satış + yarıda kalan raporu |
+| `src/lib/kaynak.ts` | Ziyaretçinin nereden geldiğini yakalar |
 | `src/lib/payment.ts` | Tarayıcı tarafı — yalnızca kendi uçlarımızla konuşur |
 | `src/components/PaytrFrame.tsx` | Ödeme formu iframe'i |
 | `src/pages/CheckoutPage.tsx` | 3 adımlı kayıt akışı |
@@ -171,6 +173,20 @@ kayıt e-postasında "Tahsil edilen" satırında görünür.
 > olamaz.** "12 Taksit" planında eskiden `1.05` yazıyordu; tahsilat elle
 > yapılırken doğruydu, ama PayTR'da vade farkını banka eklediği için müşteri
 > iki kez ödemiş olurdu. Entegrasyonla birlikte `1`'e çekildi.
+
+**Ödeme planları bilerek üç tane.**
+Eskiden 3/6/9/12 taksit ayrı birer plandı ama dördü de aynı toplamı veriyordu —
+müşteri için aralarında fark yoktu ve taksit sayısı PayTR ekranında zaten tekrar
+soruluyordu. Şimdi tek bir "Taksitli Ödeme" planı var; sayıyı müşteri ödeme
+ekranında seçiyor (`max_installment` 12).
+
+**Günlük rapor.**
+`gunluk-rapor.mts` her sabah son 24 saati özetleyip `gunluk-rapor` formuna
+gönderir: satılanlar, **yarıda kalanlar (ad + telefon ile aranacak liste)**,
+başarısız ödemeler ve kaynak dağılımı. Hiç hareket yoksa e-posta göndermez —
+her sabah gelen boş rapor okunmaz hâle gelir.
+
+Yarıda kalan = ödeme ekranına gelip 45 dakika içinde sonuçlanmamış sipariş.
 
 **"Aylık Esnek" planı online ödemeye kapalıdır.**
 Taahhütsüz, ay ay ödenen ve istenildiği ay bırakılabilen bir plan tek bir kart

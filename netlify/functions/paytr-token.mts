@@ -90,6 +90,8 @@ export default async (req: Request, context: Context) => {
   const ogrenciAdi = metin(govde.ogrenciAdi, 60);
   const ogrenciYasi = metin(govde.ogrenciYasi, 3);
   const not = metin(govde.not, 500);
+  const kaynak = metin(govde.kaynak, 120) || 'bilinmiyor';
+  const girisSayfasi = metin(govde.girisSayfasi, 120) || '/';
 
   const eksik = [
     adSoyad.length < 3 && 'ad soyad',
@@ -167,6 +169,8 @@ export default async (req: Request, context: Context) => {
     ogrenciAdi,
     ogrenciYasi,
     not,
+    kaynak,
+    girisSayfasi,
   };
 
   try {

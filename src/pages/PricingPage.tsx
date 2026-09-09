@@ -22,7 +22,7 @@ import {
   courseExtraFor,
   totalFor,
   installmentsFor,
-  installmentLabel,
+  planLine,
   classSizeLabel,
   lessonLineFor,
   pathInfo,
@@ -55,7 +55,7 @@ function extraNote(courseId: string): string {
 export default function PricingPage() {
   const [courseId, setCourseId] = useState(COURSES[0].id);
   const [tierId, setTierId] = useState(TIERS[1].id);
-  const [planId, setPlanId] = useState('taksit6');
+  const [planId, setPlanId] = useState('taksitli');
 
   usePageMeta({
     title: 'Çocuk Kodlama Kursu Fiyatları 2026 — Paketler ve Taksit | Hype Academia',
@@ -443,10 +443,10 @@ export default function PricingPage() {
                     Toplam ödeyeceğiniz
                   </div>
                   <div className="text-4xl font-extrabold text-white">{formatTRY(calc.total)}</div>
-                  {calc.inst.count > 1 && (
+                  {plan.installments > 1 && (
                     <div className="mt-3 inline-flex items-center gap-1.5 badge bg-white/20 text-white">
                       <CreditCard className="w-3 h-3" />
-                      {installmentLabel(calc.inst)}
+                      {planLine(plan, calc.base)}
                     </div>
                   )}
                   <div className="mt-3 text-sm text-white/80">

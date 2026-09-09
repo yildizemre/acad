@@ -47,6 +47,11 @@ export interface Siparis {
   ogrenciYasi: string;
   not: string;
 
+  /** Ziyaretçi siteye nereden geldi — "instagram.com", "google / cpc", "doğrudan" */
+  kaynak: string;
+  /** Siteye ilk girdiği sayfa — hangi içerik satışa götürüyor? */
+  girisSayfasi: string;
+
   // Bildirimden gelenler
   odenenKurus?: number;
   odemeTuru?: string;
@@ -57,6 +62,23 @@ export interface Siparis {
 
 function depo() {
   return getStore({ name: 'siparisler', consistency: 'strong' });
+}
+
+/**
+ * Belirtilen günden sonraki tüm siparişleri döner.
+ *
+ * Netlify Blobs'ta sorgu yok; anahtarları listeleyip tek tek okuyoruz. Sipariş
+ * hacmi binlere çıkarsa bu yavaşlar — o noktada gerçek bir veritabanına geçmek
+ * gerekir. Günlük rapor için fazlasıyla yeterli.
+ */
+export async function siparisleriListele(sonrasi: Date): Promise<Siparis[]> {
+  const { blobs } = await depo().list();
+  const hepsi = await Promise.all(
+    blobs.map((b) => depo().get(b.key, { type: 'json' }) as Promise<Siparis | null>),
+  );
+  return hepsi
+    .filter((s): s is Siparis => Boolean(s) && new Date(s!.olusturuldu) >= sonrasi)
+    .sort((a, b) => b.olusturuldu.localeCompare(a.olusturuldu));
 }
 
 export async function siparisYaz(s: Siparis): Promise<void> {

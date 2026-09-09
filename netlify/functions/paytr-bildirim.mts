@@ -55,6 +55,8 @@ async function kayitEkibineBildir(s: Siparis, basarili: boolean): Promise<void> 
     adres: s.adres,
     ogrenci: `${s.ogrenciAdi}${s.ogrenciYasi ? ` (${s.ogrenciYasi} yaş)` : ''}`,
     not: s.not || '—',
+    kaynak: s.kaynak || 'bilinmiyor',
+    girisSayfasi: s.girisSayfasi || '/',
     hata: s.hataMesaji ? `${s.hataKodu ?? ''} ${s.hataMesaji}`.trim() : '—',
     testIslemi: s.testMi ? 'EVET — gerçek tahsilat yapılmadı' : 'hayır',
   });

@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { COURSES } from '../data/courses';
 import { SITE, WA_URL } from '../data/site';
-import { SELLER, BRAND, sellerName, sellerRows } from '../data/legal-entity';
+import { SELLER, BRAND, sellerName } from '../data/legal-entity';
 import PaymentBadges from './ui/PaymentBadges';
 
 const kurumsal = [
@@ -38,9 +38,6 @@ const socials = [
 
 export default function Footer() {
   // Yalnızca doldurulmuş kurumsal bilgiler gösterilir; boş alan hiç yazılmaz
-  const kurumsal2 = sellerRows().filter(([k]) =>
-    ['Vergi Dairesi / No', 'MERSİS No', 'Ticaret Sicil No', 'Adres'].includes(k),
-  );
 
   return (
     <footer id="iletisim" className="bg-night-950 text-white">
@@ -203,11 +200,20 @@ export default function Footer() {
             faaliyet gösteren bir markadır. Satış ve faturalandırma işlemleri{' '}
             <span className="text-night-200">{sellerName}</span> tarafından yapılır.
           </p>
-          {kurumsal2.length > 0 && (
-            <p className="mt-1.5">
-              {kurumsal2.map(([k, v]) => `${k}: ${v}`).join(' · ')}
-            </p>
-          )}
+          <p className="mt-1.5">
+            Ünvan, adres, vergi ve MERSİS bilgileri{' '}
+            <Link to="/hakkimizda#kurumsal" className="text-night-200 underline hover:text-white">
+              Hakkımızda
+            </Link>{' '}
+            sayfasında ve{' '}
+            <Link
+              to="/yasal/mesafeli-satis-sozlesmesi"
+              className="text-night-200 underline hover:text-white"
+            >
+              Mesafeli Satış Sözleşmesi
+            </Link>
+            ’nde yazılıdır.
+          </p>
         </div>
       </div>
 

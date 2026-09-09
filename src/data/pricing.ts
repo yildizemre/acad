@@ -152,7 +152,18 @@ export interface PaymentPlan {
    *    (Online tahsile kapalı planlar bu kuralın dışındadır.)
    */
   multiplier: number;
+  /**
+   * İzin verilen EN FAZLA taksit sayısı. 1 = tek çekim.
+   * PayTR'a `max_installment` olarak gider; müşteri bundan fazlasını seçemez.
+   */
   installments: number;
+  /**
+   * true → taksit sayısını müşteri ödeme ekranında seçer.
+   *
+   * Bu durumda sitede kesin bir taksit tutarı GÖSTERMEYİZ: bankanın vade farkı
+   * o ekranda ekleniyor, buradaki hesap yanıltıcı olurdu.
+   */
+  customerChooses?: boolean;
   description: string;
   note?: string;
   /**
@@ -173,49 +184,19 @@ export const PAYMENT_PLANS: PaymentPlan[] = [
     multiplier: 0.9,
     installments: 1,
     description:
-      'Kurs ücretinin tamamı kayıt sırasında ödenir. En düşük toplam tutarı bu seçenek verir.',
+      'Kurs ücretinin tamamı kayıt sırasında tek çekimde ödenir. En düşük toplam tutarı bu seçenek verir.',
     note: 'Havale / EFT veya kredi kartına tek çekim.',
   },
   {
-    id: 'taksit3',
-    name: '3 Taksit',
-    badge: 'Faizsiz',
-    multiplier: 1,
-    installments: 3,
-    description: 'Kredi kartına 3 eşit taksit. Liste fiyatı üzerinden, vade farkı yoktur.',
-  },
-  {
-    id: 'taksit6',
-    name: '6 Taksit',
-    badge: 'Faizsiz · En çok tercih edilen',
-    multiplier: 1,
-    installments: 6,
-    description:
-      'Kredi kartına 6 eşit taksit. Kurs bittikten sonra da ödemesi devam eder, aylık yük en dengeli seçenektir.',
-  },
-  {
-    id: 'taksit9',
-    name: '9 Taksit',
-    badge: 'Faizsiz',
-    multiplier: 1,
-    installments: 9,
-    description: 'Anlaşmalı bankaların kredi kartlarına 9 eşit taksit.',
-    note: 'Anlaşmalı bankalar: Garanti BBVA, İş Bankası, Yapı Kredi, Akbank, QNB.',
-  },
-  {
-    id: 'taksit12',
-    name: '12 Taksit',
-    badge: 'Vade farkı bankanızın',
-    // ⚠️ Bu değer BİLEREK 1'dir, elle %5'e çevirmeyin.
-    //
-    // PayTR entegrasyonundan önce vade farkını biz hesaplıyorduk (1.05) çünkü
-    // tahsilatı elle yapıyorduk. Artık taksiti bankanın kendisi uyguluyor ve
-    // vade farkını ödeme ekranında kendisi ekliyor. Buraya 1.05 yazılırsa
-    // müşteri iki kez vade farkı öder: bir bizim eklediğimiz, bir bankanın.
+    id: 'taksitli',
+    name: 'Taksitli Ödeme',
+    badge: '12 taksite kadar',
     multiplier: 1,
     installments: 12,
+    customerChooses: true,
     description:
-      'En düşük aylık tutar. Vade farkı bankanız tarafından belirlenir ve ödeme ekranında toplam tutarla birlikte gösterilir.',
+      'Kaç taksit istediğinizi ödeme ekranında kendiniz seçersiniz. Anlaşmalı bankaların kartlarında 9 taksite kadar vade farkı yoktur; daha uzun vadelerde farkı bankanız belirler ve ekranda toplam tutarla birlikte görürsünüz.',
+    note: 'Anlaşmalı bankalar: Garanti BBVA, İş Bankası, Yapı Kredi, Akbank, QNB.',
   },
   {
     id: 'aylik',
@@ -223,12 +204,26 @@ export const PAYMENT_PLANS: PaymentPlan[] = [
     badge: 'Taahhütsüz',
     multiplier: 1.12,
     installments: 2,
+    onlineOdeme: false,
     description:
       'Kursu 4 haftalık dilimler hâlinde ay ay ödersiniz, istediğiniz ay bırakabilirsiniz. Esneklik primi %12.',
     note: 'Kararsız veliler için. Devam etmeye karar verirseniz peşin plana geçiş yapılabilir. Bu plan online kartla tek seferde tahsil edilemediği için kaydı telefonla açıyoruz.',
-    onlineOdeme: false,
   },
 ];
+
+/**
+ * Plan seçildiğinde ödeme satırında yazacak tek cümle.
+ *
+ * Taksit sayısını müşterinin seçtiği planlarda kesin tutar yazmıyoruz; sitede
+ * "12 × 741,66 TL" yazıp ödeme ekranında banka vade farkıyla başka bir rakam
+ * çıkması güveni bozar.
+ */
+export function planLine(plan: PaymentPlan, base: number): string {
+  if (plan.customerChooses) return `${plan.installments} taksite kadar`;
+  const inst = installmentsFor(base, plan);
+  return installmentLabel(inst);
+}
+
 
 // ─── İndirimler ──────────────────────────────────────────────────────────────
 

@@ -436,6 +436,23 @@
       <textarea name="not"></textarea>
       <input type="text" name="hata" />
       <input type="text" name="testIslemi" />
+      <input type="text" name="kaynak" />
+      <input type="text" name="girisSayfasi" />
+    </form>
+
+    <!--
+      Günlük satış raporu. netlify/functions/gunluk-rapor.mts her sabah 07:00'de
+      (TSİ) bu forma gönderim yapar; Netlify bildirimi e-postaya çevirir.
+    -->
+    <form name="gunluk-rapor" netlify hidden>
+      <input type="text" name="tarih" />
+      <input type="text" name="satis" />
+      <input type="text" name="ciro" />
+      <input type="text" name="yaridaKalan" />
+      <input type="text" name="kacanCiro" />
+      <input type="text" name="basarisiz" />
+      <input type="text" name="kaynaklar" />
+      <textarea name="rapor"></textarea>
     </form>
 
     <script type="module" src="/src/main.tsx"></script>

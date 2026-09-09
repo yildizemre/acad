@@ -45,6 +45,10 @@ export interface TokenIstegi extends OdemeAlicisi {
   paketId: string;
   planId: string;
   sozlesmeOnay: boolean;
+  /** "instagram.com" · "google / cpc / yaz-kampanyasi" · "doğrudan" */
+  kaynak: string;
+  /** Ziyaretçinin siteye ilk girdiği sayfa */
+  girisSayfasi: string;
 }
 
 export interface TokenYaniti {

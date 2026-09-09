@@ -17,7 +17,7 @@ import {
   priceFor,
   totalFor,
   installmentsFor,
-  installmentLabel,
+  planLine,
   classSizeLabel,
   lessonLineFor,
   formatTRY,
@@ -35,6 +35,7 @@ import {
 import { PAYMENT_PROVIDER } from '../data/legal-entity';
 import PaytrFrame from '../components/PaytrFrame';
 import PaymentBadges from '../components/ui/PaymentBadges';
+import { kaynagiOku, girisSayfasi } from '../lib/kaynak';
 
 /**
  * Kayıt sayfası. Üç adım:
@@ -158,7 +159,7 @@ export default function CheckoutPage() {
   const [params] = useSearchParams();
   const [courseId, setCourseId] = useState(params.get('kurs') ?? COURSES[0].id);
   const [tierId, setTierId] = useState(params.get('paket') ?? TIERS[1].id);
-  const [planId, setPlanId] = useState(params.get('plan') ?? 'taksit6');
+  const [planId, setPlanId] = useState(params.get('plan') ?? 'taksitli');
 
   const [adim, setAdim] = useState<Adim>('secim');
   const [alici, setAlici] = useState<OdemeAlicisi>(BOS_ALICI);
@@ -194,7 +195,7 @@ export default function CheckoutPage() {
     `Ders: ${lessonLineFor(tier, course)}\n` +
     `Ödeme planı: ${plan.name}\n` +
     `Toplam: ${formatTRY(calc.total)}` +
-    (calc.inst.count > 1 ? ` (${installmentLabel(calc.inst)})` : '');
+    (plan.installments > 1 ? ` (${planLine(plan, calc.base)})` : '');
 
   function alanDegis(alan: keyof OdemeAlicisi, deger: string) {
     setAlici((o) => ({ ...o, [alan]: deger }));
@@ -212,6 +213,8 @@ export default function CheckoutPage() {
         paketId: tier.id,
         planId: plan.id,
         sozlesmeOnay,
+        kaynak: kaynagiOku(),
+        girisSayfasi: girisSayfasi(),
       });
       setOdeme(yanit);
       setAdim('odeme');
@@ -509,8 +512,8 @@ export default function CheckoutPage() {
               <div className="text-3xl font-extrabold text-night-950">
                 {formatTRY(calc.total)}
               </div>
-              {calc.inst.count > 1 && (
-                <div className="mt-2 text-sm text-night-600">{installmentLabel(calc.inst)}</div>
+              {plan.installments > 1 && (
+                <div className="mt-2 text-sm text-night-600">{planLine(plan, calc.base)}</div>
               )}
               <div className="mt-2 text-xs text-night-500">
                 Ders başına yaklaşık {formatTRY(perLesson(calc.total, course.weeks))}

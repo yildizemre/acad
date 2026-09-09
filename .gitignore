@@ -1,0 +1,47 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# GIT'E GİRMEYECEKLER
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ⚠️ SIRLAR — en önemli satırlar bunlar.
+# PayTR mağaza anahtarı ve gizli anahtarı bu dosyalarda durur. Git'e bir kez
+# girerse geçmişten silmek zordur ve anahtarları PayTR panelinden yenilemek
+# gerekir. `.env.example` şablon olduğu için istisna.
+.env
+.env.*
+!.env.example
+
+# Bağımlılıklar
+node_modules/
+
+# Derleme çıktısı — `npm run build` her seferinde yeniden üretir.
+#
+# NOT: dist/ şu an git tarafından TAKİP EDİLİYOR. Buraya yazmak takibi
+# kendiliğinden durdurmaz. Tamamen çıkarmak için bir kez:
+#     git rm -r --cached dist
+# çalıştırıp commit'leyin. Netlify siteyi kendi sunucusunda derlediği için
+# dist'in depoda durmasına gerek yok.
+dist/
+
+# Ham medya — işlenmiş hâlleri public/videos altında zaten var (~1 MB).
+# Kaynak kayıtlar 32 MB; depoyu şişirmesin.
+medya-kaynak/
+
+# Sağlayıcıların indirilen entegrasyon paketleri (PDF, örnek kod, .dll).
+# Referans amaçlı yerelde dursun, depoya girmesin.
+PayTR IFrame API/
+PayTR - New Logo Set/
+iyzico-logo-pack/
+
+# Geçici / araç çıktıları
+.kareler/
+.netlify/
+.netlify-test/
+__pycache__/
+*.pyc
+
+# İşletim sistemi ve editör
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/

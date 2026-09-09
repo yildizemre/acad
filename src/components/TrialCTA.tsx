@@ -1,24 +1,33 @@
 import { useState } from 'react';
-import { ArrowRight, CheckCircle2, Sparkles, Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Loader2, MessageCircle, Send } from 'lucide-react';
+import { COURSES } from '../data/courses';
+import { SITE, waLink } from '../data/site';
+import { track } from '../lib/analytics';
 
-const perks = [
-  'Tamamen ücretsiz, bağlayıcılığı yok',
-  '1 saatlik birebir canlı ders',
-  '48 saat içinde sizi arayalım',
+const AGES = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+
+const STEPS = [
+  ['01', 'Formu doldurun', '30 saniye sürüyor. Kart bilgisi istemiyoruz.'],
+  ['02', 'Sizi arayalım', '48 saat içinde arayıp uygun saati birlikte belirleyelim.'],
+  ['03', '1 saatlik gerçek ders', 'Tanıtım sunumu değil; çocuğunuz eğitmenle birlikte kod yazar.'],
+  ['04', 'Dürüst geri bildirim', 'Ders sonunda seviyesi ve uygun program hakkında konuşuruz.'],
 ];
 
+/** Ana sayfanın kapanış bölümü — kısa form, Netlify Forms üzerinden gider. */
 export default function TrialCTA() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [age, setAge] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
+  const [course, setCourse] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'done'>('idle');
+
+  const valid = name.trim().length > 1 && phone.trim().length > 5 && age !== '';
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim() || !age) return;
-
-    setSubmitting(true);
+    if (!valid || status === 'sending') return;
+    setStatus('sending');
     try {
       await fetch('/', {
         method: 'POST',
@@ -28,160 +37,248 @@ export default function TrialCTA() {
           name: name.trim(),
           phone: phone.trim(),
           age,
+          course,
+          note: 'Ana sayfa formu',
         }).toString(),
       });
-      setSubmitted(true);
     } catch {
-      setSubmitted(true);
+      // Ağ hatasında bile veliyi WhatsApp'a yönlendiren ekranı gösteriyoruz
     } finally {
-      setSubmitting(false);
+      track('form_gonderildi', { yas: age, kurs: course || 'kararsiz', kaynak: 'ana_sayfa' });
+      setStatus('done');
     }
   };
 
+  const field =
+    'w-full px-4 py-3 rounded bg-white/15 border border-white/30 text-white ' +
+    'placeholder:text-white0 focus:border-white focus:outline-none transition-colors';
+
   return (
-    <section id="deneme" className="py-20 md:py-28 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative bg-brand-navy rounded-[2.5rem] overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-100 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-80 h-80 bg-brand-green/12 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+    <section id="deneme" className="section">
+      <div className="container">
+        <div className="rounded-3xl bg-electric-500 text-white p-6 sm:p-8 md:p-12 overflow-hidden">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_440px] gap-10 lg:gap-16 items-start [&>*]:min-w-0">
+          {/* Sol: süreç */}
+          <div>
+            <p className="flex items-center gap-3 mb-5">
+              <span className="h-px w-8 bg-white/25" />
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">
+                Ücretsiz Deneme Dersi
+              </span>
+            </p>
 
-          <div className="relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-0 items-center">
+            <h2 className="text-display-md text-white mb-6">
+              Anlatmakla olmuyor. Bir ders yapalım.
+            </h2>
 
-            {/* Left: Text */}
-            <div className="px-8 md:px-14 py-12 md:py-16">
-              <div className="inline-flex items-center gap-2 bg-brand-green/20 border border-brand-green/30 text-brand-green-light text-sm font-semibold px-4 py-2 rounded-full mb-7">
-                <Sparkles className="w-4 h-4" />
-                Sınırlı Kontenjan
-              </div>
+            <p className="text-lg text-white/80 leading-relaxed max-w-xl mb-10">
+              Çocuğunuz gerçek bir eğitmenle gerçek bir ders yapar; biz de size seviyesi ve
+              hangi programın uygun olduğu hakkında dürüst bir görüş veririz. Bağlayıcılığı yok.
+            </p>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-5">
-                Ücretsiz Deneme<br />
-                <span className="text-gradient">Dersinizi Bugün Alın</span>
-              </h2>
-
-              <p className="text-white/60 text-lg mb-8 leading-relaxed">
-                Çocuğunuzun hangi alanda parladığını birlikte keşfedelim.
-                Uzman eğitmenimiz 1 saatlik ücretsiz ders verir, ardından
-                en uygun programı önerir.
-              </p>
-
-              <ul className="space-y-3">
-                {perks.map((p) => (
-                  <li key={p} className="flex items-center gap-3 text-white/80 text-sm">
-                    <CheckCircle2 className="w-5 h-5 text-brand-green shrink-0" />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Right: Form */}
-            <div className="px-8 md:px-14 py-12 md:py-16 lg:border-l border-white/10">
-              {submitted ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-brand-green/20 rounded-full flex items-center justify-center mx-auto mb-5">
-                    <CheckCircle2 className="w-8 h-8 text-brand-green" />
+            <ol className="border-t border-white/25">
+              {STEPS.map(([n, t, d]) => (
+                <li key={n} className="flex gap-5 py-5 border-b border-white/25">
+                  <span className="font-mono text-xs text-white0 pt-1 shrink-0">{n}</span>
+                  <div>
+                    <h3 className="font-semibold text-white mb-1">{t}</h3>
+                    <p className="text-sm text-white/80 leading-relaxed">{d}</p>
                   </div>
-                  <h3 className="text-white font-bold text-2xl mb-2">Kaydınız Alındı!</h3>
-                  <p className="text-white/60">
-                    48 saat içinde sizi arayacağız. WhatsApp'tan da ulaşabilirsiniz.
-                  </p>
-                </div>
-              ) : (
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a
+                href={waLink('Merhaba, ücretsiz deneme dersi hakkında bilgi almak istiyorum.')}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => track('whatsapp_tiklandi', { source: 'ana_sayfa_kapanis' })}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-2 underline-offset-4 decoration-marker hover:text-marker transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp'tan yazmayı tercih ederim
+              </a>
+              <a
+                href={`tel:${SITE.phoneIntl}`}
+                onClick={() => track('telefon_tiklandi', { source: 'ana_sayfa_kapanis' })}
+                className="text-sm text-white/80 hover:text-white transition-colors"
+              >
+                veya arayın: {SITE.phoneDisplay}
+              </a>
+            </div>
+          </div>
+
+          {/* Sağ: form */}
+          <div className="border border-white/20 rounded-2xl p-6 md:p-8">
+            {status === 'done' ? (
+              <div className="py-6">
+                <h3 className="text-2xl font-extrabold text-white mb-3">
+                  Talebiniz alındı
+                </h3>
+                <p className="text-white/80 leading-relaxed mb-6">
+                  48 saat içinde <strong className="text-white">{phone}</strong> numarasından
+                  size ulaşacağız. Beklemek istemiyorsanız aşağıdaki düğme sizi bilgileriniz
+                  yazılı hâlde WhatsApp'a götürür.
+                </p>
+                <a
+                  href={waLink(
+                    `Merhaba, siteden deneme dersi formunu doldurdum.\n\n` +
+                      `Veli: ${name}\nÇocuğun yaşı: ${age}\n` +
+                      `İlgilendiği kurs: ${course || 'Henüz kararsızım'}`,
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => track('whatsapp_tiklandi', { source: 'ana_sayfa_form_sonrasi' })}
+                  className="btn-primary w-full"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp'tan hemen yaz
+                </a>
+              </div>
+            ) : (
+              <>
+                <h3 className="text-xl font-extrabold text-white mb-1">
+                  Deneme dersi isteyin
+                </h3>
+                <p className="text-sm text-white/60 mb-6">
+                  Yıldızlı alanlar zorunlu. Bilgileriniz üçüncü taraflarla paylaşılmaz.
+                </p>
+
                 <form
                   name="deneme-dersi"
                   method="POST"
                   data-netlify="true"
-                  data-netlify-honeypot="bot-field"
+                  netlify-honeypot="bot-field"
                   onSubmit={handleSubmit}
-                  className="space-y-5"
+                  className="space-y-4"
                 >
                   <input type="hidden" name="form-name" value="deneme-dersi" />
-                  <p className="hidden" aria-hidden="true">
+                  <p className="hidden">
                     <label>
-                      Bot alanı
-                      <input name="bot-field" tabIndex={-1} autoComplete="off" />
+                      Bu alanı boş bırakın: <input name="bot-field" tabIndex={-1} />
                     </label>
                   </p>
 
                   <div>
-                    <label htmlFor="trial-name" className="block text-white/70 text-sm font-medium mb-2">
-                      Adınız Soyadınız
+                    <label htmlFor="t-name" className="block text-sm text-white/80 mb-1.5">
+                      Veli adı soyadı *
                     </label>
                     <input
-                      id="trial-name"
-                      type="text"
+                      id="t-name"
                       name="name"
+                      type="text"
+                      required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Örn: Ayşe Yılmaz"
-                      required
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3.5 text-white placeholder:text-white/30 focus:outline-none focus:border-brand-green transition-colors"
+                      placeholder="Adınız Soyadınız"
+                      className={field}
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="trial-phone" className="block text-white/70 text-sm font-medium mb-2">
-                      Telefon Numaranız
+                    <label htmlFor="t-phone" className="block text-sm text-white/80 mb-1.5">
+                      Telefon *
                     </label>
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
-                      <input
-                        id="trial-phone"
-                        type="tel"
-                        name="phone"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="0 5XX XXX XX XX"
-                        required
-                        className="w-full bg-white/10 border border-white/20 rounded-xl pl-11 pr-4 py-3.5 text-white placeholder:text-white/30 focus:outline-none focus:border-brand-green transition-colors"
-                      />
-                    </div>
+                    <input
+                      id="t-phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="05XX XXX XX XX"
+                      className={field}
+                    />
                   </div>
 
-                  <div>
-                    <label htmlFor="trial-age" className="block text-white/70 text-sm font-medium mb-2">
-                      Çocuğunuzun Yaşı
-                    </label>
-                    <select
-                      id="trial-age"
-                      name="age"
-                      value={age}
-                      onChange={(e) => setAge(e.target.value)}
-                      required
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-brand-green transition-colors appearance-none"
-                    >
-                      <option value="" disabled className="bg-brand-navy text-white/50">
-                        Yaş seçin
-                      </option>
-                      {Array.from({ length: 10 }, (_, i) => i + 8).map((ageOption) => (
-                        <option key={ageOption} value={ageOption} className="bg-brand-navy text-white">
-                          {ageOption} yaş
-                        </option>
-                      ))}
-                    </select>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="t-age" className="block text-sm text-white/80 mb-1.5">
+                        Çocuğun yaşı *
+                      </label>
+                      <select
+                        id="t-age"
+                        name="age"
+                        required
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        className={field}
+                      >
+                        <option value="">Seçin</option>
+                        {AGES.map((a) => (
+                          <option key={a} value={a}>
+                            {a} yaş
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="t-course" className="block text-sm text-white/80 mb-1.5">
+                        İlgilendiği kurs
+                      </label>
+                      <select
+                        id="t-course"
+                        name="course"
+                        value={course}
+                        onChange={(e) => setCourse(e.target.value)}
+                        className={field}
+                      >
+                        <option value="">Kararsızım</option>
+                        {COURSES.map((c) => (
+                          <option key={c.id} value={c.shortTitle}>
+                            {c.shortTitle}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   <button
                     type="submit"
-                    disabled={submitting}
-                    className="w-full btn-primary text-base !py-4 !justify-center mt-2 disabled:opacity-70"
+                    disabled={!valid || status === 'sending'}
+                    className="btn-brand w-full bg-night-950 hover:bg-night-800 disabled:opacity-45 disabled:cursor-not-allowed"
                   >
-                    {submitting ? 'Gönderiliyor...' : 'Ücretsiz Ders Rezervasyonu Yap'}
-                    {!submitting && <ArrowRight className="w-5 h-5" />}
+                    {status === 'sending' ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Gönderiliyor
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Ücretsiz deneme dersi iste
+                      </>
+                    )}
                   </button>
 
-                  <p className="text-white/40 text-xs text-center leading-relaxed">
-                    Kişisel verileriniz KVKK kapsamında korunmaktadır.
-                    Spam göndermiyoruz.
+                  <p className="text-xs text-white0 text-center leading-relaxed">
+                    Daha ayrıntılı form için{' '}
+                    <Link to="/iletisim" className="text-white/80 underline hover:text-white">
+                      iletişim sayfasına
+                    </Link>{' '}
+                    geçebilirsiniz. Gönderdiğinizde{' '}
+                    <Link to="/yasal/kvkk" className="text-white/80 underline hover:text-white">
+                      KVKK metnini
+                    </Link>{' '}
+                    kabul etmiş olursunuz.
                   </p>
                 </form>
-              )}
-            </div>
-
+              </>
+            )}
           </div>
+        </div>
+
+        {/* Alt şerit */}
+        </div>
+        <div className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-semibold text-night-500">
+          <span>Kart bilgisi istemiyoruz</span>
+          <span>Otomatik yenilenen abonelik yok</span>
+          <span>İlk 2 ders içinde koşulsuz iade</span>
+          <Link to="/fiyatlar" className="text-night-950 hover:text-electric-500 transition-colors">
+            Fiyatları gör
+            <ArrowRight className="w-3.5 h-3.5 inline ml-1" />
+          </Link>
         </div>
       </div>
     </section>

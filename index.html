@@ -5,61 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO -->
-    <title>Hype Academia | 8-17 Yaş Online Yazılım, Kodlama ve Yapay Zeka Eğitimi</title>
+    <title>Çocuklar İçin Kodlama Kursu | 8-17 Yaş Online Yazılım Eğitimi — Hype Academia</title>
     <meta
       name="description"
       content="8-17 yaş arası çocuklara Python, Scratch, Unity, Web Geliştirme, Yapay Zeka ve Arduino Robotik eğitimi. GTÜ bünyesinde kurulmuş, E-Devlet onaylı sertifikalı online teknoloji akademisi. Ücretsiz deneme dersi alın."
-    />
-    <meta
-      name="keywords"
-      content="çocuklar için kodlama, online yazılım eğitimi, python çocuk kursu, scratch eğitimi, yapay zeka kursu çocuk, unity oyun geliştirme, arduino robotik çocuk, web tasarım gençler, 8-17 yaş teknoloji eğitimi, hype academia, online programlama dersi, çocuk yazılım kursu türkiye"
     />
     <meta name="author" content="Hype Academia" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="googlebot" content="index, follow" />
     <link rel="canonical" href="https://hypeacademia.com/" />
 
+    <!-- Font sunucularina onceden baglanti -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Karşılama görselini erken indir (LCP) -->
+    <!-- Ana sayfadaki 3x3 duvarın ilk satırı — videolar inmeden önce bunlar görünür -->
+    <link rel="preload" as="image" href="/videos/unity-acik-dunya.jpg" type="image/jpeg" />
+    <link rel="preload" as="image" href="/videos/quiz-uygulamasi.jpg" type="image/jpeg" />
+    <link rel="preload" as="image" href="/videos/stadyum-3b.jpg" type="image/jpeg" />
+
     <!-- Geo & Language -->
     <meta name="language" content="Turkish" />
     <meta name="geo.region" content="TR" />
     <meta http-equiv="content-language" content="tr" />
 
-    <!-- Favicon & App Icons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" href="/logo.png" sizes="512x512" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    <!-- İkonlar -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0f172a" />
-    <meta name="msapplication-TileColor" content="#0f172a" />
     <meta name="application-name" content="Hype Academia" />
     <meta name="apple-mobile-web-app-title" content="Hype Academia" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-TileColor" content="#0E2038" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F1EA" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E2038" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="tr_TR" />
     <meta property="og:site_name" content="Hype Academia" />
     <meta property="og:url" content="https://hypeacademia.com/" />
-    <meta property="og:title" content="Hype Academia | 8-17 Yaş Online Yazılım ve Kodlama Eğitimi" />
+    <meta property="og:title" content="Çocuklar İçin Kodlama Kursu | 8-17 Yaş Online Yazılım Eğitimi" />
     <meta
       property="og:description"
       content="Python, Scratch, Unity, Yapay Zeka ve Robotik — 8-17 yaş arası çocuklara canlı online yazılım eğitimi. GTÜ bünyesinde, E-Devlet onaylı sertifika. Ücretsiz deneme dersi."
     />
-    <meta property="og:image" content="https://hypeacademia.com/logo.png" />
+    <meta property="og:image" content="https://hypeacademia.com/og.png" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Hype Academia — Çocuklar için yazılım ve teknoloji eğitimi" />
+    <meta property="og:image:alt" content="Hype Academia — 8–17 yaş için canlı online yazılım, robotik ve yapay zeka eğitimi" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Hype Academia | 8-17 Yaş Online Yazılım Eğitimi" />
+    <meta name="twitter:title" content="Çocuklar İçin Kodlama Kursu | 8-17 Yaş Online Yazılım Eğitimi" />
     <meta
       name="twitter:description"
       content="Python, Scratch, Unity, AI ve Robotik — çocuklara canlı online kodlama eğitimi. Ücretsiz deneme dersi alın."
     />
-    <meta name="twitter:image" content="https://hypeacademia.com/logo.png" />
-    <meta name="twitter:image:alt" content="Hype Academia logosu" />
+    <meta name="twitter:image" content="https://hypeacademia.com/og.png" />
+    <meta name="twitter:image:alt" content="Hype Academia — 8–17 yaş online teknoloji eğitimi" />
 
-    <!-- Structured Data: Organization -->
+    <!-- Yapısal veri: Kurum -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -68,23 +78,45 @@
         "name": "Hype Academia",
         "alternateName": "Hype Academia Teknoloji Eğitimi",
         "url": "https://hypeacademia.com/",
-        "logo": "https://hypeacademia.com/logo.png",
-        "image": "https://hypeacademia.com/logo.png",
-        "description": "8-17 yaş arası çocuklara Python, Scratch, Unity, Web Geliştirme, Yapay Zeka ve Arduino Robotik alanlarında canlı online yazılım eğitimi veren teknoloji akademisi.",
-        "email": "info@hypeacademia.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://hypeacademia.com/icon-512.png",
+          "width": 512,
+          "height": 512
+        },
+        "image": "https://hypeacademia.com/og.png",
+        "description": "8–17 yaş arası çocuklara Python, Scratch, Unity, Web Geliştirme, Yapay Zeka ve Arduino Robotik alanlarında canlı online yazılım eğitimi veren teknoloji akademisi.",
+        "email": "info@hypevisionlab.com",
         "telephone": "+905418629190",
         "foundingDate": "2020",
+        "parentOrganization": {
+          "@type": "CollegeOrUniversity",
+          "name": "Gebze Teknik Üniversitesi"
+        },
         "areaServed": {
           "@type": "Country",
           "name": "Türkiye"
         },
         "address": {
           "@type": "PostalAddress",
+          "addressLocality": "Gebze",
+          "addressRegion": "Kocaeli",
           "addressCountry": "TR"
         },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+905418629190",
+            "contactType": "customer service",
+            "email": "info@hypevisionlab.com",
+            "availableLanguage": [
+              "Turkish"
+            ],
+            "areaServed": "TR"
+          }
+        ],
         "sameAs": [
-          "https://instagram.com/hypeacademia",
-          "https://panel.hypeacademia.com"
+          "https://instagram.com/hypeacademia"
         ],
         "knowsAbout": [
           "Python Programlama",
@@ -93,12 +125,17 @@
           "Web Tasarım ve Geliştirme",
           "Yapay Zeka ve Makine Öğrenmesi",
           "Arduino ve Robotik",
-          "Çocuklar için Yazılım Eğitimi"
-        ]
+          "Çocuklar için Yazılım Eğitimi",
+          "Çocuklar için Kodlama"
+        ],
+        "audience": {
+          "@type": "EducationalAudience",
+          "audienceType": "8-17 yaş çocuklar ve gençler"
+        }
       }
     </script>
 
-    <!-- Structured Data: WebSite -->
+    <!-- Yapısal veri: Site -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -106,7 +143,7 @@
         "@id": "https://hypeacademia.com/#website",
         "url": "https://hypeacademia.com/",
         "name": "Hype Academia",
-        "description": "8-17 yaş arası çocuklara online yazılım, kodlama ve yapay zeka eğitimi",
+        "description": "8–17 yaş arası çocuklara online yazılım, kodlama ve yapay zeka eğitimi",
         "inLanguage": "tr-TR",
         "publisher": {
           "@id": "https://hypeacademia.com/#organization"
@@ -129,11 +166,30 @@
               "@type": "Course",
               "name": "Scratch ile Oyun Geliştirme",
               "description": "8-12 yaş arası çocuklar için blok tabanlı görsel kodlama ve oyun geliştirme kursu.",
-              "provider": { "@id": "https://hypeacademia.com/#organization" },
+              "url": "https://hypeacademia.com/kurslar/scratch-ile-oyun-gelistirme",
+              "provider": {
+                "@id": "https://hypeacademia.com/#organization"
+              },
               "educationalLevel": "Başlangıç",
               "timeRequired": "P8W",
               "inLanguage": "tr",
-              "audience": { "@type": "EducationalAudience", "audienceType": "8-12 yaş çocuklar" }
+              "audience": {
+                "@type": "EducationalAudience",
+                "audienceType": "8-12 yaş çocuklar"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": 8900,
+                "priceCurrency": "TRY",
+                "category": "Paid",
+                "availability": "https://schema.org/InStock",
+                "url": "https://hypeacademia.com/fiyatlar"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "courseWorkload": "8 hafta"
+              }
             }
           },
           {
@@ -143,11 +199,30 @@
               "@type": "Course",
               "name": "Python Programlama",
               "description": "11-15 yaş arası gençlere yönelik Python programlama ve proje geliştirme kursu.",
-              "provider": { "@id": "https://hypeacademia.com/#organization" },
+              "url": "https://hypeacademia.com/kurslar/python-programlama",
+              "provider": {
+                "@id": "https://hypeacademia.com/#organization"
+              },
               "educationalLevel": "Orta",
               "timeRequired": "P8W",
               "inLanguage": "tr",
-              "audience": { "@type": "EducationalAudience", "audienceType": "11-15 yaş gençler" }
+              "audience": {
+                "@type": "EducationalAudience",
+                "audienceType": "11-15 yaş gençler"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": 8900,
+                "priceCurrency": "TRY",
+                "category": "Paid",
+                "availability": "https://schema.org/InStock",
+                "url": "https://hypeacademia.com/fiyatlar"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "courseWorkload": "8 hafta"
+              }
             }
           },
           {
@@ -157,10 +232,30 @@
               "@type": "Course",
               "name": "Web Tasarım ve Geliştirme",
               "description": "12-17 yaş arası gençlere HTML, CSS, JavaScript ve React ile web geliştirme eğitimi.",
-              "provider": { "@id": "https://hypeacademia.com/#organization" },
+              "url": "https://hypeacademia.com/kurslar/web-tasarim-ve-gelistirme",
+              "provider": {
+                "@id": "https://hypeacademia.com/#organization"
+              },
               "educationalLevel": "Orta",
               "timeRequired": "P10W",
-              "inLanguage": "tr"
+              "inLanguage": "tr",
+              "audience": {
+                "@type": "EducationalAudience",
+                "audienceType": "12-17 yaş gençler"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": 10900,
+                "priceCurrency": "TRY",
+                "category": "Paid",
+                "availability": "https://schema.org/InStock",
+                "url": "https://hypeacademia.com/fiyatlar"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "courseWorkload": "10 hafta"
+              }
             }
           },
           {
@@ -169,11 +264,31 @@
             "item": {
               "@type": "Course",
               "name": "Unity ile Oyun Geliştirme",
-              "description": "13-17 yaş arası gençlere Unity ile 2D ve 3D oyun geliştirme eğitimi.",
-              "provider": { "@id": "https://hypeacademia.com/#organization" },
+              "description": "13-17 yaş arası gençlere Unity ve C# ile 2D/3D oyun geliştirme eğitimi.",
+              "url": "https://hypeacademia.com/kurslar/unity-ile-oyun-gelistirme",
+              "provider": {
+                "@id": "https://hypeacademia.com/#organization"
+              },
               "educationalLevel": "İleri",
               "timeRequired": "P10W",
-              "inLanguage": "tr"
+              "inLanguage": "tr",
+              "audience": {
+                "@type": "EducationalAudience",
+                "audienceType": "13-17 yaş gençler"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": 10900,
+                "priceCurrency": "TRY",
+                "category": "Paid",
+                "availability": "https://schema.org/InStock",
+                "url": "https://hypeacademia.com/fiyatlar"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "courseWorkload": "10 hafta"
+              }
             }
           },
           {
@@ -182,11 +297,31 @@
             "item": {
               "@type": "Course",
               "name": "Yapay Zeka ve Makine Öğrenmesi",
-              "description": "14-17 yaş arası gençlere yapay zeka, ML ve veri bilimi temelleri eğitimi.",
-              "provider": { "@id": "https://hypeacademia.com/#organization" },
+              "description": "14-17 yaş arası gençlere yapay zeka, makine öğrenmesi ve veri bilimi temelleri eğitimi.",
+              "url": "https://hypeacademia.com/kurslar/yapay-zeka-ve-makine-ogrenmesi",
+              "provider": {
+                "@id": "https://hypeacademia.com/#organization"
+              },
               "educationalLevel": "İleri",
               "timeRequired": "P8W",
-              "inLanguage": "tr"
+              "inLanguage": "tr",
+              "audience": {
+                "@type": "EducationalAudience",
+                "audienceType": "14-17 yaş gençler"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": 8900,
+                "priceCurrency": "TRY",
+                "category": "Paid",
+                "availability": "https://schema.org/InStock",
+                "url": "https://hypeacademia.com/fiyatlar"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "courseWorkload": "8 hafta"
+              }
             }
           },
           {
@@ -195,68 +330,67 @@
             "item": {
               "@type": "Course",
               "name": "Arduino ve Robotik",
-              "description": "10-15 yaş arası çocuklara Arduino ile robotik ve gömülü sistemler eğitimi.",
-              "provider": { "@id": "https://hypeacademia.com/#organization" },
+              "description": "10-15 yaş arası çocuklara Arduino ile robotik ve gömülü sistemler eğitimi. Donanım seti dahil.",
+              "url": "https://hypeacademia.com/kurslar/arduino-ve-robotik",
+              "provider": {
+                "@id": "https://hypeacademia.com/#organization"
+              },
               "educationalLevel": "Orta",
               "timeRequired": "P8W",
-              "inLanguage": "tr"
+              "inLanguage": "tr",
+              "audience": {
+                "@type": "EducationalAudience",
+                "audienceType": "10-15 yaş çocuklar"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": 8900,
+                "priceCurrency": "TRY",
+                "category": "Paid",
+                "availability": "https://schema.org/InStock",
+                "url": "https://hypeacademia.com/fiyatlar"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "courseWorkload": "8 hafta"
+              }
             }
           }
         ]
       }
     </script>
 
-    <!-- Structured Data: FAQ -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Kurslar online mı yoksa yüz yüze mi?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Tüm kurslarımız canlı (live), birebir veya küçük gruplar hâlinde (maksimum 8 öğrenci) online olarak gerçekleştirilmektedir. Zoom veya Google Meet üzerinden yürütülür."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Çocuğumun önceden kodlama bilgisi gerekiyor mu?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Hayır. Başlangıç kurslarımız (Scratch, Arduino) daha önce hiç kod yazmamış çocuklar için özel olarak tasarlanmıştır."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "E-Devlet onaylı sertifika nedir?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Kurslarımızı tamamlayan öğrenciler, Türk hükümetinin e-Devlet sistemi üzerinden doğrulanabilir resmi bir tamamlama sertifikası alır."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Deneme dersini nasıl alabilirim?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Web sitemizdeki formu doldurun ya da WhatsApp hattımıza (0541 862 91 90) mesaj atın. 48 saat içinde sizi arayarak ücretsiz deneme dersini programlıyoruz."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "Hangi yaş grubuna eğitim veriyorsunuz?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "8-17 yaş arası çocuk ve gençlere Python, Scratch, Unity, Web Geliştirme, Yapay Zeka ve Arduino Robotik alanlarında online yazılım eğitimi veriyoruz."
-            }
-          }
-        ]
-      }
-    </script>
+  </head>
+  <body>
+    <noscript>
+      <h1>Hype Academia — 8-17 Yaş Online Yazılım Eğitimi</h1>
+      <p>
+        8-17 yaş arası çocuklara Python, Scratch, Unity, Web Geliştirme, Yapay Zeka ve Arduino Robotik
+        eğitimi veren online teknoloji akademisi. GTÜ bünyesinde kurulmuş, E-Devlet onaylı sertifikalı
+        programlar. Ücretsiz deneme dersi için 0541 862 91 90 numarasından bize ulaşın.
+      </p>
+    </noscript>
+    <div id="root"></div>
 
-    <!-- Netlify Forms: build-time form detection (React SPA) -->
+    <!--
+      NETLIFY FORMS — derleme anında form tespiti
+      ==========================================
+      Netlify formları YALNIZCA deploy edilen HTML'i tarayarak bulur; JavaScript
+      çalıştırmaz. React formları tarayıcıda oluşturduğu için burada gizli
+      birer kopyasını bırakıyoruz.
+
+      ⚠️ Bunlar <body> içinde durmak ZORUNDA. <head> içinde <form> geçersiz
+         HTML'dir; tarayıcı ve tarayıcı-dışı ayrıştırıcılar farklı davranır ve
+         form tespiti güvenilmez hâle gelir.
+
+      ⚠️ Alan adları, gönderim yapan taraftaki adlarla BİREBİR aynı olmalı:
+         · deneme-dersi     → src/pages/ContactPage.tsx
+         · odeme-bildirimi  → netlify/functions/paytr-bildirim.mts
+
+      Form eklendikten sonra siteyi YENİDEN DEPLOY edin — tespit deploy
+      anında yapılır, panelde ancak ondan sonra görünür.
+    -->
     <form name="deneme-dersi" netlify netlify-honeypot="bot-field" hidden>
       <input type="text" name="name" />
       <input type="tel" name="phone" />
@@ -272,18 +406,38 @@
         <option value="16">16</option>
         <option value="17">17</option>
       </select>
+      <input type="text" name="course" />
+      <textarea name="note"></textarea>
     </form>
-  </head>
-  <body>
-    <noscript>
-      <h1>Hype Academia — 8-17 Yaş Online Yazılım Eğitimi</h1>
-      <p>
-        8-17 yaş arası çocuklara Python, Scratch, Unity, Web Geliştirme, Yapay Zeka ve Arduino Robotik
-        eğitimi veren online teknoloji akademisi. GTÜ bünyesinde kurulmuş, E-Devlet onaylı sertifikalı
-        programlar. Ücretsiz deneme dersi için 0541 862 91 90 numarasından bize ulaşın.
-      </p>
-    </noscript>
-    <div id="root"></div>
+
+    <!--
+      Ödeme sonucu bildirimi. PayTR bildirim fonksiyonu (netlify/functions/
+      paytr-bildirim.mts) her sonuçlanan ödeme için bu forma gönderim yapar;
+      böylece kayıt ekibine e-posta düşer.
+
+      Netlify formu yalnızca derleme sırasında HTML içinde görürse tanır —
+      bu yüzden burada gizli olarak duruyor. Alan adları fonksiyondaki
+      alanlarla birebir aynı olmalı.
+    -->
+    <form name="odeme-bildirimi" netlify hidden>
+      <input type="text" name="durum" />
+      <input type="text" name="siparisNo" />
+      <input type="text" name="kurs" />
+      <input type="text" name="paket" />
+      <input type="text" name="plan" />
+      <input type="text" name="tutar" />
+      <input type="text" name="tahsilEdilen" />
+      <input type="text" name="odemeTuru" />
+      <input type="text" name="veli" />
+      <input type="email" name="email" />
+      <input type="tel" name="telefon" />
+      <textarea name="adres"></textarea>
+      <input type="text" name="ogrenci" />
+      <textarea name="not"></textarea>
+      <input type="text" name="hata" />
+      <input type="text" name="testIslemi" />
+    </form>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

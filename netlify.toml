@@ -5,13 +5,88 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# SPA fallback (public/_redirects ile birlikte)
+# ─── Sunucu fonksiyonları ─────────────────────────────────────────────────────
+# PayTR entegrasyonu üç uçtan oluşuyor (netlify/functions/):
+#
+#   POST /api/paytr/token     → ödeme formunu açan iframe_token (1. ADIM)
+#   POST /api/paytr/bildirim  → PayTR'ın ödeme sonucunu bildirdiği adres (2. ADIM)
+#   GET  /api/paytr/durum     → sonuç sayfasının siparişi yokladığı uç
+#
+# Adresler fonksiyonların içindeki `export const config = { path: ... }`
+# satırlarında tanımlı — burada ayrıca yönlendirme kuralı gerekmiyor.
+#
+# ⚠️ PayTR Mağaza Paneli → Ayarlar → Bildirim URL Ayarları bölümüne
+#    https://hypeacademia.com/api/paytr/bildirim yazılmalı, protokol HTTPS.
+[functions]
+  node_bundler = "esbuild"
+
+# ─── Yönlendirme ──────────────────────────────────────────────────────────────
+# Derleme sırasında her rota için ayrı bir index.html üretiliyor
+# (scripts/prerender.mjs). Netlify önce bu statik dosyalara bakar, bulamazsa
+# aşağıdaki kurala düşer.
+#
+# ⚠️  Bu kurala "force = true" EKLEMEYİN. Eklenirse statik sayfalar atlanır,
+#     arama motorları her adreste aynı boş index.html'i görür ve ön işlemenin
+#     bütün faydası kaybolur.
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Deneme dersi formu bildirim e-postası:
-# Netlify Dashboard → Site configuration → Forms → Form notifications
-# → Add notification → Email notification → emre.yildiz@hypevisionlab.com
-# Form adı: deneme-dersi
+# ─── Önbellek ─────────────────────────────────────────────────────────────────
+# Hash'li varlıklar sonsuza kadar önbelleklenebilir; HTML asla.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# ─── Güvenlik başlıkları ──────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+    # SSL: Netlify alan adı bağlandığında Let's Encrypt sertifikasını otomatik
+    # kurar ve HTTP'yi HTTPS'e yönlendirir (Domain management → HTTPS →
+    # "Force HTTPS" açık olmalı). Aşağıdaki başlık tarayıcıya bir yıl boyunca
+    # yalnızca HTTPS kullanmasını söyler.
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# ─── Notlar ───────────────────────────────────────────────────────────────────
+# ─── Form bildirimleri ────────────────────────────────────────────────────────
+# Deneme dersi formu gönderimleri şu adrese düşmeli:
+#
+#     info@hypevisionlab.com
+#
+# Netlify bu ayarı yalnızca panelden kabul ediyor, dosyadan yapılamıyor:
+#   Netlify Dashboard → Site configuration → Forms → Form notifications
+#   → Add notification → Email notification
+#   Event: New form submission   ·   Form: deneme-dersi
+#   Email to notify: info@hypevisionlab.com
+#
+# İlk deploy'dan sonra siteden bir test formu gönderip panelde
+# Forms → deneme-dersi altında göründüğünü doğrulayın.
+#
+# Ödeme sonucu bildirimleri (PayTR) `odeme-bildirimi` formuna düşer. Aynı
+# yerden ona da bir e-posta bildirimi tanımlayın:
+#   Event: New form submission   ·   Form: odeme-bildirimi
+#   Email to notify: info@hypevisionlab.com
+#
+# Ortam değişkenleri (analitik, takvim, ödeme):
+#   Site configuration → Environment variables — bkz. .env.example
+#
+#   PAYTR_MERCHANT_ID / PAYTR_MERCHANT_KEY / PAYTR_MERCHANT_SALT
+#   PAYTR_TEST_MODE (1 = test, 0 = canlı)
+#   VITE_PAYMENT_ONLINE (true olduğunda ödeme adımı açılır)

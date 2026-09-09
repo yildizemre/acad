@@ -2,59 +2,115 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    container: {
+      center: true,
+      padding: { DEFAULT: '1.25rem', sm: '1.75rem', lg: '2.5rem' },
+      screens: { '2xl': '1240px' },
+    },
     extend: {
       colors: {
-        navy: {
-          50: '#eef2ff',
-          100: '#dde6ff',
-          200: '#c0cfff',
-          300: '#93adff',
-          400: '#607fff',
-          500: '#3b57ff',
-          600: '#1e36f5',
-          700: '#1428e0',
-          800: '#1722b5',
-          900: '#0f1a6e',
-          950: '#0a1150',
+        // ── Metin ve koyu yüzeyler. Lacivert değil, siyaha yakın — vurucu.
+        night: {
+          50: '#F6F7F8',
+          100: '#EDEEF1',
+          200: '#D9DCE1',
+          300: '#B4BAC4',
+          400: '#8A929F',
+          500: '#646D7C',
+          600: '#474F5D',
+          700: '#333A46',
+          800: '#22272F',
+          900: '#181C22',
+          950: '#0F1216',
         },
-        brand: {
-          navy: '#0D1B4B',
-          'navy-light': '#1A2E6E',
-          green: '#ed5b2d',
-          'green-light': '#f07847',
-          'green-dark': '#d44d22',
+        // ── Marka mavisi (logo rengi). Ana eylem rengi.
+        electric: {
+          50: '#EFEFFF',
+          100: '#E0DFFF',
+          200: '#C4C2FF',
+          300: '#9B98FF',
+          400: '#6663FF',
+          500: '#1B18FF',
+          600: '#1512D6',
+          700: '#110FA8',
+          800: '#0E0C85',
+          900: '#0B0A66',
+        },
+        // ── Fosforlu vurgu. Başlıklarda kelime altını boyamak için.
+        marker: {
+          DEFAULT: '#D8F84E',
+          soft: '#EAFBA6',
+        },
+        // ── Kart zeminleri. Her kursun kendi rengi olur.
+        tint: {
+          peach: '#FFEADF',
+          rose: '#FCE4F2',
+          lime: '#EDF9CE',
+          sky: '#E2ECFE',
+          lilac: '#EDE7FE',
+          mint: '#DCF5EC',
+          sand: '#FBF3E4',
+        },
+        // ── Sıcak aksan (ikinci derece)
+        brick: {
+          50: '#FBF2EF',
+          100: '#F6E1DA',
+          200: '#EDC5B6',
+          300: '#E09E86',
+          400: '#CF7052',
+          500: '#B8432B',
+          600: '#9E3723',
+          700: '#822C1D',
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        // Gövde ve başlıklar aynı aileden — Kodland gibi tek, kalın, geometrik
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      },
+      fontSize: {
+        'display-sm': [
+          'clamp(1.9rem, 1.5rem + 1.8vw, 2.85rem)',
+          { lineHeight: '1.1', letterSpacing: '-0.03em' },
+        ],
+        'display-md': [
+          'clamp(2.4rem, 1.75rem + 3vw, 4rem)',
+          { lineHeight: '1.05', letterSpacing: '-0.035em' },
+        ],
+        'display-lg': [
+          'clamp(2.9rem, 1.9rem + 4.6vw, 5.25rem)',
+          { lineHeight: '1.02', letterSpacing: '-0.04em' },
+        ],
+      },
+      borderRadius: {
+        DEFAULT: '10px',
+        md: '12px',
+        lg: '16px',
+        xl: '20px',
+        '2xl': '24px',
+        '3xl': '32px',
+        '4xl': '40px',
+      },
+      boxShadow: {
+        soft: '0 2px 8px rgba(15,18,22,0.05)',
+        lift: '0 8px 30px -12px rgba(15,18,22,0.18)',
       },
       animation: {
-        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
-        'fade-in': 'fadeIn 0.5s ease-out forwards',
-        'float': 'float 6s ease-in-out infinite',
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'slide-in-right': 'slideInRight 0.3s ease-out forwards',
+        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards',
+        'fade-in': 'fadeIn 0.4s ease-out forwards',
+        float: 'float 5s ease-in-out infinite',
       },
       keyframes: {
         fadeInUp: {
-          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
+        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
         float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-12px)' },
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
         },
-        slideInRight: {
-          '0%': { opacity: '0', transform: 'translateX(20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-      },
-      backgroundImage: {
-        'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
       },
     },
   },

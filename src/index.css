@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,99 +7,160 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
   }
 
   body {
-    font-family: 'Inter', system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    @apply bg-white text-night-600 antialiased;
+    font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
   }
 
-  * {
-    box-sizing: border-box;
+  h1, h2, h3, h4 {
+    @apply text-night-950 font-extrabold;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+  * { box-sizing: border-box; }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-electric-500 ring-offset-2 rounded-lg;
+  }
+
+  ::selection {
+    @apply bg-marker text-night-950;
   }
 }
 
 @layer components {
+  /* ─── Butonlar — siyah hap, yüksek kontrast ──────────────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-bold
+           transition-all duration-200 whitespace-nowrap active:scale-[0.98];
+  }
+
   .btn-primary {
-    @apply bg-brand-green text-white font-semibold px-6 py-3 rounded-xl
-           hover:bg-brand-green-light transition-all duration-200
-           shadow-lg hover:shadow-brand-green/30 hover:scale-105
-           active:scale-95 inline-flex items-center gap-2;
+    @apply btn bg-night-950 text-white px-7 py-3.5 hover:bg-night-800;
+  }
+
+  .btn-brand {
+    @apply btn bg-electric-500 text-white px-7 py-3.5 hover:bg-electric-600;
+  }
+
+  .btn-ghost {
+    @apply btn border-2 border-night-200 bg-white text-night-950 px-7 py-3.5
+           hover:border-night-950;
   }
 
   .btn-outline {
-    @apply border-2 border-white text-white font-semibold px-6 py-3 rounded-xl
-           hover:bg-white hover:text-brand-navy transition-all duration-200
-           active:scale-95 inline-flex items-center gap-2;
+    @apply btn border-2 border-white/50 text-white px-7 py-3.5
+           hover:bg-white hover:text-night-950;
   }
 
+  .btn-lg { @apply text-base px-8 py-4; }
+  .btn-sm { @apply text-sm px-5 py-2.5; }
+
+  /* ─── Yüzeyler — büyük yarıçap, renkli zemin ─────────────────────────── */
   .card {
-    @apply bg-white rounded-2xl shadow-md hover:shadow-xl
-           transition-all duration-300 hover:-translate-y-1 overflow-hidden;
+    @apply bg-white rounded-3xl border border-night-100;
   }
+
+  .card-hover {
+    @apply card transition-all duration-300 hover:shadow-lift hover:-translate-y-1;
+  }
+
+  .panel {
+    @apply bg-night-50 rounded-3xl;
+  }
+
+  /* ─── Etiketler — dolgulu hap ────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center gap-1.5 text-xs font-bold
+           px-3 py-1.5 rounded-full;
+  }
+
+  .badge-neutral { @apply badge bg-night-100 text-night-700; }
+  .badge-white   { @apply badge bg-white text-night-900; }
+  .badge-marker  { @apply badge bg-marker text-night-950; }
+  .badge-brand   { @apply badge bg-electric-500 text-white; }
+  .badge-dark    { @apply badge bg-night-950 text-white; }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-sm font-bold text-night-400;
+  }
+
+  .section { @apply py-16 md:py-24; }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold text-brand-navy leading-tight;
-  }
-
-  .section-subtitle {
-    @apply text-gray-500 text-lg mt-4 leading-relaxed;
-  }
-
-  .badge {
-    @apply inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full;
+    @apply text-display-sm font-extrabold text-night-950;
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    background: linear-gradient(135deg, #ed5b2d 0%, #f07847 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  /* ─── Fosforlu vurgu — başlıkta kelimenin arkasını boyar ─────────────── */
+  .mark {
+    @apply bg-marker px-[0.22em] py-[0.02em] rounded-[0.15em]
+           box-decoration-clone;
   }
 
-  .bg-hero {
-    background: linear-gradient(135deg, #0D1B4B 0%, #1A2E6E 60%, #0f2a5e 100%);
+  .mark-brand {
+    @apply bg-electric-500 text-white px-[0.22em] py-[0.02em] rounded-[0.15em]
+           box-decoration-clone;
   }
+
+  /* Sayı vurgusu — istatistik şeridinde rakamı boyar */
+  .mark-num {
+    @apply inline-flex items-center justify-center rounded-2xl px-3 py-0.5;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
 
   .animate-delay-100 { animation-delay: 100ms; }
   .animate-delay-200 { animation-delay: 200ms; }
   .animate-delay-300 { animation-delay: 300ms; }
-  .animate-delay-400 { animation-delay: 400ms; }
-  .animate-delay-500 { animation-delay: 500ms; }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
+/* ─── Kaydırma çubuğu ───────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #f6f7f8; }
+::-webkit-scrollbar-thumb { background: #d9dce1; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #b4bac4; }
 
-/* Floating WhatsApp button pulse ring */
+/* ─── Kaydırınca beliren bölümler ───────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* WhatsApp butonu — markanın kendi rengi */
 .whatsapp-ring::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: #25D366;
-  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  opacity: 0.4;
+  background: #25d366;
+  animation: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.35;
 }
 
 @keyframes ping {
-  75%, 100% {
-    transform: scale(1.5);
-    opacity: 0;
+  75%, 100% { transform: scale(1.5); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+  .reveal { opacity: 1; transform: none; }
 }

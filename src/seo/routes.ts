@@ -221,6 +221,18 @@ export const SEO_ROUTES: SeoRoute[] = [
       'Bu sayfa ödeme işleminin sonucunu gösterir. Sonucu görebilmek için tarayıcınızda JavaScript açık olmalıdır.',
     links: [{ label: 'Ana Sayfa', href: '/' }, { label: 'İletişim', href: '/iletisim' }],
   },
+  {
+    // Öğrenci paneli henüz yayında değil; bu sayfa geçici karşılama.
+    path: '/panel',
+    priority: '0.1',
+    noindex: true,
+    title: 'Öğrenci Paneli | Hype Academia',
+    description: 'Hype Academia öğrenci paneli.',
+    h1: 'Panel hazırlanıyor',
+    summary:
+      'Öğrenci panelimiz üzerinde çalışıyoruz. Açıldığında kayıtlı velilerimize e-posta ile giriş bilgisi göndereceğiz. Bu arada ders saati, kayıt ve ödev paylaşımı e-posta ve WhatsApp üzerinden yürüyor.',
+    links: [{ label: 'Ana Sayfa', href: '/' }, { label: 'İletişim', href: '/iletisim' }],
+  },
 
   // ─── Kurs detay sayfaları ───
   ...COURSES.map<SeoRoute>((c) => ({

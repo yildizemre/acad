@@ -19,6 +19,7 @@ const LegalPage = lazy(() => import('./pages/LegalPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const PaymentResultPage = lazy(() => import('./pages/PaymentResultPage'));
+const PanelPage = lazy(() => import('./pages/PanelPage'));
 const GuidePage = lazy(() => import('./pages/GuidePage'));
 const ArticlePage = lazy(() => import('./pages/ArticlePage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -63,6 +64,7 @@ export default function App() {
             <Route path="/projeler" element={<ProjectsPage />} />
             <Route path="/kayit" element={<CheckoutPage />} />
             <Route path="/odeme-sonucu" element={<PaymentResultPage />} />
+            <Route path="/panel" element={<PanelPage />} />
             <Route path="/rehber" element={<GuidePage />} />
             <Route path="/rehber/:slug" element={<ArticlePage />} />
             <Route path="/yasal/:slug" element={<LegalPage />} />

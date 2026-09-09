@@ -70,17 +70,25 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       fontSize: {
+        // ⚠️ SATIR YÜKSEKLİKLERİ TÜRKÇE İÇİN AYARLI — düşürmeyin.
+        //
+        // İngilizce başlıklarda 1.0–1.05 satır yüksekliği sorunsuz durur, ama
+        // Türkçede aynı satırda hem ÜSTE hem ALTA taşan işaretler var:
+        //   ğ ü ö İ  → harfin üstünde     ·  Ç ç Ş ş  → harfin altında
+        // "Çocuğunuz" tek kelimede ikisini birden barındırıyor. 1.02'de
+        // ğ'nin şapkası ile Ç'nin kuyruğu satır kutusuna sığmıyor, üstelik
+        // .mark vurgusunun zemin kutusu komşu satıra biniyordu.
         'display-sm': [
           'clamp(1.9rem, 1.5rem + 1.8vw, 2.85rem)',
-          { lineHeight: '1.1', letterSpacing: '-0.03em' },
+          { lineHeight: '1.18', letterSpacing: '-0.03em' },
         ],
         'display-md': [
           'clamp(2.4rem, 1.75rem + 3vw, 4rem)',
-          { lineHeight: '1.05', letterSpacing: '-0.035em' },
+          { lineHeight: '1.14', letterSpacing: '-0.035em' },
         ],
         'display-lg': [
           'clamp(2.9rem, 1.9rem + 4.6vw, 5.25rem)',
-          { lineHeight: '1.02', letterSpacing: '-0.04em' },
+          { lineHeight: '1.12', letterSpacing: '-0.04em' },
         ],
       },
       borderRadius: {

@@ -99,13 +99,18 @@
 
 @layer utilities {
   /* ─── Fosforlu vurgu — başlıkta kelimenin arkasını boyar ─────────────── */
+  /*
+   * Fosforlu vurgu. Dikey dolgu, Türkçe işaretlerin (ğ ü Ç ş) kutunun içinde
+   * kalması için bilerek cömert; satır yükseklikleri de buna göre ayarlı
+   * (bkz. tailwind.config.js → fontSize display-*).
+   */
   .mark {
-    @apply bg-marker px-[0.22em] py-[0.02em] rounded-[0.15em]
+    @apply bg-marker px-[0.22em] py-[0.06em] rounded-[0.15em]
            box-decoration-clone;
   }
 
   .mark-brand {
-    @apply bg-electric-500 text-white px-[0.22em] py-[0.02em] rounded-[0.15em]
+    @apply bg-electric-500 text-white px-[0.22em] py-[0.06em] rounded-[0.15em]
            box-decoration-clone;
   }
 

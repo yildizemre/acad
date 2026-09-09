@@ -18,15 +18,16 @@
 
 export const SELLER = {
   /** Ticaret sicilindeki tam ünvan — "... Ltd. Şti." / "... A.Ş." dahil */
-  legalName: '',
+  legalName: 'Hype Vision Teknoloji Ticaret Limited Şirketi',
   /** Kısa kullanım adı — bu biliniyor, her zaman gösterilir */
   shortName: 'Hype Vision',
   /** Fatura ve tebligat adresi */
-  address: '',
-  taxOffice: '',
-  taxNumber: '',
-  mersis: '',
-  tradeRegistryNo: '',
+  address:
+    'Hürriyet Mah. Reyhan Sk. Burcu Temel Sitesi A Blok No: 28/A İç Kapı No: 21, Kartal / İstanbul',
+  taxOffice: 'Yakacık',
+  taxNumber: '4651646075',
+  mersis: '0465164607500001',
+  tradeRegistryNo: '1154213',
   phone: '+90 541 862 91 90',
   email: 'info@hypevisionlab.com',
   /** Kayıtlı elektronik posta — varsa yazın */

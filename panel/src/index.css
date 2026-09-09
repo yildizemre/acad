@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-night-50 text-night-900 antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  /* Türkçe işaretler (ğ ü Ç ş) satır kutusuna sığsın — sitede de aynı sorun çıkmıştı */
+  h1, h2, h3 { @apply leading-snug; }
+}
+
+@layer components {
+  .kart      { @apply bg-white rounded-2xl ring-1 ring-night-100; }
+  .btn       { @apply inline-flex items-center justify-center gap-2 rounded-xl font-bold
+                      transition-colors disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-ana   { @apply btn bg-night-950 text-white px-5 py-2.5 text-sm hover:bg-night-800; }
+  .btn-ikinci{ @apply btn border-2 border-night-200 bg-white text-night-950 px-5 py-2.5 text-sm
+                      hover:border-night-950; }
+  .btn-sil   { @apply btn bg-brick-500 text-white px-4 py-2 text-sm hover:bg-brick-600; }
+  .girdi     { @apply w-full rounded-xl border-2 border-night-200 px-4 py-2.5 text-night-950
+                      outline-none transition-colors placeholder:text-night-300
+                      focus:border-night-950 disabled:bg-night-50; }
+  .etiket    { @apply mb-1.5 block text-sm font-bold text-night-950; }
+  .rozet     { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold; }
+}

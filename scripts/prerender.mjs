@@ -206,7 +206,8 @@ async function main() {
     for (const e of eksik) console.warn(`     · ${e}`);
     console.warn('     Dosya: src/data/legal-entity.ts');
     console.warn('     Ziyaretçi bunları görmüyor — sözleşmeden çıkarılıyorlar.');
-    console.warn('     Ama iyzico başvurusu için doldurulmaları ZORUNLU.');
+    console.warn('     Ama gerçek satış yapılırken doldurulmaları YASAL ZORUNLULUKTUR
+     (6502 sayılı Kanun · Mesafeli Sözleşmeler Yönetmeliği).');
     console.warn('');
   }
 }

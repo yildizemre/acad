@@ -210,13 +210,18 @@ export default function Navbar() {
 
           {/* Masaüstü eylemler */}
           <div className="hidden lg:flex items-center gap-2">
-            <Link
-              to={SITE.panelUrl}
+            {/* Panel ayrı bir alan adında (panel.hypeacademia.com) - router
+                bağlantısı değil, gerçek <a>. Yeni sekmede açıyoruz ki veli
+                sitedeki yerini kaybetmesin. */}
+            <a
+              href={SITE.panelUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-sm font-medium px-3.5 py-2 rounded-2xl text-night-600 hover:text-night-950 hover:bg-white transition-colors"
             >
               <LogIn className="w-4 h-4" />
               Giriş Yap
-            </Link>
+            </a>
             <Link to="/iletisim" className="btn-primary btn-sm">
               Ücretsiz Deneme Dersi
             </Link>
@@ -284,10 +289,15 @@ export default function Navbar() {
             </div>
 
             <div className="pt-4 space-y-2">
-              <Link to={SITE.panelUrl} className="btn-ghost w-full">
+              <a
+                href={SITE.panelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost w-full"
+              >
                 <LogIn className="w-4 h-4" />
                 Giriş Yap
-              </Link>
+              </a>
               <Link to="/iletisim" className="btn-primary w-full">
                 Ücretsiz Deneme Dersi Al
                 <ArrowRight className="w-4 h-4" />

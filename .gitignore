@@ -32,12 +32,6 @@ PayTR IFrame API/
 PayTR - New Logo Set/
 iyzico-logo-pack/
 
-# Supabase yerel yığınının ürettiği geçici dosyalar.
-# ⚠️ .temp/start-secrets içinde servis anahtarları duruyor — asla commit'lenmez.
-panel/supabase/.temp/
-panel/supabase/.branches/
-panel/dist/
-
 # Geçici / araç çıktıları
 .kareler/
 .netlify/

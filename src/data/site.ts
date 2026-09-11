@@ -22,17 +22,10 @@ export const SITE = {
   emailOperations: 'info@hypevisionlab.com',
   address: 'Gebze Teknik Üniversitesi, Gebze / Kocaeli',
   /**
-   * Öğrenci paneli.
-   *
-   * ⚠️ panel.hypeacademia.com HENÜZ YAYINDA DEĞİL. Panel açılana kadar site
-   *    içindeki /panel sayfasına yönlendiriyoruz; ölü bağlantı vermek, üstelik
-   *    ödeme almışken, güveni doğrudan kırar.
-   *
-   *    Panel yayına alındığında burayı 'https://panel.hypeacademia.com' yapmak
-   *    ve `panelHazir` değerini true'ya çekmek yeterli.
+   * Öğrenci paneli — ayrı bir uygulama, ayrı alan adında yayında.
+   * Navbar'daki "Giriş Yap" doğrudan buraya gider (yeni sekmede).
    */
-  panelUrl: '/panel',
-  panelHazir: false,
+  panelUrl: 'https://panel.hypeacademia.com/',
   instagram: 'https://instagram.com/hypeacademia',
 } as const;
 
